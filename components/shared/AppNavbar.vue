@@ -56,8 +56,8 @@ function closeMenu() {
         </div>
 
         <div class="hidden md:flex md:items-center md:gap-4">
-          <Button variant="ghost" size="sm">Log In</Button>
-          <Button size="sm">Get Started</Button>
+          <Button variant="ghost" size="sm" class="text-foreground hover:bg-white/50">Log In</Button>
+          <Button size="sm" class="shadow-md">Get Started</Button>
         </div>
 
         <!-- Mobile Menu Button -->

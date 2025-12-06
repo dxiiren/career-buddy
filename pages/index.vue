@@ -29,6 +29,7 @@ useHead({
 <template>
   <div>
     <LandingHeroSection />
+    <LandingTrustBadgesSection />
     <LandingProblemSection />
     <LandingFeaturesSection />
     <LandingHowItWorksSection />
