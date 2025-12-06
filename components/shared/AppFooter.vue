@@ -1,21 +1,31 @@
 <script setup lang="ts">
 import { Twitter, Linkedin, Instagram, Mail } from 'lucide-vue-next'
 
+const route = useRoute()
+const isLandingPage = computed(() => route.path === '/')
+
+// Generate full href for anchor links based on current page
+function getAnchorHref(anchor: string) {
+  return isLandingPage.value ? anchor : `/${anchor}`
+}
+
 const footerLinks = {
   product: [
-    { name: 'Features', href: '#features' },
-    { name: 'How It Works', href: '#how-it-works' },
-    { name: 'FAQ', href: '#faq' },
+    { name: 'Challenges', anchor: '#challenges' },
+    { name: 'Features', anchor: '#features' },
+    { name: 'How It Works', anchor: '#how-it-works' },
+    { name: 'Feedback', anchor: '#feedback' },
+    { name: 'FAQ', anchor: '#faq' },
   ],
   resources: [
-    { name: 'Resume Templates', href: '#' },
-    { name: 'Interview Guide', href: '#' },
-    { name: 'Career Blog', href: '#' },
+    { name: 'Resume Templates', href: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1' },
+    { name: 'Interview Guide', href: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1' },
+    { name: 'Career Blog', href: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1' },
   ],
   company: [
-    { name: 'About Us', href: '#' },
-    { name: 'Contact', href: '#' },
-    { name: 'Privacy Policy', href: '#' },
+    { name: 'About Us', href: '/about' },
+    { name: 'Contact', href: '/contact' },
+    { name: 'Privacy Policy', href: '/privacy' },
   ],
 }
 
@@ -72,7 +82,7 @@ const socialLinks = [
           <h4 class="font-semibold mb-4">Product</h4>
           <ul class="space-y-3">
             <li v-for="link in footerLinks.product" :key="link.name">
-              <a :href="link.href" class="text-sm text-muted-foreground transition-colors hover:text-primary">
+              <a :href="getAnchorHref(link.anchor)" class="text-sm text-muted-foreground transition-colors hover:text-primary">
                 {{ link.name }}
               </a>
             </li>
@@ -84,7 +94,7 @@ const socialLinks = [
           <h4 class="font-semibold mb-4">Resources</h4>
           <ul class="space-y-3">
             <li v-for="link in footerLinks.resources" :key="link.name">
-              <a :href="link.href" class="text-sm text-muted-foreground transition-colors hover:text-primary">
+              <a :href="link.href" target="_blank" rel="noopener noreferrer" class="text-sm text-muted-foreground transition-colors hover:text-primary">
                 {{ link.name }}
               </a>
             </li>
@@ -96,9 +106,9 @@ const socialLinks = [
           <h4 class="font-semibold mb-4">Company</h4>
           <ul class="space-y-3">
             <li v-for="link in footerLinks.company" :key="link.name">
-              <a :href="link.href" class="text-sm text-muted-foreground transition-colors hover:text-primary">
+              <NuxtLink :to="link.href" class="text-sm text-muted-foreground transition-colors hover:text-primary">
                 {{ link.name }}
-              </a>
+              </NuxtLink>
             </li>
           </ul>
         </div>

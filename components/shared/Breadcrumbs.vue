@@ -29,7 +29,20 @@ const routeLabels: Record<string, string> = {
   ats: 'ATS Optimization',
   chat: 'Career Chat',
   help: 'Help & Support',
+  about: 'About Us',
+  contact: 'Contact',
+  privacy: 'Privacy Policy',
 }
+
+// Company pages should link to landing page, dashboard pages should link to dashboard
+const companyPages = ['about', 'contact', 'privacy']
+const isCompanyPage = computed(() => {
+  const firstSegment = route.path.split('/').filter(Boolean)[0]
+  return companyPages.includes(firstSegment)
+})
+
+const homeLink = computed(() => isCompanyPage.value ? '/' : '/dashboard')
+const homeLabel = computed(() => isCompanyPage.value ? 'Home' : 'Dashboard')
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => {
   const pathSegments = route.path.split('/').filter(Boolean)
@@ -56,8 +69,8 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => {
 })
 
 const showBreadcrumbs = computed(() => {
-  // Show breadcrumbs when we have more than one level of navigation
-  return breadcrumbs.value.length > 1
+  // Show breadcrumbs on all pages
+  return breadcrumbs.value.length >= 1
 })
 </script>
 
@@ -66,11 +79,11 @@ const showBreadcrumbs = computed(() => {
     <ol class="flex items-center gap-2 text-sm">
       <li>
         <NuxtLink
-          to="/dashboard"
+          :to="homeLink"
           class="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
         >
           <Home class="h-4 w-4" />
-          <span class="sr-only">Home</span>
+          <span class="sr-only sm:not-sr-only sm:ml-1">{{ homeLabel }}</span>
         </NuxtLink>
       </li>
       <li v-for="(item, index) in breadcrumbs" :key="item.href" class="flex items-center gap-2">
