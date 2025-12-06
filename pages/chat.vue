@@ -14,6 +14,7 @@ const {
   sendMessage,
   clearMessages,
 } = useCareerChat()
+const { trackPageVisit } = useRecentActivity()
 
 const isLoading = ref(true)
 const messagesContainer = ref<HTMLElement | null>(null)
@@ -47,6 +48,7 @@ onMounted(async () => {
     return
   }
 
+  trackPageVisit('/chat')
   await new Promise(resolve => setTimeout(resolve, 500))
   isLoading.value = false
 

@@ -12,6 +12,7 @@ const {
   templateCategories,
   loadResume,
 } = useResume()
+const { trackPageVisit } = useRecentActivity()
 
 const animatedCards = ref<Set<number>>(new Set())
 const selectedCategory = ref('all')
@@ -37,6 +38,7 @@ onMounted(async () => {
     return
   }
 
+  trackPageVisit('/resume/templates')
   await loadResume()
 
   for (let i = 0; i < templates.value.length + 2; i++) {

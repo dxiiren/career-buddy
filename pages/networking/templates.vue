@@ -18,6 +18,7 @@ const {
   copyToClipboard,
   loadNetworking,
 } = useNetworking()
+const { trackPageVisit } = useRecentActivity()
 
 // Track which cards have animated in
 const animatedCards = ref<Set<number>>(new Set())
@@ -51,6 +52,7 @@ onMounted(async () => {
     return
   }
 
+  trackPageVisit('/networking/templates')
   await loadNetworking()
 
   // Stagger card animations

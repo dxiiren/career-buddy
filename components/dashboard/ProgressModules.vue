@@ -62,10 +62,11 @@ function getProgressColor(progress: number): string {
       <div v-else key="content">
         <h2 class="text-lg font-heading font-semibold mb-4">Your Progress</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div
+          <NuxtLink
             v-for="module in modules"
             :key="module.id"
-            class="group rounded-xl border border-border p-4 hover:border-primary/50 hover:shadow-lg hover:scale-[1.02] hover:bg-muted/30 transition-all duration-300 cursor-pointer"
+            :to="module.href"
+            class="group rounded-xl border border-border p-4 hover:border-primary/50 hover:shadow-lg hover:scale-[1.02] hover:bg-muted/30 transition-all duration-300"
           >
             <div class="flex items-center gap-3 mb-3">
               <div
@@ -88,7 +89,7 @@ function getProgressColor(progress: number): string {
               </span>
               <span class="text-primary group-hover:underline font-medium">{{ module.cta }} →</span>
             </div>
-          </div>
+          </NuxtLink>
         </div>
       </div>
     </Transition>

@@ -13,6 +13,7 @@ const {
   coverLetterExamples,
   loadResume,
 } = useResume()
+const { trackPageVisit } = useRecentActivity()
 
 const animatedCards = ref<Set<number>>(new Set())
 
@@ -27,6 +28,7 @@ onMounted(async () => {
     return
   }
 
+  trackPageVisit('/resume/cover-letter')
   await loadResume()
 
   for (let i = 0; i < coverLetterExamples.value.length + 4; i++) {

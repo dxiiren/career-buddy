@@ -20,6 +20,7 @@ const {
   filterByCategory,
   submitContactForm,
 } = useHelp()
+const { trackPageVisit } = useRecentActivity()
 
 // Track which cards have animated in
 const animatedCards = ref<Set<number>>(new Set())
@@ -59,6 +60,7 @@ onMounted(async () => {
     return
   }
 
+  trackPageVisit('/help')
   await loadHelp()
 
   // Stagger card animations

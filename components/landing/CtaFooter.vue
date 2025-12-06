@@ -2,7 +2,13 @@
 import { Button } from '@/components/ui/button'
 import { ArrowRight, Sparkles, CheckCircle2, Users, Star, Zap, Rocket } from 'lucide-vue-next'
 
+const { isAuthenticated, initAuth } = useAuth()
 const { target, isVisible } = useScrollAnimation()
+
+// Initialize auth state from localStorage
+onMounted(() => {
+  initAuth()
+})
 
 const benefits = [
   { icon: CheckCircle2, text: 'No credit card required' },
@@ -61,13 +67,29 @@ const benefits = [
           ]"
           style="transition-delay: 200ms;"
         >
-          <Button size="lg" class="w-full sm:w-auto bg-white text-primary hover:bg-white/90 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 text-lg px-8 py-6 group">
-            Get Started Free
-            <ArrowRight class="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-          </Button>
-          <Button size="lg" class="w-full sm:w-auto bg-white/20 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-primary transition-all duration-300 text-lg px-8 py-6">
-            Talk to Career Buddy AI
-          </Button>
+          <!-- Authenticated: Go to Dashboard -->
+          <template v-if="isAuthenticated">
+            <NuxtLink to="/dashboard">
+              <Button size="lg" class="w-full sm:w-auto bg-white text-primary hover:bg-white/90 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 text-lg px-8 py-6 group">
+                Go to Dashboard
+                <ArrowRight class="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </NuxtLink>
+          </template>
+          <!-- Guest: Get Started -->
+          <template v-else>
+            <NuxtLink to="/login">
+              <Button size="lg" class="w-full sm:w-auto bg-white text-primary hover:bg-white/90 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 text-lg px-8 py-6 group">
+                Get Started Free
+                <ArrowRight class="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </NuxtLink>
+          </template>
+          <NuxtLink to="/chat">
+            <Button size="lg" class="w-full sm:w-auto bg-white/20 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-primary transition-all duration-300 text-lg px-8 py-6">
+              Talk to Career Buddy AI
+            </Button>
+          </NuxtLink>
         </div>
 
         <!-- Benefits Strip -->

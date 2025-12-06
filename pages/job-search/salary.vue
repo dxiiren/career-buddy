@@ -14,6 +14,7 @@ const {
   negotiationScripts,
   loadJobSearch,
 } = useJobSearch()
+const { trackPageVisit } = useRecentActivity()
 
 const animatedCards = ref<Set<number>>(new Set())
 
@@ -28,6 +29,7 @@ onMounted(async () => {
     return
   }
 
+  trackPageVisit('/job-search/salary')
   await loadJobSearch()
 
   for (let i = 0; i < 6; i++) {

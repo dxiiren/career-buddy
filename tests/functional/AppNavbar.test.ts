@@ -39,21 +39,24 @@ describe('AppNavbar Component', () => {
     it('renders desktop navigation links', async () => {
       const wrapper = await mountSuspended(AppNavbar)
 
-      expect(wrapper.text()).toContain('Features')
-      expect(wrapper.text()).toContain('How It Works')
-      expect(wrapper.text()).toContain('FAQ')
+      expect(wrapper.text()).toContain('Home')
+      expect(wrapper.text()).toContain('About Us')
+      expect(wrapper.text()).toContain('Contact')
+      expect(wrapper.text()).toContain('Privacy')
     })
 
     it('renders navigation links with correct hrefs', async () => {
       const wrapper = await mountSuspended(AppNavbar)
 
-      const featuresLink = wrapper.find('a[href="#features"]')
-      const howItWorksLink = wrapper.find('a[href="#how-it-works"]')
-      const faqLink = wrapper.find('a[href="#faq"]')
+      const homeLink = wrapper.find('a[href="/"]')
+      const aboutLink = wrapper.find('a[href="/about"]')
+      const contactLink = wrapper.find('a[href="/contact"]')
+      const privacyLink = wrapper.find('a[href="/privacy"]')
 
-      expect(featuresLink.exists()).toBe(true)
-      expect(howItWorksLink.exists()).toBe(true)
-      expect(faqLink.exists()).toBe(true)
+      expect(homeLink.exists()).toBe(true)
+      expect(aboutLink.exists()).toBe(true)
+      expect(contactLink.exists()).toBe(true)
+      expect(privacyLink.exists()).toBe(true)
     })
 
     it('renders Log In button', async () => {
@@ -144,9 +147,10 @@ describe('AppNavbar Component', () => {
       await mobileButton.trigger('click')
 
       const mobileMenu = wrapper.find('.absolute.top-16')
-      expect(mobileMenu.text()).toContain('Features')
-      expect(mobileMenu.text()).toContain('How It Works')
-      expect(mobileMenu.text()).toContain('FAQ')
+      expect(mobileMenu.text()).toContain('Home')
+      expect(mobileMenu.text()).toContain('About Us')
+      expect(mobileMenu.text()).toContain('Contact')
+      expect(mobileMenu.text()).toContain('Privacy')
     })
 
     it('mobile menu contains theme toggle', async () => {
@@ -244,7 +248,7 @@ describe('AppNavbar Component', () => {
     it('desktop nav is hidden on mobile', async () => {
       const wrapper = await mountSuspended(AppNavbar)
 
-      const desktopNav = wrapper.find('.hidden.md\\:flex.md\\:items-center.md\\:gap-8')
+      const desktopNav = wrapper.find('.hidden.md\\:flex.md\\:items-center.md\\:gap-6')
       expect(desktopNav.exists()).toBe(true)
     })
 
@@ -267,11 +271,16 @@ describe('AppNavbar Component', () => {
       expect(mobileButton.element.tagName.toLowerCase()).toBe('button')
     })
 
-    it('navigation links are accessible', async () => {
+    it('navigation links are NuxtLinks to company pages', async () => {
       const wrapper = await mountSuspended(AppNavbar)
 
-      const links = wrapper.findAll('a[href^="#"]')
-      expect(links.length).toBe(3) // Features, How It Works, FAQ
+      // Check that company page links exist
+      const links = wrapper.findAll('a')
+      const hrefs = links.map((l) => l.attributes('href'))
+      expect(hrefs).toContain('/')
+      expect(hrefs).toContain('/about')
+      expect(hrefs).toContain('/contact')
+      expect(hrefs).toContain('/privacy')
     })
   })
 })

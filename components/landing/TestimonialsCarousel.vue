@@ -10,6 +10,7 @@ const testimonials = [
     role: 'Fresh Graduate, UM',
     avatar: 'SA',
     avatarColor: 'from-pink-500 to-rose-500',
+    image: 'https://picsum.photos/seed/sarah/100/100',
     quote: 'I was so lost before Career Buddy. Now I have a professional resume and actually feel confident going into interviews!',
     rating: 5,
     verified: true,
@@ -20,6 +21,7 @@ const testimonials = [
     role: 'Final Year Student, UTM',
     avatar: 'MH',
     avatarColor: 'from-blue-500 to-cyan-500',
+    image: 'https://picsum.photos/seed/haziq/100/100',
     quote: 'The AI interview practice was a game-changer. I used to freeze during interviews, but now I know exactly what to say.',
     rating: 5,
     verified: true,
@@ -30,6 +32,7 @@ const testimonials = [
     role: 'Job Seeker, KL',
     avatar: 'NA',
     avatarColor: 'from-blue-500 to-navy-500',
+    image: 'https://picsum.photos/seed/aisyah/100/100',
     quote: 'Finally, career advice that makes sense for Malaysians! The networking templates helped me land 3 coffee chats.',
     rating: 5,
     verified: true,
@@ -40,6 +43,7 @@ const testimonials = [
     role: 'Intern at Tech Company',
     avatar: 'KL',
     avatarColor: 'from-green-500 to-emerald-500',
+    image: 'https://picsum.photos/seed/kevin/100/100',
     quote: 'Career Buddy helped me negotiate my first salary. I got RM500 more per month than the initial offer!',
     rating: 5,
     verified: true,
@@ -50,6 +54,7 @@ const testimonials = [
     role: 'Career Changer',
     avatar: 'PD',
     avatarColor: 'from-mustard-500 to-mustard-600',
+    image: 'https://picsum.photos/seed/priya/100/100',
     quote: 'Switching careers felt impossible until I found Career Buddy. The step-by-step guides made everything clear.',
     rating: 5,
     verified: true,
@@ -109,7 +114,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section ref="target" class="py-24 gradient-bg overflow-hidden relative">
+  <section id="feedback" ref="target" class="py-24 gradient-bg overflow-hidden relative">
     <!-- Background Decorations -->
     <div class="absolute inset-0 pointer-events-none">
       <div class="absolute top-20 left-10 w-20 h-20 bg-primary/10 rounded-full blur-2xl animate-pulse" />
@@ -195,10 +200,12 @@ onUnmounted(() => {
               </div>
 
               <div class="flex items-center gap-3 pt-4 border-t border-border/50">
-                <!-- Colorful Avatar -->
-                <div :class="['flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r text-white font-semibold shadow-md', testimonial.avatarColor]">
-                  {{ testimonial.avatar }}
-                </div>
+                <!-- Photo Avatar -->
+                <img
+                  :src="testimonial.image"
+                  :alt="testimonial.name"
+                  class="h-12 w-12 rounded-full object-cover shadow-md ring-2 ring-border"
+                />
                 <div class="flex-1">
                   <div class="flex items-center gap-1.5">
                     <p class="font-semibold text-foreground">{{ testimonial.name }}</p>
@@ -260,9 +267,11 @@ onUnmounted(() => {
                 </div>
 
                 <div class="flex items-center gap-3 pt-4 border-t border-border/50">
-                  <div :class="['flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r text-white font-semibold shadow-md', testimonial.avatarColor]">
-                    {{ testimonial.avatar }}
-                  </div>
+                  <img
+                    :src="testimonial.image"
+                    :alt="testimonial.name"
+                    class="h-12 w-12 rounded-full object-cover shadow-md ring-2 ring-border"
+                  />
                   <div class="flex-1">
                     <div class="flex items-center gap-1.5">
                       <p class="font-semibold text-foreground">{{ testimonial.name }}</p>

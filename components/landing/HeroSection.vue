@@ -3,6 +3,13 @@ import { Button } from '@/components/ui/button'
 import { ArrowRight, Play, Sparkles, CheckCircle2, Users, Award, TrendingUp } from 'lucide-vue-next'
 import { ref, onMounted } from 'vue'
 
+const { isAuthenticated, initAuth } = useAuth()
+
+// Initialize auth state from localStorage
+onMounted(() => {
+  initAuth()
+})
+
 // Animated counter for stats
 const usersCount = ref(0)
 const successRate = ref(0)
@@ -114,17 +121,36 @@ onMounted(() => {
 
           <!-- CTAs -->
           <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 animate-fade-up" style="animation-delay: 0.3s;">
-            <Button size="lg" class="w-full sm:w-auto group relative overflow-hidden">
-              <span class="relative z-10 flex items-center">
-                Get Started Free
-                <ArrowRight class="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </span>
-              <div class="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-primary bg-[length:200%_100%] group-hover:animate-shimmer" />
-            </Button>
-            <Button variant="outline" size="lg" class="w-full sm:w-auto group bg-muted/50 backdrop-blur-sm border-border hover:bg-muted text-foreground">
-              <Play class="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
-              Watch Demo
-            </Button>
+            <!-- Authenticated: Go to Dashboard -->
+            <template v-if="isAuthenticated">
+              <NuxtLink to="/dashboard">
+                <Button size="lg" class="w-full sm:w-auto group relative overflow-hidden">
+                  <span class="relative z-10 flex items-center">
+                    Go to Dashboard
+                    <ArrowRight class="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                  <div class="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-primary bg-[length:200%_100%] group-hover:animate-shimmer" />
+                </Button>
+              </NuxtLink>
+            </template>
+            <!-- Guest: Get Started -->
+            <template v-else>
+              <NuxtLink to="/login">
+                <Button size="lg" class="w-full sm:w-auto group relative overflow-hidden">
+                  <span class="relative z-10 flex items-center">
+                    Get Started Free
+                    <ArrowRight class="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                  <div class="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-primary bg-[length:200%_100%] group-hover:animate-shimmer" />
+                </Button>
+              </NuxtLink>
+            </template>
+            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1" target="_blank" rel="noopener noreferrer">
+              <Button variant="outline" size="lg" class="w-full sm:w-auto group bg-muted/50 backdrop-blur-sm border-border hover:bg-muted text-foreground">
+                <Play class="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
+                Watch Demo
+              </Button>
+            </a>
           </div>
 
           <!-- Mini Stats -->

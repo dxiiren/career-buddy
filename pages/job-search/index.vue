@@ -13,6 +13,7 @@ const {
   commonMistakes,
   loadJobSearch,
 } = useJobSearch()
+const { trackPageVisit } = useRecentActivity()
 
 const animatedCards = ref<Set<number>>(new Set())
 
@@ -27,6 +28,7 @@ onMounted(async () => {
     return
   }
 
+  trackPageVisit('/job-search')
   await loadJobSearch()
 
   for (let i = 0; i < 5; i++) {

@@ -12,6 +12,7 @@ const {
   atsKeywords,
   loadResume,
 } = useResume()
+const { trackPageVisit } = useRecentActivity()
 
 const animatedCards = ref<Set<number>>(new Set())
 
@@ -26,6 +27,7 @@ onMounted(async () => {
     return
   }
 
+  trackPageVisit('/resume/ats')
   await loadResume()
 
   for (let i = 0; i < 4; i++) {
