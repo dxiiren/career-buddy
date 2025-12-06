@@ -13,6 +13,7 @@ const password = ref('')
 const showPassword = ref(false)
 const rememberMe = ref(false)
 const shake = ref(false)
+const showSuccessToast = ref(false)
 
 async function handleSubmit() {
   clearError()
@@ -20,7 +21,11 @@ async function handleSubmit() {
   const success = await login(username.value, password.value)
 
   if (success) {
-    navigateTo('/dashboard')
+    showSuccessToast.value = true
+    // Delay navigation slightly so user sees the success toast
+    setTimeout(() => {
+      navigateTo('/dashboard')
+    }, 800)
   } else {
     // Trigger shake animation
     shake.value = true
@@ -37,6 +42,14 @@ function togglePassword() {
 
 <template>
   <AuthAuthLayout>
+    <!-- Success Toast -->
+    <UiToast
+      message="Welcome back! Redirecting to dashboard..."
+      type="success"
+      :visible="showSuccessToast"
+      :duration="0"
+    />
+
     <div>
       <!-- Header -->
       <div class="mb-8">

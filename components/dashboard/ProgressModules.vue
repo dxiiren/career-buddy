@@ -45,23 +45,23 @@ const iconMap: Record<string, any> = {
       <div
         v-for="module in modules"
         :key="module.id"
-        class="group rounded-xl border border-border p-4 hover:border-primary/50 hover:shadow-md transition-all duration-200 cursor-pointer"
+        class="group rounded-xl border border-border p-4 hover:border-primary/50 hover:shadow-lg hover:scale-[1.02] hover:bg-muted/30 transition-all duration-300 cursor-pointer"
       >
         <div class="flex items-center gap-3 mb-3">
           <div
-            class="h-10 w-10 rounded-lg bg-gradient-to-br flex items-center justify-center text-white"
+            class="h-10 w-10 rounded-lg bg-gradient-to-br flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300"
             :class="module.color"
           >
             <component :is="iconMap[module.icon]" class="h-5 w-5" />
           </div>
-          <span class="font-medium">{{ module.name }}</span>
+          <span class="font-medium group-hover:text-primary transition-colors">{{ module.name }}</span>
         </div>
 
         <UiProgress :model-value="module.progress" class="mb-2" />
 
         <div class="flex items-center justify-between text-sm">
           <span class="text-muted-foreground">{{ module.progress }}%</span>
-          <span class="text-primary group-hover:underline">{{ module.cta }}</span>
+          <span class="text-primary group-hover:underline font-medium">{{ module.cta }} →</span>
         </div>
       </div>
     </div>

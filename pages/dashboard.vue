@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 
 definePageMeta({
   layout: 'default',
 })
 
-const { user, isAuthenticated, initAuth, logout } = useAuth()
+const { user, isAuthenticated, initAuth } = useAuth()
 const {
   isLoading,
   progressModules,
@@ -19,6 +19,14 @@ const {
   toggleTask,
 } = useDashboard()
 
+// Track which cards have animated in
+const animatedCards = ref<Set<number>>(new Set())
+
+// Show cards with staggered animation after loading
+const showCard = (index: number) => {
+  return !isLoading.value && animatedCards.value.has(index)
+}
+
 onMounted(async () => {
   initAuth()
 
@@ -30,12 +38,15 @@ onMounted(async () => {
 
   // Load dashboard data
   await loadDashboard()
-})
 
-function handleLogout() {
-  logout()
-  navigateTo('/login')
-}
+  // Stagger card animations
+  const cardCount = 6
+  for (let i = 0; i < cardCount; i++) {
+    setTimeout(() => {
+      animatedCards.value.add(i)
+    }, i * 100)
+  }
+})
 </script>
 
 <template>
@@ -45,7 +56,10 @@ function handleLogout() {
       <!-- Bento Grid Layout -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <!-- Welcome Header - Full Width -->
-        <div class="lg:col-span-12">
+        <div
+          class="lg:col-span-12 transition-all duration-500"
+          :class="showCard(0) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
+        >
           <DashboardWelcomeHeader
             :user-name="user?.name || 'User'"
             :overall-progress="overallProgress"
@@ -54,7 +68,10 @@ function handleLogout() {
         </div>
 
         <!-- Progress Modules - Large Left -->
-        <div class="lg:col-span-7">
+        <div
+          class="lg:col-span-7 transition-all duration-500"
+          :class="showCard(1) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
+        >
           <DashboardProgressModules
             :modules="progressModules"
             :loading="isLoading"
@@ -64,18 +81,31 @@ function handleLogout() {
         <!-- Right Column Stack -->
         <div class="lg:col-span-5 space-y-6">
           <!-- Quick Actions -->
-          <DashboardQuickActions :loading="isLoading" />
+          <div
+            class="transition-all duration-500"
+            :class="showCard(2) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
+          >
+            <DashboardQuickActions :loading="isLoading" />
+          </div>
 
           <!-- Daily Tasks -->
-          <DashboardDailyTasks
-            :tasks="dailyTasks"
-            :loading="isLoading"
-            @toggle="toggleTask"
-          />
+          <div
+            class="transition-all duration-500"
+            :class="showCard(3) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
+          >
+            <DashboardDailyTasks
+              :tasks="dailyTasks"
+              :loading="isLoading"
+              @toggle="toggleTask"
+            />
+          </div>
         </div>
 
         <!-- Recent Activity -->
-        <div class="lg:col-span-6">
+        <div
+          class="lg:col-span-6 transition-all duration-500"
+          :class="showCard(4) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
+        >
           <DashboardRecentActivity
             :activities="recentActivity"
             :loading="isLoading"
@@ -83,7 +113,10 @@ function handleLogout() {
         </div>
 
         <!-- Motivational Section -->
-        <div class="lg:col-span-6">
+        <div
+          class="lg:col-span-6 transition-all duration-500"
+          :class="showCard(5) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
+        >
           <DashboardMotivationalSection
             :quote="currentQuote"
             :tip="currentTip"
@@ -92,22 +125,14 @@ function handleLogout() {
         </div>
 
         <!-- Resume Preview -->
-        <div class="lg:col-span-6">
+        <div
+          class="lg:col-span-12 transition-all duration-500"
+          :class="showCard(5) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
+        >
           <DashboardResumePreview
             :resume="resumeInfo"
             :loading="isLoading"
           />
-        </div>
-
-        <!-- Logout Button (temporary for demo) -->
-        <div class="lg:col-span-6 flex items-end">
-          <UiButton
-            variant="outline"
-            class="w-full lg:w-auto"
-            @click="handleLogout"
-          >
-            Sign Out
-          </UiButton>
         </div>
       </div>
     </div>
