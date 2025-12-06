@@ -25,7 +25,7 @@ function handleSubmit() {
 </script>
 
 <template>
-  <div class="rounded-2xl bg-card border border-border p-6">
+  <div class="h-full rounded-2xl bg-card border border-border p-6">
     <Transition
       mode="out-in"
       enter-active-class="transition-opacity duration-300"

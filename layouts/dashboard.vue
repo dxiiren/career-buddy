@@ -2,7 +2,6 @@
 import {
   LayoutDashboard,
   FileText,
-  Mail,
   Mic,
   Users,
   Target,
@@ -10,14 +9,14 @@ import {
   Settings,
   HelpCircle,
   LogOut,
-  ChevronLeft,
-  ChevronRight,
   Bell,
   Search,
   Sparkles,
   Home,
+  Menu,
 } from 'lucide-vue-next'
 import ThemeToggle from '@/components/shared/ThemeToggle.vue'
+import Breadcrumbs from '@/components/shared/Breadcrumbs.vue'
 
 const { user, logout } = useAuth()
 const route = useRoute()
@@ -27,7 +26,6 @@ const isCollapsed = ref(false)
 const navigationItems = [
   { name: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
   { name: 'Resume Builder', icon: FileText, href: '/resume' },
-  { name: 'Cover Letters', icon: Mail, href: '/cover-letters' },
   { name: 'Interview Prep', icon: Mic, href: '/interview' },
   { name: 'Networking', icon: Users, href: '/networking' },
   { name: 'Job Search', icon: Target, href: '/job-search' },
@@ -57,7 +55,7 @@ function isActive(href: string) {
       :class="isCollapsed ? 'w-16' : 'w-64'"
     >
       <!-- Logo -->
-      <div class="h-16 flex items-center justify-between px-4 border-b border-border">
+      <div class="h-16 flex items-center px-4 border-b border-border">
         <div class="flex items-center gap-3">
           <div class="h-9 w-9 rounded-lg bg-primary flex items-center justify-center shrink-0">
             <Sparkles class="h-5 w-5 text-primary-foreground" />
@@ -69,15 +67,6 @@ function isActive(href: string) {
             Career Buddy
           </span>
         </div>
-        <!-- Collapse Toggle Button -->
-        <button
-          v-if="!isCollapsed"
-          class="h-8 w-8 rounded-lg border border-border bg-background hover:bg-muted flex items-center justify-center transition-colors"
-          @click="isCollapsed = !isCollapsed"
-          title="Toggle sidebar"
-        >
-          <ChevronLeft class="h-4 w-4 text-muted-foreground" />
-        </button>
       </div>
 
       <!-- Navigation -->
@@ -127,17 +116,6 @@ function isActive(href: string) {
           <span v-if="!isCollapsed" class="text-sm font-medium">Sign Out</span>
         </button>
       </div>
-
-      <!-- Expand Button (when collapsed) -->
-      <div v-if="isCollapsed" class="p-3 border-t border-border">
-        <button
-          class="w-full h-9 rounded-lg border border-border bg-background hover:bg-muted flex items-center justify-center transition-colors"
-          @click="isCollapsed = false"
-          title="Expand sidebar"
-        >
-          <ChevronRight class="h-4 w-4 text-muted-foreground" />
-        </button>
-      </div>
     </aside>
 
     <!-- Main Content Area -->
@@ -147,8 +125,16 @@ function isActive(href: string) {
     >
       <!-- Top Bar -->
       <header class="h-16 bg-card border-b border-border flex items-center justify-between px-6 sticky top-0 z-30">
-        <!-- Search -->
+        <!-- Left side: Toggle + Search -->
         <div class="flex items-center gap-4 flex-1 max-w-xl">
+          <!-- Sidebar Toggle Button -->
+          <button
+            class="h-10 w-10 rounded-lg hover:bg-muted flex items-center justify-center transition-colors"
+            @click="isCollapsed = !isCollapsed"
+            :title="isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+          >
+            <Menu class="h-5 w-5 text-muted-foreground" />
+          </button>
           <div class="relative flex-1">
             <Search class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
@@ -187,6 +173,7 @@ function isActive(href: string) {
 
       <!-- Page Content -->
       <main class="flex-1 p-6">
+        <Breadcrumbs />
         <slot />
       </main>
     </div>
