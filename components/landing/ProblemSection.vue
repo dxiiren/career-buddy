@@ -19,9 +19,10 @@ const painPoints = [
     icon: Search,
     title: 'Information Overload',
     description: 'Career advice scattered across TikTok, Instagram, LinkedIn, and countless websites — no clear starting point.',
-    color: 'text-orange-500',
-    bgColor: 'bg-orange-50',
-    borderColor: 'border-orange-200',
+    color: 'text-primary',
+    accentColor: '#E3B23C',
+    bgColor: 'bg-primary/10',
+    borderColor: 'border-primary/30',
     stat: '73%',
     statLabel: 'feel overwhelmed',
   },
@@ -29,9 +30,10 @@ const painPoints = [
     icon: MapPin,
     title: 'No Clear Roadmap',
     description: 'Everyone says different things. Should you update your LinkedIn first? Write a resume? Learn to network?',
-    color: 'text-red-500',
-    bgColor: 'bg-red-50',
-    borderColor: 'border-red-200',
+    color: 'text-secondary',
+    accentColor: '#2B5F8A',
+    bgColor: 'bg-secondary/10',
+    borderColor: 'border-secondary/30',
     stat: '68%',
     statLabel: 'lack direction',
   },
@@ -39,9 +41,10 @@ const painPoints = [
     icon: Frown,
     title: 'Feeling Lost & Anxious',
     description: 'The pressure to "figure it out" while watching peers land jobs makes the whole process feel overwhelming.',
-    color: 'text-purple-500',
-    bgColor: 'bg-purple-50',
-    borderColor: 'border-purple-200',
+    color: 'text-red-400',
+    accentColor: '#ef4444',
+    bgColor: 'bg-red-500/10',
+    borderColor: 'border-red-500/30',
     stat: '82%',
     statLabel: 'feel stressed',
   },
@@ -49,11 +52,11 @@ const painPoints = [
 </script>
 
 <template>
-  <section ref="target" class="py-24 bg-gradient-to-b from-white to-muted/20 relative overflow-hidden">
+  <section ref="target" class="py-24 bg-gradient-to-b from-background to-card relative overflow-hidden">
     <!-- Background Elements -->
     <div class="absolute inset-0 pointer-events-none">
-      <div class="absolute top-20 right-10 w-32 h-32 bg-orange-100/50 rounded-full blur-3xl" />
-      <div class="absolute bottom-20 left-10 w-40 h-40 bg-purple-100/50 rounded-full blur-3xl" />
+      <div class="absolute top-20 right-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
+      <div class="absolute bottom-20 left-10 w-40 h-40 bg-secondary/10 rounded-full blur-3xl" />
     </div>
 
     <div class="container mx-auto px-4 relative z-10">
@@ -63,13 +66,13 @@ const painPoints = [
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8',
         ]"
       >
-        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-100 text-orange-600 text-sm font-medium mb-6">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 text-red-400 text-sm font-medium mb-6 border border-red-500/20">
           <AlertCircle class="h-4 w-4" />
           The Challenge
         </span>
-        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold font-heading text-foreground mb-6">
-          We Know Job Hunting Feels
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500">
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold font-heading mb-6">
+          <span class="text-primary">We Know Job Hunting Feels</span>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-red-400">
             Overwhelming
           </span>
         </h2>
@@ -141,7 +144,7 @@ const painPoints = [
                       point.bgColor,
                       isVisible ? 'w-full' : 'w-0',
                     ]"
-                    :style="{ backgroundColor: point.color.replace('text-', ''), transitionDelay: `${(index + 1) * 200}ms` }"
+                    :style="{ backgroundColor: point.accentColor, transitionDelay: `${(index + 1) * 200}ms` }"
                   />
                 </div>
               </div>
@@ -191,7 +194,7 @@ const painPoints = [
                     <div class="flex-1 h-1 bg-muted rounded-full overflow-hidden">
                       <div
                         :class="['h-full rounded-full w-full', point.bgColor]"
-                        :style="{ backgroundColor: point.color.replace('text-', '') }"
+                        :style="{ backgroundColor: point.accentColor }"
                       />
                     </div>
                   </div>
@@ -204,7 +207,7 @@ const painPoints = [
         <!-- Mobile Navigation -->
         <div class="flex items-center justify-center gap-4 mt-6">
           <button
-            class="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md border border-border"
+            class="flex h-10 w-10 items-center justify-center rounded-full bg-card shadow-md border border-border"
             @click="prevSlide"
           >
             <ChevronLeft class="h-5 w-5 text-muted-foreground" />
@@ -221,7 +224,7 @@ const painPoints = [
             />
           </div>
           <button
-            class="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md border border-border"
+            class="flex h-10 w-10 items-center justify-center rounded-full bg-card shadow-md border border-border"
             @click="nextSlide"
           >
             <ChevronRight class="h-5 w-5 text-muted-foreground" />

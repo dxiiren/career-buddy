@@ -36,12 +36,12 @@ function closeMenu() {
   <nav
     :class="[
       'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-      isScrolled ? 'bg-white/80 backdrop-blur-md shadow-sm' : 'bg-transparent',
+      isScrolled ? 'bg-card/90 backdrop-blur-md shadow-sm border-b border-border/50' : 'bg-transparent',
     ]"
   >
     <div class="container mx-auto px-4">
       <div class="flex h-16 items-center justify-between">
-        <AppLogo />
+        <SharedAppLogo />
 
         <!-- Desktop Navigation -->
         <div class="hidden md:flex md:items-center md:gap-8">
@@ -55,8 +55,9 @@ function closeMenu() {
           </a>
         </div>
 
-        <div class="hidden md:flex md:items-center md:gap-4">
-          <Button variant="ghost" size="sm" class="text-foreground hover:bg-white/50">Log In</Button>
+        <div class="hidden md:flex md:items-center md:gap-3">
+          <SharedThemeToggle />
+          <Button variant="ghost" size="sm" class="text-foreground hover:bg-muted">Log In</Button>
           <Button size="sm" class="shadow-md">Get Started</Button>
         </div>
 
@@ -82,7 +83,7 @@ function closeMenu() {
     >
       <div
         v-if="isMenuOpen"
-        class="absolute top-16 left-0 right-0 bg-white shadow-lg md:hidden"
+        class="absolute top-16 left-0 right-0 bg-card shadow-lg border-b border-border md:hidden"
       >
         <div class="container mx-auto px-4 py-4">
           <div class="flex flex-col gap-4">
@@ -95,7 +96,11 @@ function closeMenu() {
             >
               {{ link.name }}
             </a>
-            <div class="flex flex-col gap-2 pt-4 border-t">
+            <div class="flex flex-col gap-2 pt-4 border-t border-border">
+              <div class="flex items-center justify-between py-2">
+                <span class="text-sm text-muted-foreground">Theme</span>
+                <SharedThemeToggle />
+              </div>
               <Button variant="ghost" class="w-full justify-center">Log In</Button>
               <Button class="w-full justify-center">Get Started</Button>
             </div>

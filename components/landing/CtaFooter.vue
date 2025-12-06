@@ -100,7 +100,7 @@ const benefits = [
           <div class="flex -space-x-3">
             <div class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 border-2 border-white flex items-center justify-center text-white text-xs font-bold">SA</div>
             <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 border-2 border-white flex items-center justify-center text-white text-xs font-bold">MH</div>
-            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-violet-500 border-2 border-white flex items-center justify-center text-white text-xs font-bold">NA</div>
+            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-navy-500 border-2 border-white flex items-center justify-center text-white text-xs font-bold">NA</div>
             <div class="w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 border-2 border-white flex items-center justify-center text-white text-xs font-bold">KL</div>
             <div class="w-10 h-10 rounded-full bg-white/20 border-2 border-white flex items-center justify-center text-white text-xs font-bold">+5K</div>
           </div>

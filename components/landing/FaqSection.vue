@@ -37,7 +37,7 @@ const faqs = [
 </script>
 
 <template>
-  <section id="faq" ref="target" class="py-20 bg-white">
+  <section id="faq" ref="target" class="py-20 bg-background">
     <div class="container mx-auto px-4">
       <div
         :class="[
@@ -48,9 +48,9 @@ const faqs = [
         <span class="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
           Got Questions?
         </span>
-        <h2 class="text-3xl md:text-4xl font-bold font-heading text-foreground mb-4">
-          Frequently Asked
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
+        <h2 class="text-3xl md:text-4xl font-bold font-heading mb-4">
+          <span class="text-primary">Frequently Asked</span>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-primary">
             Questions
           </span>
         </h2>

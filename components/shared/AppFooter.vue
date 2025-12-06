@@ -28,7 +28,7 @@ const socialLinks = [
 </script>
 
 <template>
-  <footer class="bg-foreground text-white">
+  <footer class="bg-muted text-foreground">
     <div class="container mx-auto px-4 py-12">
       <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-5">
         <!-- Brand -->
@@ -51,7 +51,7 @@ const socialLinks = [
             </div>
             <span class="text-xl font-bold font-heading">Career Buddy</span>
           </div>
-          <p class="text-sm text-gray-400 max-w-xs mb-6">
+          <p class="text-sm text-muted-foreground max-w-xs mb-6">
             Your all-in-one career preparation platform. Helping young adults navigate their career journey with confidence.
           </p>
           <div class="flex gap-4">
@@ -72,7 +72,7 @@ const socialLinks = [
           <h4 class="font-semibold mb-4">Product</h4>
           <ul class="space-y-3">
             <li v-for="link in footerLinks.product" :key="link.name">
-              <a :href="link.href" class="text-sm text-gray-400 transition-colors hover:text-white">
+              <a :href="link.href" class="text-sm text-muted-foreground transition-colors hover:text-primary">
                 {{ link.name }}
               </a>
             </li>
@@ -84,7 +84,7 @@ const socialLinks = [
           <h4 class="font-semibold mb-4">Resources</h4>
           <ul class="space-y-3">
             <li v-for="link in footerLinks.resources" :key="link.name">
-              <a :href="link.href" class="text-sm text-gray-400 transition-colors hover:text-white">
+              <a :href="link.href" class="text-sm text-muted-foreground transition-colors hover:text-primary">
                 {{ link.name }}
               </a>
             </li>
@@ -96,7 +96,7 @@ const socialLinks = [
           <h4 class="font-semibold mb-4">Company</h4>
           <ul class="space-y-3">
             <li v-for="link in footerLinks.company" :key="link.name">
-              <a :href="link.href" class="text-sm text-gray-400 transition-colors hover:text-white">
+              <a :href="link.href" class="text-sm text-muted-foreground transition-colors hover:text-primary">
                 {{ link.name }}
               </a>
             </li>
@@ -104,8 +104,8 @@ const socialLinks = [
         </div>
       </div>
 
-      <div class="mt-12 pt-8 border-t border-white/10">
-        <p class="text-center text-sm text-gray-400">
+      <div class="mt-12 pt-8 border-t border-border">
+        <p class="text-center text-sm text-muted-foreground">
           &copy; {{ new Date().getFullYear() }} Career Buddy. All rights reserved.
         </p>
       </div>

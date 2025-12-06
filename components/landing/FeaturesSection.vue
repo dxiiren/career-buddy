@@ -20,7 +20,7 @@ const features = [
     icon: FileText,
     title: 'Resume & Cover Letter',
     description: 'Professional templates with step-by-step guidance. Learn what employers actually want to see.',
-    color: 'bg-warm-50 text-primary',
+    color: 'bg-primary/20 text-primary',
     gradient: 'from-primary/20 to-primary/5',
     stats: '50+ Templates',
   },
@@ -28,7 +28,7 @@ const features = [
     icon: Video,
     title: 'AI Interview Simulation',
     description: 'Practice with AI-powered mock interviews. Build confidence and improve your speaking skills.',
-    color: 'bg-lavender-50 text-secondary',
+    color: 'bg-secondary/20 text-secondary',
     gradient: 'from-secondary/20 to-secondary/5',
     stats: 'AI-Powered',
   },
@@ -36,7 +36,7 @@ const features = [
     icon: Users,
     title: 'Networking Guides',
     description: 'Ready-to-use message templates and strategies. Learn to connect with professionals authentically.',
-    color: 'bg-green-50 text-green-600',
+    color: 'bg-green-500/20 text-green-400',
     gradient: 'from-green-500/20 to-green-500/5',
     stats: '100+ Scripts',
   },
@@ -44,7 +44,7 @@ const features = [
     icon: Briefcase,
     title: 'Job Search Strategies',
     description: 'Navigate job platforms, negotiate salary, and avoid scams. Real advice for the Malaysian job market.',
-    color: 'bg-blue-50 text-blue-600',
+    color: 'bg-blue-500/20 text-blue-400',
     gradient: 'from-blue-500/20 to-blue-500/5',
     stats: 'Malaysia-Focused',
   },
@@ -52,7 +52,7 @@ const features = [
     icon: Star,
     title: 'Self-Promotion Tools',
     description: 'Optimize your LinkedIn, build your personal brand, and learn workplace expectations.',
-    color: 'bg-yellow-50 text-yellow-600',
+    color: 'bg-yellow-500/20 text-yellow-400',
     gradient: 'from-yellow-500/20 to-yellow-500/5',
     stats: 'LinkedIn Tips',
   },
@@ -60,7 +60,7 @@ const features = [
     icon: MessageCircle,
     title: 'Career Buddy AI Chat',
     description: 'Get instant answers to your career questions. Preloaded with common queries for quick help.',
-    color: 'bg-pink-50 text-pink-600',
+    color: 'bg-pink-500/20 text-pink-400',
     gradient: 'from-pink-500/20 to-pink-500/5',
     stats: '24/7 Support',
   },
@@ -68,12 +68,12 @@ const features = [
 </script>
 
 <template>
-  <section id="features" ref="target" class="py-24 bg-muted/30 relative overflow-hidden">
+  <section id="features" ref="target" class="py-24 bg-background relative overflow-hidden">
     <!-- Background Decorations -->
     <div class="absolute inset-0 pointer-events-none">
-      <div class="absolute top-10 left-10 w-32 h-32 bg-primary/5 rounded-full blur-3xl" />
-      <div class="absolute bottom-10 right-10 w-40 h-40 bg-secondary/5 rounded-full blur-3xl" />
-      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-lavender-100/20 rounded-full blur-3xl" />
+      <div class="absolute top-10 left-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
+      <div class="absolute bottom-10 right-10 w-40 h-40 bg-secondary/10 rounded-full blur-3xl" />
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-secondary/5 rounded-full blur-3xl" />
     </div>
 
     <div class="container mx-auto px-4 relative z-10">
@@ -88,9 +88,9 @@ const features = [
           <Sparkles class="h-4 w-4" />
           Everything You Need
         </div>
-        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold font-heading text-foreground mb-6">
-          One Platform,
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold font-heading mb-6">
+          <span class="text-primary">One Platform,</span>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-primary">
             Complete Preparation
           </span>
         </h2>
@@ -138,7 +138,7 @@ const features = [
               <!-- Stats Badge -->
               <span
                 :class="[
-                  'px-3 py-1 rounded-full text-xs font-medium bg-white/80 text-muted-foreground border border-border/50 transition-all duration-300',
+                  'px-3 py-1 rounded-full text-xs font-medium bg-muted/80 text-muted-foreground border border-border/50 transition-all duration-300',
                   hoveredFeature === index ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4',
                 ]"
               >
@@ -189,7 +189,7 @@ const features = [
                   <div :class="['flex h-14 w-14 items-center justify-center rounded-xl', feature.color]">
                     <component :is="feature.icon" class="h-7 w-7" />
                   </div>
-                  <span class="px-3 py-1 rounded-full text-xs font-medium bg-white/80 text-muted-foreground border border-border/50">
+                  <span class="px-3 py-1 rounded-full text-xs font-medium bg-muted/80 text-muted-foreground border border-border/50">
                     {{ feature.stats }}
                   </span>
                 </div>
@@ -213,7 +213,7 @@ const features = [
         <!-- Mobile Navigation -->
         <div class="flex items-center justify-center gap-4 mt-6">
           <button
-            class="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md border border-border"
+            class="flex h-10 w-10 items-center justify-center rounded-full bg-card shadow-md border border-border"
             @click="prevSlide"
           >
             <ChevronLeft class="h-5 w-5 text-muted-foreground" />
@@ -230,7 +230,7 @@ const features = [
             />
           </div>
           <button
-            class="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md border border-border"
+            class="flex h-10 w-10 items-center justify-center rounded-full bg-card shadow-md border border-border"
             @click="nextSlide"
           >
             <ChevronRight class="h-5 w-5 text-muted-foreground" />

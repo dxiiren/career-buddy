@@ -4,52 +4,65 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 24.6 95% 53.1%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 262.1 83.3% 57.8%;
+    /* Dark premium theme as default */
+    --background: 220 20% 6%;
+    --foreground: 210 40% 98%;
+    --card: 220 20% 10%;
+    --card-foreground: 210 40% 98%;
+    --popover: 220 20% 8%;
+    --popover-foreground: 210 40% 98%;
+    /* Primary: Mustard/Gold #e3b23c - for CTAs and highlights */
+    --primary: 43 76% 56%;
+    --primary-foreground: 220 20% 6%;
+    /* Secondary: Medium blue #2b5f8a */
+    --secondary: 207 52% 45%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --muted: 220 15% 15%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 220 15% 18%;
+    --accent-foreground: 210 40% 98%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 24.6 95% 53.1%;
+    --border: 220 15% 20%;
+    --input: 220 15% 18%;
+    --ring: 43 76% 56%;
     --radius: 0.75rem;
 
-    /* Custom Career Buddy colors */
-    --gradient-start: 30 100% 97%;
-    --gradient-end: 270 100% 97%;
+    /* Custom Career Buddy colors - dark premium gradient */
+    --gradient-start: 220 20% 8%;
+    --gradient-end: 220 20% 12%;
+
+    /* Brand colors for direct use */
+    --mustard: 43 76% 56%;
+    --blue: 207 52% 45%;
+    --navy: 220 20% 6%;
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 24.6 95% 53.1%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 262.1 83.3% 57.8%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 24.6 95% 53.1%;
+  .light {
+    /* Soft gray theme - no pure whites */
+    --background: 220 14% 94%;
+    --foreground: 220 20% 18%;
+    --card: 220 14% 96%;
+    --card-foreground: 220 20% 18%;
+    --popover: 220 14% 96%;
+    --popover-foreground: 220 20% 18%;
+    --primary: 43 76% 50%;
+    --primary-foreground: 220 20% 12%;
+    --secondary: 207 52% 40%;
+    --secondary-foreground: 220 14% 94%;
+    --muted: 220 14% 90%;
+    --muted-foreground: 220 15% 38%;
+    --accent: 220 14% 88%;
+    --accent-foreground: 220 20% 18%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 220 14% 94%;
+    --border: 220 14% 82%;
+    --input: 220 14% 82%;
+    --ring: 43 76% 50%;
+
+    /* Light mode gradient - soft gray */
+    --gradient-start: 220 14% 93%;
+    --gradient-end: 220 14% 90%;
   }
 }
 
@@ -121,10 +134,10 @@
 /* Pulse glow animation */
 @keyframes pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 20px rgba(var(--primary), 0.3);
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
   }
   50% {
-    box-shadow: 0 0 40px rgba(var(--primary), 0.6);
+    box-shadow: 0 0 40px hsl(var(--primary) / 0.6);
   }
 }
 
