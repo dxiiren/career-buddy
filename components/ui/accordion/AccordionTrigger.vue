@@ -16,12 +16,12 @@ const delegatedProps = computed(() => {
     <AccordionTrigger
       v-bind="delegatedProps"
       :class="cn(
-        'flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180',
+        'flex flex-1 items-center justify-between py-4 font-medium hover:underline [&[data-state=open]>svg]:rotate-180',
         props.class,
       )"
     >
       <slot />
-      <ChevronDown class="h-4 w-4 shrink-0 transition-transform duration-200" />
+      <ChevronDown class="h-4 w-4 shrink-0 transform-gpu transition-transform duration-100" />
     </AccordionTrigger>
   </AccordionHeader>
 </template>

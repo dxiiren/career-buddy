@@ -2,18 +2,21 @@
 import { Menu, X, LogOut, User } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 
-const route = useRoute()
-const { user, isAuthenticated, logout } = useAuth()
+const { user, isAuthenticated, logout, initAuth } = useAuth()
 
 const isMenuOpen = ref(false)
 const isScrolled = ref(false)
 
-const isDashboard = computed(() => route.path === '/dashboard')
+// Initialize auth state from localStorage
+onMounted(() => {
+  initAuth()
+})
 
 const navLinks = [
-  { name: 'Features', href: '#features' },
-  { name: 'How It Works', href: '#how-it-works' },
-  { name: 'FAQ', href: '#faq' },
+  { name: 'Home', href: '/' },
+  { name: 'About Us', href: '/about' },
+  { name: 'Contact', href: '/contact' },
+  { name: 'Privacy', href: '/privacy' },
 ]
 
 function handleLogout() {
@@ -54,15 +57,15 @@ function closeMenu() {
         <SharedAppLogo />
 
         <!-- Desktop Navigation -->
-        <div class="hidden md:flex md:items-center md:gap-8">
-          <a
+        <div class="hidden md:flex md:items-center md:gap-6">
+          <NuxtLink
             v-for="link in navLinks"
             :key="link.name"
-            :href="link.href"
+            :to="link.href"
             class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
             {{ link.name }}
-          </a>
+          </NuxtLink>
         </div>
 
         <div class="hidden md:flex md:items-center md:gap-3">
@@ -110,15 +113,15 @@ function closeMenu() {
       >
         <div class="container mx-auto px-4 py-4">
           <div class="flex flex-col gap-4">
-            <a
+            <NuxtLink
               v-for="link in navLinks"
               :key="link.name"
-              :href="link.href"
+              :to="link.href"
               class="py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               @click="closeMenu"
             >
               {{ link.name }}
-            </a>
+            </NuxtLink>
             <div class="flex flex-col gap-2 pt-4 border-t border-border">
               <div class="flex items-center justify-between py-2">
                 <span class="text-sm text-muted-foreground">Theme</span>
