@@ -8,6 +8,7 @@ import HowItWorksSection from '../../components/landing/HowItWorksSection.vue'
 import FaqSection from '../../components/landing/FaqSection.vue'
 import CtaFooter from '../../components/landing/CtaFooter.vue'
 import TrustBadgesSection from '../../components/landing/TrustBadgesSection.vue'
+import TestimonialsCarousel from '../../components/landing/TestimonialsCarousel.vue'
 
 // Mock useScrollAnimation
 vi.mock('../../composables/useScrollAnimation', () => ({
@@ -205,14 +206,19 @@ describe('TrustBadgesSection Component', () => {
     expect(wrapper.text()).toContain('Success Rate')
   })
 
-  it('renders university names', async () => {
+  it('renders university logos', async () => {
     const wrapper = await mountSuspended(TrustBadgesSection)
 
-    expect(wrapper.text()).toContain('UM')
-    expect(wrapper.text()).toContain('UTM')
-    expect(wrapper.text()).toContain('UPM')
-    expect(wrapper.text()).toContain('USM')
-    expect(wrapper.text()).toContain('UKM')
+    const logos = wrapper.findAll('img')
+    expect(logos.length).toBe(6)
+
+    // Check that alt texts contain university names
+    expect(wrapper.html()).toContain('Universiti Malaya')
+    expect(wrapper.html()).toContain('Universiti Teknologi Malaysia')
+    expect(wrapper.html()).toContain('Universiti Putra Malaysia')
+    expect(wrapper.html()).toContain('Universiti Sains Malaysia')
+    expect(wrapper.html()).toContain('Universiti Kebangsaan Malaysia')
+    expect(wrapper.html()).toContain('Universiti Teknologi MARA')
   })
 
   it('renders trust message', async () => {
@@ -434,11 +440,12 @@ describe('TrustBadgesSection Interactions', () => {
     expect(links.length).toBeGreaterThanOrEqual(0)
   })
 
-  it('stat cards have visual styling', async () => {
+  it('stat section has visual styling', async () => {
     const wrapper = await mountSuspended(TrustBadgesSection)
 
-    const cards = wrapper.findAll('[class*="rounded"]')
-    expect(cards.length).toBeGreaterThan(0)
+    // Check for flex layout
+    const flexContainer = wrapper.find('[class*="flex"]')
+    expect(flexContainer.exists()).toBe(true)
   })
 
   it('has responsive flex layout for stats', async () => {
@@ -497,5 +504,117 @@ describe('Landing Sections Accessibility', () => {
     buttons.forEach((button) => {
       expect(button.element.tagName.toLowerCase()).toBe('button')
     })
+  })
+})
+
+// ============================================
+// NAVBAR ANCHOR LINK SECTION ID TESTS
+// ============================================
+
+describe('Navbar Anchor Link Section IDs', () => {
+  it('ProblemSection has id="challenges" for navbar navigation', async () => {
+    const wrapper = await mountSuspended(ProblemSection)
+
+    const section = wrapper.find('section')
+    expect(section.exists()).toBe(true)
+    expect(section.attributes('id')).toBe('challenges')
+  })
+
+  it('ProblemSection contains The Challenge content for Challenges link', async () => {
+    const wrapper = await mountSuspended(ProblemSection)
+
+    // Verify this is the correct section for the "Challenges" navbar link
+    expect(wrapper.text()).toContain('The Challenge')
+    expect(wrapper.text()).toContain('We Know Job Hunting Feels')
+    expect(wrapper.text()).toContain('Overwhelming')
+  })
+
+  it('TestimonialsCarousel has id="feedback" for navbar navigation', async () => {
+    const wrapper = await mountSuspended(TestimonialsCarousel)
+
+    const section = wrapper.find('section')
+    expect(section.exists()).toBe(true)
+    expect(section.attributes('id')).toBe('feedback')
+  })
+
+  it('TestimonialsCarousel contains testimonials/feedback content', async () => {
+    const wrapper = await mountSuspended(TestimonialsCarousel)
+
+    // Verify this is the correct section for the "Feedback" navbar link
+    expect(wrapper.text()).toContain('Hear From Our')
+    expect(wrapper.text()).toContain('Community')
+    expect(wrapper.text()).toContain('4.9/5 from 2,000+ reviews')
+  })
+})
+
+// ============================================
+// TESTIMONIALS CAROUSEL TESTS
+// ============================================
+
+describe('TestimonialsCarousel Component', () => {
+  it('renders the section headline', async () => {
+    const wrapper = await mountSuspended(TestimonialsCarousel)
+
+    expect(wrapper.text()).toContain('Hear From Our')
+    expect(wrapper.text()).toContain('Community')
+  })
+
+  it('renders testimonial cards with quotes', async () => {
+    const wrapper = await mountSuspended(TestimonialsCarousel)
+
+    // Should contain testimonial content
+    expect(wrapper.text()).toContain('Career Buddy')
+  })
+
+  it('renders star ratings', async () => {
+    const wrapper = await mountSuspended(TestimonialsCarousel)
+
+    // Check for star icons (5 stars per testimonial)
+    const stars = wrapper.findAll('svg')
+    expect(stars.length).toBeGreaterThan(0)
+  })
+
+  it('renders navigation controls', async () => {
+    const wrapper = await mountSuspended(TestimonialsCarousel)
+
+    // Should have navigation buttons
+    const buttons = wrapper.findAll('button')
+    expect(buttons.length).toBeGreaterThan(0)
+  })
+
+  it('renders trust stats section', async () => {
+    const wrapper = await mountSuspended(TestimonialsCarousel)
+
+    expect(wrapper.text()).toContain('5,000+')
+    expect(wrapper.text()).toContain('Active Users')
+    expect(wrapper.text()).toContain('94%')
+    expect(wrapper.text()).toContain('Success Rate')
+  })
+
+  it('renders user photo avatars from picsum', async () => {
+    const wrapper = await mountSuspended(TestimonialsCarousel)
+
+    // Check for avatar images from picsum.photos
+    const images = wrapper.findAll('img')
+    expect(images.length).toBeGreaterThan(0)
+
+    // Should have picsum.photos URLs
+    const html = wrapper.html()
+    expect(html).toContain('picsum.photos')
+  })
+
+  it('renders verified badges', async () => {
+    const wrapper = await mountSuspended(TestimonialsCarousel)
+
+    // Should have verified icons
+    const html = wrapper.html()
+    expect(html).toContain('text-blue-500')
+  })
+
+  it('renders outcome badges', async () => {
+    const wrapper = await mountSuspended(TestimonialsCarousel)
+
+    // Check for outcome badges with green styling
+    expect(wrapper.text()).toMatch(/Landed|job offers|connections|salary|career/)
   })
 })

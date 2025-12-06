@@ -15,6 +15,7 @@ const {
   emailTemplates,
   loadSelfPromotion,
 } = useSelfPromotion()
+const { trackPageVisit } = useRecentActivity()
 
 const animatedCards = ref<Set<number>>(new Set())
 
@@ -29,6 +30,7 @@ onMounted(async () => {
     return
   }
 
+  trackPageVisit('/self-promotion/workplace')
   await loadSelfPromotion()
 
   for (let i = 0; i < 6; i++) {

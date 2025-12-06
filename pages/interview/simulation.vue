@@ -18,6 +18,7 @@ const {
   submitAnswer,
   updateSettings,
 } = useInterview()
+const { trackPageVisit } = useRecentActivity()
 
 const animatedCards = ref<Set<number>>(new Set())
 const currentAnswer = ref('')
@@ -94,6 +95,7 @@ onMounted(async () => {
     return
   }
 
+  trackPageVisit('/interview/simulation')
   await loadInterview()
 
   for (let i = 0; i < 4; i++) {

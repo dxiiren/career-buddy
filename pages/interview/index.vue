@@ -15,6 +15,7 @@ const {
   prepSteps,
   loadInterview,
 } = useInterview()
+const { trackPageVisit } = useRecentActivity()
 
 const animatedCards = ref<Set<number>>(new Set())
 
@@ -29,6 +30,7 @@ onMounted(async () => {
     return
   }
 
+  trackPageVisit('/interview')
   await loadInterview()
 
   for (let i = 0; i < 6; i++) {

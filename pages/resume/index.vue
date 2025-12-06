@@ -13,6 +13,7 @@ const {
   resumeMistakes,
   loadResume,
 } = useResume()
+const { trackPageVisit } = useRecentActivity()
 
 const animatedCards = ref<Set<number>>(new Set())
 
@@ -27,6 +28,7 @@ onMounted(async () => {
     return
   }
 
+  trackPageVisit('/resume')
   await loadResume()
 
   for (let i = 0; i < 6; i++) {

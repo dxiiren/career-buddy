@@ -11,6 +11,7 @@ const {
   platforms,
   loadJobSearch,
 } = useJobSearch()
+const { trackPageVisit } = useRecentActivity()
 
 const animatedCards = ref<Set<number>>(new Set())
 
@@ -25,6 +26,7 @@ onMounted(async () => {
     return
   }
 
+  trackPageVisit('/job-search/platforms')
   await loadJobSearch()
 
   for (let i = 0; i < platforms.value.length + 1; i++) {

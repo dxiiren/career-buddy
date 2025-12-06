@@ -14,6 +14,7 @@ const {
   introductionTips,
   loadNetworking,
 } = useNetworking()
+const { trackPageVisit } = useRecentActivity()
 
 // Track which cards have animated in
 const animatedCards = ref<Set<number>>(new Set())
@@ -30,6 +31,7 @@ onMounted(async () => {
     return
   }
 
+  trackPageVisit('/networking')
   await loadNetworking()
 
   // Stagger card animations

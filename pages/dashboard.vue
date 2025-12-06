@@ -9,15 +9,11 @@ const { user, isAuthenticated, initAuth } = useAuth()
 const {
   isLoading,
   progressModules,
-  dailyTasks,
-  recentActivity,
   resumeInfo,
   overallProgress,
-  currentQuote,
-  currentTip,
   loadDashboard,
-  toggleTask,
 } = useDashboard()
+const { trackPageVisit } = useRecentActivity()
 
 // Track which cards have animated in
 const animatedCards = ref<Set<number>>(new Set())
@@ -35,6 +31,9 @@ onMounted(async () => {
     navigateTo('/login')
     return
   }
+
+  // Track page visit
+  trackPageVisit('/dashboard')
 
   // Load dashboard data
   await loadDashboard()
@@ -92,9 +91,7 @@ onMounted(async () => {
             :class="showCard(3) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
           >
             <DashboardDailyTasks
-              :tasks="dailyTasks"
               :loading="isLoading"
-              @toggle="toggleTask"
             />
           </div>
         </div>
@@ -105,7 +102,6 @@ onMounted(async () => {
           :class="showCard(4) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
         >
           <DashboardRecentActivity
-            :activities="recentActivity"
             :loading="isLoading"
           />
         </div>
@@ -116,8 +112,6 @@ onMounted(async () => {
           :class="showCard(5) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
         >
           <DashboardMotivationalSection
-            :quote="currentQuote"
-            :tip="currentTip"
             :loading="isLoading"
           />
         </div>

@@ -12,6 +12,7 @@ const {
   starMethod,
   loadInterview,
 } = useInterview()
+const { trackPageVisit } = useRecentActivity()
 
 const animatedCards = ref<Set<number>>(new Set())
 const selectedCategory = ref('all')
@@ -40,6 +41,7 @@ onMounted(async () => {
     return
   }
 
+  trackPageVisit('/interview/questions')
   await loadInterview()
 
   for (let i = 0; i < questions.value.length + 3; i++) {

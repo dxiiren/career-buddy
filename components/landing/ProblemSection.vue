@@ -52,7 +52,7 @@ const painPoints = [
 </script>
 
 <template>
-  <section ref="target" class="py-24 bg-gradient-to-b from-background to-card relative overflow-hidden">
+  <section id="challenges" ref="target" class="py-24 bg-gradient-to-b from-background to-card relative overflow-hidden">
     <!-- Background Elements -->
     <div class="absolute inset-0 pointer-events-none">
       <div class="absolute top-20 right-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />

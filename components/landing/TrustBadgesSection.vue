@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Shield, Award, Users, Star, ExternalLink } from 'lucide-vue-next'
+import { Shield, Award, Users, Star } from 'lucide-vue-next'
 
 const { target, isVisible } = useScrollAnimation()
 
@@ -11,11 +11,12 @@ const stats = [
 ]
 
 const universities = [
-  { abbr: 'UM', name: 'Universiti Malaya', url: 'https://www.um.edu.my/' },
-  { abbr: 'UTM', name: 'Universiti Teknologi Malaysia', url: 'https://www.utm.my/' },
-  { abbr: 'UPM', name: 'Universiti Putra Malaysia', url: 'https://www.upm.edu.my/' },
-  { abbr: 'USM', name: 'Universiti Sains Malaysia', url: 'https://www.usm.my/' },
-  { abbr: 'UKM', name: 'Universiti Kebangsaan Malaysia', url: 'https://www.ukm.my/' },
+  { abbr: 'UM', name: 'Universiti Malaya', url: 'https://www.um.edu.my/', logo: '/images/universities/um.png' },
+  { abbr: 'UTM', name: 'Universiti Teknologi Malaysia', url: 'https://www.utm.my/', logo: '/images/universities/utm.png' },
+  { abbr: 'UPM', name: 'Universiti Putra Malaysia', url: 'https://www.upm.edu.my/', logo: '/images/universities/upm.png' },
+  { abbr: 'USM', name: 'Universiti Sains Malaysia', url: 'https://www.usm.my/', logo: '/images/universities/usm.png' },
+  { abbr: 'UKM', name: 'Universiti Kebangsaan Malaysia', url: 'https://www.ukm.my/', logo: '/images/universities/ukm.png' },
+  { abbr: 'UiTM', name: 'Universiti Teknologi MARA', url: 'https://www.uitm.edu.my/', logo: '/images/universities/uitm.png' },
 ]
 </script>
 
@@ -49,9 +50,9 @@ const universities = [
         <div class="hidden md:block w-px h-8 bg-border" />
 
         <!-- Universities -->
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-4">
           <span class="text-xs text-muted-foreground whitespace-nowrap">Trusted by students from</span>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-3">
             <a
               v-for="uni in universities"
               :key="uni.abbr"
@@ -59,10 +60,15 @@ const universities = [
               target="_blank"
               rel="noopener noreferrer"
               :title="uni.name"
-              class="group flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium text-muted-foreground bg-muted/50 hover:text-primary hover:bg-primary/5 transition-colors cursor-pointer"
+              class="group transition-all duration-200 hover:scale-105 grayscale hover:grayscale-0 opacity-70 hover:opacity-100"
             >
-              {{ uni.abbr }}
-              <ExternalLink class="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div class="h-10 w-10 rounded-xl bg-background border border-border/50 flex items-center justify-center p-1.5 group-hover:border-primary/30 group-hover:shadow-sm transition-all">
+                <img
+                  :src="uni.logo"
+                  :alt="uni.name"
+                  class="h-full w-full object-contain"
+                />
+              </div>
             </a>
           </div>
         </div>

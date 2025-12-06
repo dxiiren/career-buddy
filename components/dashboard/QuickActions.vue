@@ -10,11 +10,11 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const actions = [
-  { id: '1', label: 'Write Resume', icon: FileText, color: 'hover:bg-blue-500/10 hover:text-blue-500 hover:border-blue-500/30' },
-  { id: '2', label: 'Practise Interview', icon: Mic, color: 'hover:bg-green-500/10 hover:text-green-500 hover:border-green-500/30' },
-  { id: '3', label: 'Generate Cover Letter', icon: Mail, color: 'hover:bg-purple-500/10 hover:text-purple-500 hover:border-purple-500/30' },
-  { id: '4', label: 'Send Networking Message', icon: Users, color: 'hover:bg-orange-500/10 hover:text-orange-500 hover:border-orange-500/30' },
-  { id: '5', label: 'Ask Buddy', icon: MessageCircle, color: 'hover:bg-primary/10 hover:text-primary hover:border-primary/30' },
+  { id: '1', label: 'Write Resume', icon: FileText, href: '/resume', color: 'hover:bg-blue-500/10 hover:text-blue-500 hover:border-blue-500/30' },
+  { id: '2', label: 'Practise Interview', icon: Mic, href: '/interview', color: 'hover:bg-green-500/10 hover:text-green-500 hover:border-green-500/30' },
+  { id: '3', label: 'Generate Cover Letter', icon: Mail, href: '/resume/cover-letter', color: 'hover:bg-purple-500/10 hover:text-purple-500 hover:border-purple-500/30' },
+  { id: '4', label: 'Send Networking Message', icon: Users, href: '/networking', color: 'hover:bg-orange-500/10 hover:text-orange-500 hover:border-orange-500/30' },
+  { id: '5', label: 'Ask Buddy', icon: MessageCircle, href: '/chat', color: 'hover:bg-primary/10 hover:text-primary hover:border-primary/30' },
 ]
 </script>
 
@@ -31,15 +31,16 @@ const actions = [
 
     <!-- Action Buttons -->
     <div v-else class="flex flex-wrap gap-2">
-      <button
+      <NuxtLink
         v-for="action in actions"
         :key="action.id"
+        :to="action.href"
         class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-sm font-medium transition-all duration-200"
         :class="action.color"
       >
         <component :is="action.icon" class="h-4 w-4" />
         {{ action.label }}
-      </button>
+      </NuxtLink>
     </div>
   </div>
 </template>

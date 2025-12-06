@@ -19,6 +19,7 @@ const {
   updatePreferences,
   deleteAccount,
 } = useSettings()
+const { trackPageVisit } = useRecentActivity()
 
 // Track which cards have animated in
 const animatedCards = ref<Set<number>>(new Set())
@@ -91,6 +92,9 @@ onMounted(async () => {
     profile.value.name = user.value.name || ''
     profile.value.email = user.value.email || ''
   }
+
+  // Track page visit
+  trackPageVisit('/settings')
 
   // Load settings
   await loadSettings()

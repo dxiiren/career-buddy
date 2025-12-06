@@ -12,7 +12,6 @@ import {
   Bell,
   Search,
   Sparkles,
-  Home,
   Menu,
 } from 'lucide-vue-next'
 import ThemeToggle from '@/components/shared/ThemeToggle.vue'
@@ -54,8 +53,8 @@ function isActive(href: string) {
       class="fixed left-0 top-0 h-screen bg-card border-r border-border flex flex-col transition-all duration-300 z-40"
       :class="isCollapsed ? 'w-16' : 'w-64'"
     >
-      <!-- Logo -->
-      <div class="h-16 flex items-center px-4 border-b border-border">
+      <!-- Logo - Clickable to go to landing page -->
+      <NuxtLink to="/" class="h-16 flex items-center px-4 border-b border-border hover:bg-muted/50 transition-colors">
         <div class="flex items-center gap-3">
           <div class="h-9 w-9 rounded-lg bg-primary flex items-center justify-center shrink-0">
             <Sparkles class="h-5 w-5 text-primary-foreground" />
@@ -67,7 +66,7 @@ function isActive(href: string) {
             Career Buddy
           </span>
         </div>
-      </div>
+      </NuxtLink>
 
       <!-- Navigation -->
       <nav class="flex-1 p-3 space-y-1 overflow-y-auto">
@@ -89,15 +88,6 @@ function isActive(href: string) {
 
       <!-- Bottom Section -->
       <div class="p-3 border-t border-border space-y-1">
-        <!-- Back to Home -->
-        <NuxtLink
-          to="/"
-          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-all duration-200"
-        >
-          <Home class="h-5 w-5 shrink-0" />
-          <span v-if="!isCollapsed" class="text-sm font-medium">Back to Home</span>
-        </NuxtLink>
-
         <NuxtLink
           v-for="item in bottomItems"
           :key="item.name"

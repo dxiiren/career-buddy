@@ -14,6 +14,7 @@ const {
   postIdeas,
   loadSelfPromotion,
 } = useSelfPromotion()
+const { trackPageVisit } = useRecentActivity()
 
 const animatedCards = ref<Set<number>>(new Set())
 
@@ -28,6 +29,7 @@ onMounted(async () => {
     return
   }
 
+  trackPageVisit('/self-promotion/linkedin')
   await loadSelfPromotion()
 
   for (let i = 0; i < 5; i++) {
