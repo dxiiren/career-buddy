@@ -1,15 +1,25 @@
 <script setup lang="ts">
-import { Menu, X } from 'lucide-vue-next'
+import { Menu, X, LogOut, User } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
+
+const route = useRoute()
+const { user, isAuthenticated, logout } = useAuth()
 
 const isMenuOpen = ref(false)
 const isScrolled = ref(false)
+
+const isDashboard = computed(() => route.path === '/dashboard')
 
 const navLinks = [
   { name: 'Features', href: '#features' },
   { name: 'How It Works', href: '#how-it-works' },
   { name: 'FAQ', href: '#faq' },
 ]
+
+function handleLogout() {
+  logout()
+  navigateTo('/login')
+}
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
@@ -57,8 +67,21 @@ function closeMenu() {
 
         <div class="hidden md:flex md:items-center md:gap-3">
           <SharedThemeToggle />
-          <Button variant="ghost" size="sm" class="text-foreground hover:bg-muted">Log In</Button>
-          <Button size="sm" class="shadow-md">Get Started</Button>
+          <!-- Authenticated User - Show Dashboard Button -->
+          <template v-if="isAuthenticated">
+            <NuxtLink to="/dashboard">
+              <Button size="sm" class="shadow-md">Go to Dashboard</Button>
+            </NuxtLink>
+          </template>
+          <!-- Guest Buttons -->
+          <template v-else>
+            <NuxtLink to="/login">
+              <Button variant="ghost" size="sm" class="text-foreground hover:bg-muted">Log In</Button>
+            </NuxtLink>
+            <NuxtLink to="/register">
+              <Button size="sm" class="shadow-md">Get Started</Button>
+            </NuxtLink>
+          </template>
         </div>
 
         <!-- Mobile Menu Button -->
@@ -101,8 +124,21 @@ function closeMenu() {
                 <span class="text-sm text-muted-foreground">Theme</span>
                 <SharedThemeToggle />
               </div>
-              <Button variant="ghost" class="w-full justify-center">Log In</Button>
-              <Button class="w-full justify-center">Get Started</Button>
+              <!-- Authenticated User - Show Dashboard Button (Mobile) -->
+              <template v-if="isAuthenticated">
+                <NuxtLink to="/dashboard" @click="closeMenu">
+                  <Button class="w-full justify-center">Go to Dashboard</Button>
+                </NuxtLink>
+              </template>
+              <!-- Guest Buttons (Mobile) -->
+              <template v-else>
+                <NuxtLink to="/login" @click="closeMenu">
+                  <Button variant="ghost" class="w-full justify-center">Log In</Button>
+                </NuxtLink>
+                <NuxtLink to="/register" @click="closeMenu">
+                  <Button class="w-full justify-center">Get Started</Button>
+                </NuxtLink>
+              </template>
             </div>
           </div>
         </div>
