@@ -67,16 +67,11 @@ function closeMenu() {
 
         <div class="hidden md:flex md:items-center md:gap-3">
           <SharedThemeToggle />
-          <!-- Authenticated User Menu -->
+          <!-- Authenticated User - Show Dashboard Button -->
           <template v-if="isAuthenticated">
-            <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/50">
-              <User class="h-4 w-4 text-muted-foreground" />
-              <span class="text-sm font-medium">{{ user?.name }}</span>
-            </div>
-            <Button variant="ghost" size="sm" @click="handleLogout">
-              <LogOut class="h-4 w-4 mr-2" />
-              Sign Out
-            </Button>
+            <NuxtLink to="/dashboard">
+              <Button size="sm" class="shadow-md">Go to Dashboard</Button>
+            </NuxtLink>
           </template>
           <!-- Guest Buttons -->
           <template v-else>
@@ -129,16 +124,11 @@ function closeMenu() {
                 <span class="text-sm text-muted-foreground">Theme</span>
                 <SharedThemeToggle />
               </div>
-              <!-- Authenticated User Menu (Mobile) -->
+              <!-- Authenticated User - Show Dashboard Button (Mobile) -->
               <template v-if="isAuthenticated">
-                <div class="flex items-center gap-2 py-2">
-                  <User class="h-4 w-4 text-muted-foreground" />
-                  <span class="text-sm font-medium">{{ user?.name }}</span>
-                </div>
-                <Button variant="ghost" class="w-full justify-center" @click="handleLogout">
-                  <LogOut class="h-4 w-4 mr-2" />
-                  Sign Out
-                </Button>
+                <NuxtLink to="/dashboard" @click="closeMenu">
+                  <Button class="w-full justify-center">Go to Dashboard</Button>
+                </NuxtLink>
               </template>
               <!-- Guest Buttons (Mobile) -->
               <template v-else>

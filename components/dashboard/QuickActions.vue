@@ -20,9 +20,11 @@ const actions = [
 
 <template>
   <div class="rounded-2xl bg-card border border-border p-6">
-    <h2 class="text-lg font-heading font-semibold mb-4">Quick Actions</h2>
+    <!-- Title -->
+    <UiSkeleton v-if="loading" class="h-6 w-32 mb-4" />
+    <h2 v-else class="text-lg font-heading font-semibold mb-4">Quick Actions</h2>
 
-    <!-- Loading Skeleton -->
+    <!-- Skeleton Loading -->
     <div v-if="loading" class="flex flex-wrap gap-2">
       <UiSkeleton v-for="i in 5" :key="i" class="h-10 w-32 rounded-lg" />
     </div>

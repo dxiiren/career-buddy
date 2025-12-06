@@ -1,3 +1,12 @@
+<script setup lang="ts">
+// Initialize theme globally on app load
+const { initTheme } = useTheme()
+
+onMounted(() => {
+  initTheme()
+})
+</script>
+
 <template>
   <div>
     <NuxtRouteAnnouncer />

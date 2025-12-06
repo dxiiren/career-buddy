@@ -20,10 +20,12 @@ const iconMap: Record<string, any> = {
 </script>
 
 <template>
-  <div class="rounded-2xl bg-card border border-border p-6">
-    <h2 class="text-lg font-heading font-semibold mb-4">Recent Activity</h2>
+  <div class="rounded-2xl bg-card border border-border p-6 h-full">
+    <!-- Title -->
+    <UiSkeleton v-if="loading" class="h-6 w-36 mb-4" />
+    <h2 v-else class="text-lg font-heading font-semibold mb-4">Recent Activity</h2>
 
-    <!-- Loading Skeleton -->
+    <!-- Skeleton Loading -->
     <div v-if="loading" class="space-y-4">
       <div v-for="i in 4" :key="i" class="flex items-start gap-3">
         <UiSkeleton class="h-8 w-8 rounded-lg" />

@@ -39,30 +39,30 @@
   }
 
   .light {
-    /* Soft gray theme - no pure whites */
-    --background: 220 14% 94%;
-    --foreground: 220 20% 18%;
-    --card: 220 14% 96%;
-    --card-foreground: 220 20% 18%;
-    --popover: 220 14% 96%;
-    --popover-foreground: 220 20% 18%;
-    --primary: 43 76% 50%;
-    --primary-foreground: 220 20% 12%;
-    --secondary: 207 52% 40%;
-    --secondary-foreground: 220 14% 94%;
-    --muted: 220 14% 90%;
-    --muted-foreground: 220 15% 38%;
-    --accent: 220 14% 88%;
-    --accent-foreground: 220 20% 18%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 220 14% 94%;
-    --border: 220 14% 82%;
-    --input: 220 14% 82%;
-    --ring: 43 76% 50%;
+    /* Premium soft gray theme - consistent, no pure whites */
+    --background: 220 10% 90%;
+    --foreground: 220 20% 15%;
+    --card: 220 10% 96%;
+    --card-foreground: 220 20% 15%;
+    --popover: 220 10% 96%;
+    --popover-foreground: 220 20% 15%;
+    --primary: 43 76% 48%;
+    --primary-foreground: 220 20% 10%;
+    --secondary: 207 52% 38%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 220 10% 86%;
+    --muted-foreground: 220 12% 42%;
+    --accent: 220 10% 86%;
+    --accent-foreground: 220 20% 15%;
+    --destructive: 0 84.2% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 10% 82%;
+    --input: 220 10% 86%;
+    --ring: 43 76% 48%;
 
-    /* Light mode gradient - soft gray */
-    --gradient-start: 220 14% 93%;
-    --gradient-end: 220 14% 90%;
+    /* Light mode gradient - same as card for consistency */
+    --gradient-start: 220 10% 96%;
+    --gradient-end: 220 10% 96%;
   }
 }
 

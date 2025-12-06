@@ -15,7 +15,9 @@ const props = withDefaults(defineProps<Props>(), {
 <template>
   <div class="rounded-2xl bg-card border border-border p-6">
     <div class="flex items-center justify-between mb-4">
-      <h2 class="text-lg font-heading font-semibold">Resume Preview</h2>
+      <!-- Title -->
+      <UiSkeleton v-if="loading" class="h-6 w-36" />
+      <h2 v-else class="text-lg font-heading font-semibold">Resume Preview</h2>
       <button
         v-if="!loading"
         class="text-sm text-primary hover:underline flex items-center gap-1"
@@ -24,7 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
       </button>
     </div>
 
-    <!-- Loading Skeleton -->
+    <!-- Skeleton Loading -->
     <div v-if="loading" class="space-y-3">
       <div class="flex items-center gap-3">
         <UiSkeleton class="h-12 w-12 rounded-lg" />

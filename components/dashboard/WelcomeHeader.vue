@@ -19,10 +19,26 @@ const strokeDashoffset = computed(() => {
 </script>
 
 <template>
-  <div class="rounded-2xl bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/5 border border-border p-6 lg:p-8">
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+  <div class="rounded-2xl bg-card border border-border p-6 lg:p-8">
+    <!-- Skeleton Loading -->
+    <div v-if="loading" class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+      <div class="flex-1">
+        <UiSkeleton class="h-9 w-64 mb-3" />
+        <UiSkeleton class="h-5 w-48" />
+      </div>
+      <div class="flex items-center gap-4">
+        <UiSkeleton class="h-24 w-24 rounded-full" />
+        <div>
+          <UiSkeleton class="h-4 w-16 mb-1" />
+          <UiSkeleton class="h-4 w-12" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Actual Content -->
+    <div v-else class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
       <!-- Text Content -->
-      <div v-if="!loading">
+      <div>
         <h1 class="text-2xl lg:text-3xl font-heading font-bold mb-2">
           Welcome back, {{ userName }}!
         </h1>
@@ -31,14 +47,8 @@ const strokeDashoffset = computed(() => {
         </p>
       </div>
 
-      <!-- Skeleton for text -->
-      <div v-else class="flex-1">
-        <UiSkeleton class="h-9 w-64 mb-3" />
-        <UiSkeleton class="h-5 w-48" />
-      </div>
-
       <!-- Progress Ring -->
-      <div v-if="!loading" class="flex items-center gap-4">
+      <div class="flex items-center gap-4">
         <div class="relative w-24 h-24">
           <svg class="w-24 h-24 transform -rotate-90" viewBox="0 0 100 100">
             <!-- Background circle -->
@@ -71,15 +81,6 @@ const strokeDashoffset = computed(() => {
         </div>
         <div class="text-sm text-muted-foreground">
           Overall<br />Progress
-        </div>
-      </div>
-
-      <!-- Skeleton for progress ring -->
-      <div v-else class="flex items-center gap-4">
-        <UiSkeleton class="h-24 w-24 rounded-full" />
-        <div>
-          <UiSkeleton class="h-4 w-16 mb-1" />
-          <UiSkeleton class="h-4 w-12" />
         </div>
       </div>
     </div>

@@ -1,12 +1,25 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { Eye, EyeOff, Loader2 } from 'lucide-vue-next'
+import { ref, onMounted } from 'vue'
+import { Eye, EyeOff, Loader2, ArrowLeft } from 'lucide-vue-next'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Checkbox } from '@/components/ui/checkbox'
+import AuthLayout from '@/components/auth/Layout.vue'
 
 definePageMeta({
   layout: false,
 })
 
-const { login, isLoading, error, clearError } = useAuth()
+const { login, isLoading, error, clearError, isAuthenticated, initAuth } = useAuth()
+
+// Redirect to dashboard if already authenticated
+onMounted(() => {
+  initAuth()
+  if (isAuthenticated.value) {
+    navigateTo('/dashboard')
+  }
+})
 
 const username = ref('')
 const password = ref('')
@@ -41,16 +54,36 @@ function togglePassword() {
 </script>
 
 <template>
-  <AuthAuthLayout>
-    <!-- Success Toast -->
-    <UiToast
-      message="Welcome back! Redirecting to dashboard..."
-      type="success"
-      :visible="showSuccessToast"
-      :duration="0"
-    />
+  <AuthLayout>
+    <!-- Success Message (inline) -->
+    <Transition
+      enter-active-class="transition-all duration-300 ease-out"
+      enter-from-class="opacity-0 -translate-y-2"
+      enter-to-class="opacity-100 translate-y-0"
+      leave-active-class="transition-all duration-200 ease-in"
+      leave-from-class="opacity-100 translate-y-0"
+      leave-to-class="opacity-0 -translate-y-2"
+    >
+      <div
+        v-if="showSuccessToast"
+        class="mb-6 p-4 rounded-lg bg-green-500/10 border border-green-500/30 text-green-500 text-sm flex items-center gap-3"
+      >
+        <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span class="font-medium text-foreground">Welcome back! Redirecting to dashboard...</span>
+      </div>
+    </Transition>
 
-    <div>
+      <!-- Back to Home -->
+      <NuxtLink
+        to="/"
+        class="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
+      >
+        <ArrowLeft class="h-4 w-4" />
+        Back to Home
+      </NuxtLink>
+
       <!-- Header -->
       <div class="mb-8">
         <h1 class="text-3xl font-heading font-bold mb-2">Welcome back</h1>
@@ -69,8 +102,8 @@ function togglePassword() {
 
         <!-- Username Field -->
         <div class="mb-4">
-          <UiLabel for="username" class="mb-2 block">Username</UiLabel>
-          <UiInput
+          <Label for="username" class="mb-2 block">Username</Label>
+          <Input
             id="username"
             v-model="username"
             type="text"
@@ -82,9 +115,9 @@ function togglePassword() {
 
         <!-- Password Field -->
         <div class="mb-4">
-          <UiLabel for="password" class="mb-2 block">Password</UiLabel>
+          <Label for="password" class="mb-2 block">Password</Label>
           <div class="relative">
-            <UiInput
+            <Input
               id="password"
               v-model="password"
               :type="showPassword ? 'text' : 'password'"
@@ -106,14 +139,14 @@ function togglePassword() {
         <!-- Remember Me & Forgot Password -->
         <div class="flex items-center justify-between mb-6">
           <div class="flex items-center gap-2">
-            <UiCheckbox id="remember" v-model="rememberMe" />
-            <UiLabel for="remember" class="text-sm cursor-pointer">Remember me</UiLabel>
+            <Checkbox id="remember" v-model="rememberMe" />
+            <Label for="remember" class="text-sm cursor-pointer">Remember me</Label>
           </div>
           <a href="#" class="text-sm text-primary hover:underline">Forgot password?</a>
         </div>
 
         <!-- Submit Button -->
-        <UiButton
+        <Button
           type="submit"
           size="lg"
           class="w-full"
@@ -126,7 +159,7 @@ function togglePassword() {
           <template v-else>
             Sign In
           </template>
-        </UiButton>
+        </Button>
       </form>
 
       <!-- Register Link -->
@@ -143,8 +176,7 @@ function togglePassword() {
           <span class="font-medium">Demo credentials:</span> admin / admin
         </p>
       </div>
-    </div>
-  </AuthAuthLayout>
+  </AuthLayout>
 </template>
 
 <style scoped>

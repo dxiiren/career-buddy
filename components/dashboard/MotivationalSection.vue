@@ -13,12 +13,12 @@ const props = withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div class="rounded-2xl bg-gradient-to-br from-primary/5 via-secondary/5 to-primary/10 border border-border p-6">
-    <!-- Loading Skeleton -->
+  <div class="rounded-2xl bg-card border border-border p-6 h-full">
+    <!-- Skeleton Loading -->
     <div v-if="loading" class="space-y-6">
       <div>
         <UiSkeleton class="h-5 w-32 mb-3" />
-        <UiSkeleton class="h-4 w-full" />
+        <UiSkeleton class="h-6 w-full" />
       </div>
       <div>
         <UiSkeleton class="h-5 w-24 mb-3" />
@@ -27,6 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
       </div>
     </div>
 
+    <!-- Actual Content -->
     <div v-else class="space-y-6">
       <!-- Quote -->
       <div>

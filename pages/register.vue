@@ -1,12 +1,24 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { Eye, EyeOff, Loader2, Check, X } from 'lucide-vue-next'
+import { ref, computed, onMounted } from 'vue'
+import { Eye, EyeOff, Loader2, Check, X, ArrowLeft } from 'lucide-vue-next'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import AuthLayout from '@/components/auth/Layout.vue'
 
 definePageMeta({
   layout: false,
 })
 
-const { register, isLoading, error, clearError } = useAuth()
+const { register, isLoading, error, clearError, isAuthenticated, initAuth } = useAuth()
+
+// Redirect to dashboard if already authenticated
+onMounted(() => {
+  initAuth()
+  if (isAuthenticated.value) {
+    navigateTo('/dashboard')
+  }
+})
 
 const name = ref('')
 const email = ref('')
@@ -54,8 +66,16 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <AuthAuthLayout>
-    <div>
+  <AuthLayout>
+      <!-- Back to Home -->
+      <NuxtLink
+        to="/"
+        class="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
+      >
+        <ArrowLeft class="h-4 w-4" />
+        Back to Home
+      </NuxtLink>
+
       <!-- Header -->
       <div class="mb-8">
         <h1 class="text-3xl font-heading font-bold mb-2">Create your account</h1>
@@ -74,8 +94,8 @@ async function handleSubmit() {
 
         <!-- Full Name Field -->
         <div class="mb-4">
-          <UiLabel for="name" class="mb-2 block">Full Name</UiLabel>
-          <UiInput
+          <Label for="name" class="mb-2 block">Full Name</Label>
+          <Input
             id="name"
             v-model="name"
             type="text"
@@ -87,8 +107,8 @@ async function handleSubmit() {
 
         <!-- Email Field -->
         <div class="mb-4">
-          <UiLabel for="email" class="mb-2 block">Email</UiLabel>
-          <UiInput
+          <Label for="email" class="mb-2 block">Email</Label>
+          <Input
             id="email"
             v-model="email"
             type="email"
@@ -100,9 +120,9 @@ async function handleSubmit() {
 
         <!-- Password Field -->
         <div class="mb-4">
-          <UiLabel for="password" class="mb-2 block">Password</UiLabel>
+          <Label for="password" class="mb-2 block">Password</Label>
           <div class="relative">
-            <UiInput
+            <Input
               id="password"
               v-model="password"
               :type="showPassword ? 'text' : 'password'"
@@ -138,9 +158,9 @@ async function handleSubmit() {
 
         <!-- Confirm Password Field -->
         <div class="mb-6">
-          <UiLabel for="confirm-password" class="mb-2 block">Confirm Password</UiLabel>
+          <Label for="confirm-password" class="mb-2 block">Confirm Password</Label>
           <div class="relative">
-            <UiInput
+            <Input
               id="confirm-password"
               v-model="confirmPassword"
               :type="showConfirmPassword ? 'text' : 'password'"
@@ -169,7 +189,7 @@ async function handleSubmit() {
         </div>
 
         <!-- Submit Button -->
-        <UiButton
+        <Button
           type="submit"
           size="lg"
           class="w-full"
@@ -182,7 +202,7 @@ async function handleSubmit() {
           <template v-else>
             Create Account
           </template>
-        </UiButton>
+        </Button>
       </form>
 
       <!-- Login Link -->
@@ -192,6 +212,5 @@ async function handleSubmit() {
           Sign in
         </NuxtLink>
       </p>
-    </div>
-  </AuthAuthLayout>
+  </AuthLayout>
 </template>

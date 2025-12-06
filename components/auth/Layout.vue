@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import { Sparkles } from 'lucide-vue-next'
+import ThemeToggle from '@/components/shared/ThemeToggle.vue'
 </script>
 
 <template>
-  <div class="min-h-screen flex">
+  <div class="min-h-screen flex bg-background">
     <!-- Left Side - Form Area -->
-    <div class="flex-1 flex items-center justify-center p-8 lg:p-12">
+    <div class="flex-1 flex items-center justify-center p-8 lg:p-12 relative">
+      <!-- Theme Toggle - Top Right -->
+      <div class="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
+
       <div class="w-full max-w-md">
         <!-- Logo for mobile -->
         <div class="lg:hidden flex items-center gap-2 mb-8">
