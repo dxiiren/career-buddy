@@ -36,7 +36,7 @@ function handleSelect(category: FAQCategory | null) {
 </script>
 
 <template>
-  <div class="rounded-2xl bg-card border border-border p-4">
+  <div class="rounded-2xl bg-card border border-border p-3 sm:p-4">
     <Transition
       mode="out-in"
       enter-active-class="transition-opacity duration-300"

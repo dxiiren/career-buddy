@@ -19,26 +19,26 @@ const actions = [
 </script>
 
 <template>
-  <div class="rounded-2xl bg-card border border-border p-6">
+  <div class="rounded-2xl bg-card border border-border p-4 sm:p-5 lg:p-6">
     <!-- Title -->
-    <Skeleton v-if="loading" class="h-6 w-32 mb-4" />
-    <h2 v-else class="text-lg font-heading font-semibold mb-4">Quick Actions</h2>
+    <Skeleton v-if="loading" class="h-5 sm:h-6 w-28 sm:w-32 mb-3 sm:mb-4" />
+    <h2 v-else class="text-base sm:text-lg font-heading font-semibold mb-3 sm:mb-4">Quick Actions</h2>
 
     <!-- Skeleton Loading -->
     <div v-if="loading" class="flex flex-wrap gap-2">
-      <Skeleton v-for="i in 5" :key="i" class="h-10 w-32 rounded-lg" />
+      <Skeleton v-for="i in 5" :key="i" class="h-8 sm:h-10 w-24 sm:w-32 rounded-lg" />
     </div>
 
     <!-- Action Buttons -->
-    <div v-else class="flex flex-wrap gap-2">
+    <div v-else class="flex flex-wrap gap-1.5 sm:gap-2">
       <NuxtLink
         v-for="action in actions"
         :key="action.id"
         :to="action.href"
-        class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-sm font-medium transition-all duration-200"
+        class="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border border-border text-xs sm:text-sm font-medium transition-all duration-200"
         :class="action.color"
       >
-        <component :is="action.icon" class="h-4 w-4" />
+        <component :is="action.icon" class="h-3.5 w-3.5 sm:h-4 sm:w-4" />
         {{ action.label }}
       </NuxtLink>
     </div>

@@ -1121,8 +1121,8 @@ describe('MotivationalSection - Daily Tips', () => {
       props: { loading: false },
     })
 
-    // Should have space-y-6 container with two children
-    const sectionsContainer = wrapper.find('.space-y-6')
+    // Should have space-y-4 container with two children (responsive: space-y-4 sm:space-y-6)
+    const sectionsContainer = wrapper.find('.space-y-4')
     expect(sectionsContainer.exists()).toBe(true)
 
     // Should contain both sections

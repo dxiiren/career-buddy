@@ -19,7 +19,7 @@ function formatSalary(amount: number): string {
 </script>
 
 <template>
-  <div class="rounded-2xl bg-card border border-border p-6">
+  <div class="rounded-2xl bg-card border border-border p-4 sm:p-5 lg:p-6">
     <Transition
       mode="out-in"
       enter-active-class="transition-opacity duration-300"

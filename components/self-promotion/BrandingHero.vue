@@ -9,7 +9,7 @@ defineProps<Props>()
 </script>
 
 <template>
-  <div class="rounded-2xl bg-gradient-to-br from-primary/10 via-secondary/5 to-background border border-border p-8">
+  <div class="rounded-2xl bg-gradient-to-br from-primary/10 via-secondary/5 to-background border border-border p-4 sm:p-6 lg:p-8">
     <Transition
       mode="out-in"
       enter-active-class="transition-opacity duration-300"

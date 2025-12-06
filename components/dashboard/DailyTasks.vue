@@ -122,12 +122,12 @@ const canAddMore = computed(() => tasks.value.length < MAX_TASKS)
 </script>
 
 <template>
-  <div class="rounded-2xl bg-card border border-border p-6 h-full">
+  <div class="rounded-2xl bg-card border border-border p-4 sm:p-5 lg:p-6 h-full">
     <!-- Title -->
-    <Skeleton v-if="loading" class="h-6 w-28 mb-4" />
-    <div v-else class="flex items-center justify-between mb-4">
-      <h2 class="text-lg font-heading font-semibold">Daily Tasks</h2>
-      <div class="flex items-center gap-3">
+    <Skeleton v-if="loading" class="h-5 sm:h-6 w-24 sm:w-28 mb-3 sm:mb-4" />
+    <div v-else class="flex items-center justify-between mb-3 sm:mb-4">
+      <h2 class="text-base sm:text-lg font-heading font-semibold">Daily Tasks</h2>
+      <div class="flex items-center gap-2 sm:gap-3">
         <button
           v-if="tasks.length > 0"
           class="text-xs text-muted-foreground hover:text-destructive transition-colors"
@@ -242,7 +242,7 @@ const canAddMore = computed(() => tasks.value.length < MAX_TASKS)
     <!-- Add Task Button -->
     <button
       v-if="canAddMore && !showAddInput && !loading"
-      class="mt-3 w-full flex items-center justify-center gap-2 py-2 text-sm text-muted-foreground hover:text-primary border border-dashed border-border rounded-lg hover:border-primary transition-colors"
+      class="mt-3 w-full flex items-center justify-center gap-2 py-2.5 sm:py-2 text-sm text-muted-foreground hover:text-primary border border-dashed border-border rounded-lg hover:border-primary transition-colors"
       @click="openAddInput"
     >
       <Plus class="h-4 w-4" />

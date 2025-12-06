@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Sparkles, Home, RefreshCw, Gamepad2 } from 'lucide-vue-next'
+import { Sparkles, Home, RefreshCw, Gamepad2, ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 
 const props = defineProps<{
@@ -248,6 +248,84 @@ function handleKeydown(e: KeyboardEvent) {
   }
 }
 
+// Mobile D-pad controls
+function moveUp() {
+  if (!gameStarted.value || gameOver.value) {
+    startGame()
+    return
+  }
+  if (direction.y !== 1) nextDirection = { x: 0, y: -1 }
+}
+
+function moveDown() {
+  if (!gameStarted.value || gameOver.value) {
+    startGame()
+    return
+  }
+  if (direction.y !== -1) nextDirection = { x: 0, y: 1 }
+}
+
+function moveLeft() {
+  if (!gameStarted.value || gameOver.value) {
+    startGame()
+    return
+  }
+  if (direction.x !== 1) nextDirection = { x: -1, y: 0 }
+}
+
+function moveRight() {
+  if (!gameStarted.value || gameOver.value) {
+    startGame()
+    return
+  }
+  if (direction.x !== -1) nextDirection = { x: 1, y: 0 }
+}
+
+// Touch swipe controls
+let touchStartX = 0
+let touchStartY = 0
+
+function handleTouchStart(e: TouchEvent) {
+  touchStartX = e.touches[0].clientX
+  touchStartY = e.touches[0].clientY
+}
+
+function handleTouchEnd(e: TouchEvent) {
+  if (!gameStarted.value || gameOver.value) {
+    startGame()
+    return
+  }
+
+  const touchEndX = e.changedTouches[0].clientX
+  const touchEndY = e.changedTouches[0].clientY
+
+  const deltaX = touchEndX - touchStartX
+  const deltaY = touchEndY - touchStartY
+
+  const minSwipeDistance = 30
+
+  // Determine swipe direction based on which delta is larger
+  if (Math.abs(deltaX) > Math.abs(deltaY)) {
+    // Horizontal swipe
+    if (Math.abs(deltaX) > minSwipeDistance) {
+      if (deltaX > 0 && direction.x !== -1) {
+        nextDirection = { x: 1, y: 0 } // Right
+      } else if (deltaX < 0 && direction.x !== 1) {
+        nextDirection = { x: -1, y: 0 } // Left
+      }
+    }
+  } else {
+    // Vertical swipe
+    if (Math.abs(deltaY) > minSwipeDistance) {
+      if (deltaY > 0 && direction.y !== -1) {
+        nextDirection = { x: 0, y: 1 } // Down
+      } else if (deltaY < 0 && direction.y !== 1) {
+        nextDirection = { x: 0, y: -1 } // Up
+      }
+    }
+  }
+}
+
 onMounted(() => {
   window.addEventListener('keydown', handleKeydown)
   // Initial draw
@@ -342,8 +420,11 @@ const errorMessage = computed(() => {
             <h2 class="text-lg font-heading font-semibold">While you're here, play a game!</h2>
           </div>
 
-          <p class="text-sm text-muted-foreground mb-4">
+          <p class="text-sm text-muted-foreground mb-4 hidden sm:block">
             Use arrow keys or WASD to move. Press Space to start.
+          </p>
+          <p class="text-sm text-muted-foreground mb-4 sm:hidden">
+            Swipe on canvas or use D-pad to move. Tap to start.
           </p>
 
           <!-- Score Display -->
@@ -407,13 +488,53 @@ const errorMessage = computed(() => {
               ref="gameCanvas"
               :width="GRID_SIZE * CELL_SIZE"
               :height="GRID_SIZE * CELL_SIZE"
-              class="rounded-lg border border-border cursor-pointer"
+              class="rounded-lg border border-border cursor-pointer touch-none"
               @click="!gameStarted || gameOver ? startGame() : null"
+              @touchstart="handleTouchStart"
+              @touchend="handleTouchEnd"
             />
           </div>
 
+          <!-- Mobile D-Pad Controls -->
+          <div class="mt-4 sm:hidden">
+            <div class="flex flex-col items-center gap-1">
+              <!-- Up Button -->
+              <button
+                class="w-14 h-14 rounded-lg bg-muted hover:bg-muted/80 active:bg-primary active:text-primary-foreground flex items-center justify-center transition-colors"
+                @click="moveUp"
+              >
+                <ChevronUp class="h-8 w-8" />
+              </button>
+              <!-- Left, Center, Right Row -->
+              <div class="flex gap-1">
+                <button
+                  class="w-14 h-14 rounded-lg bg-muted hover:bg-muted/80 active:bg-primary active:text-primary-foreground flex items-center justify-center transition-colors"
+                  @click="moveLeft"
+                >
+                  <ChevronLeft class="h-8 w-8" />
+                </button>
+                <div class="w-14 h-14 rounded-lg bg-muted/50 flex items-center justify-center">
+                  <Gamepad2 class="h-6 w-6 text-muted-foreground" />
+                </div>
+                <button
+                  class="w-14 h-14 rounded-lg bg-muted hover:bg-muted/80 active:bg-primary active:text-primary-foreground flex items-center justify-center transition-colors"
+                  @click="moveRight"
+                >
+                  <ChevronRight class="h-8 w-8" />
+                </button>
+              </div>
+              <!-- Down Button -->
+              <button
+                class="w-14 h-14 rounded-lg bg-muted hover:bg-muted/80 active:bg-primary active:text-primary-foreground flex items-center justify-center transition-colors"
+                @click="moveDown"
+              >
+                <ChevronDown class="h-8 w-8" />
+              </button>
+            </div>
+          </div>
+
           <!-- Game Instructions -->
-          <div v-if="!gameStarted" class="mt-4">
+          <div v-if="!gameStarted" class="mt-4 hidden sm:block">
             <Button variant="outline" size="sm" @click="startGame">
               <Gamepad2 class="h-4 w-4 mr-2" />
               Start Game

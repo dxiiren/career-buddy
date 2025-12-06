@@ -103,9 +103,9 @@ onMounted(async () => {
       class="transition-all duration-500"
       :class="showCard(4) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
     >
-      <div class="rounded-2xl bg-gradient-to-r from-primary/10 to-secondary/10 border border-border p-6 text-center">
-        <h3 class="text-lg font-heading font-semibold mb-2">Ready to Start Networking?</h3>
-        <p class="text-muted-foreground mb-4">
+      <div class="rounded-2xl bg-gradient-to-r from-primary/10 to-secondary/10 border border-border p-4 sm:p-5 lg:p-6 text-center">
+        <h3 class="text-base sm:text-lg font-heading font-semibold mb-1 sm:mb-2">Ready to Start Networking?</h3>
+        <p class="text-sm sm:text-base text-muted-foreground mb-3 sm:mb-4">
           Use our professionally crafted message templates to make your first connection.
         </p>
         <NuxtLink to="/networking/templates">

@@ -51,7 +51,7 @@ onMounted(async () => {
 <template>
   <div>
     <!-- Bento Grid Layout -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5 lg:gap-6">
         <!-- Welcome Header - Full Width -->
         <div
           class="lg:col-span-12 transition-all duration-500"
@@ -75,8 +75,8 @@ onMounted(async () => {
           />
         </div>
 
-        <!-- Right Column Stack -->
-        <div class="lg:col-span-5 flex flex-col gap-6">
+        <!-- Right Column Stack (Quick Actions + Daily Tasks) -->
+        <div class="lg:col-span-5 flex flex-col gap-4 sm:gap-5 lg:gap-6">
           <!-- Quick Actions -->
           <div
             class="transition-all duration-500"
@@ -85,7 +85,7 @@ onMounted(async () => {
             <DashboardQuickActions :loading="isLoading" />
           </div>
 
-          <!-- Daily Tasks -->
+          <!-- Daily Tasks - flex-1 to fill remaining height -->
           <div
             class="flex-1 transition-all duration-500"
             :class="showCard(3) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
@@ -96,7 +96,7 @@ onMounted(async () => {
           </div>
         </div>
 
-        <!-- Recent Activity -->
+        <!-- Recent Activity - Left half -->
         <div
           class="lg:col-span-6 transition-all duration-500"
           :class="showCard(4) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
@@ -106,7 +106,7 @@ onMounted(async () => {
           />
         </div>
 
-        <!-- Motivational Section -->
+        <!-- Motivational Section - Right half -->
         <div
           class="lg:col-span-6 transition-all duration-500"
           :class="showCard(5) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
@@ -116,7 +116,7 @@ onMounted(async () => {
           />
         </div>
 
-        <!-- Resume Preview -->
+        <!-- Resume Preview - Full Width -->
         <div
           class="lg:col-span-12 transition-all duration-500"
           :class="showCard(5) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"

@@ -79,48 +79,48 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="rounded-2xl bg-card border border-border p-6 h-full">
+  <div class="rounded-2xl bg-card border border-border p-4 sm:p-5 lg:p-6 h-full">
     <!-- Skeleton Loading -->
-    <div v-if="loading" class="space-y-6">
+    <div v-if="loading" class="space-y-4 sm:space-y-6">
       <div>
-        <Skeleton class="h-5 w-32 mb-3" />
-        <Skeleton class="h-6 w-full" />
+        <Skeleton class="h-4 sm:h-5 w-28 sm:w-32 mb-2 sm:mb-3" />
+        <Skeleton class="h-5 sm:h-6 w-full" />
       </div>
       <div>
-        <Skeleton class="h-5 w-24 mb-3" />
-        <Skeleton class="h-4 w-full" />
-        <Skeleton class="h-4 w-3/4 mt-1" />
+        <Skeleton class="h-4 sm:h-5 w-20 sm:w-24 mb-2 sm:mb-3" />
+        <Skeleton class="h-3 sm:h-4 w-full" />
+        <Skeleton class="h-3 sm:h-4 w-3/4 mt-1" />
       </div>
     </div>
 
     <!-- Actual Content -->
-    <div v-else class="space-y-6">
+    <div v-else class="space-y-4 sm:space-y-6">
       <!-- Quote -->
       <div>
-        <div class="flex items-center justify-between mb-3">
-          <div class="flex items-center gap-2">
-            <Sparkles class="h-4 w-4 text-primary" />
-            <span class="text-sm font-medium text-primary">Motivation</span>
+        <div class="flex items-center justify-between mb-2 sm:mb-3">
+          <div class="flex items-center gap-1.5 sm:gap-2">
+            <Sparkles class="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
+            <span class="text-xs sm:text-sm font-medium text-primary">Motivation</span>
           </div>
           <button
-            class="h-6 w-6 rounded flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
+            class="h-6 w-6 sm:h-7 sm:w-7 rounded flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
             :class="{ 'animate-spin': quoteLoading }"
             :disabled="quoteLoading"
             @click="fetchQuote"
           >
-            <RefreshCw class="h-3.5 w-3.5" />
+            <RefreshCw class="h-3 w-3 sm:h-3.5 sm:w-3.5" />
           </button>
         </div>
-        <div v-if="quoteLoading" class="rounded-xl bg-gradient-to-br from-primary/5 to-secondary/10 p-4 border border-primary/10">
-          <Skeleton class="h-5 w-full" />
-          <Skeleton class="h-5 w-3/4 mt-2" />
-          <Skeleton class="h-3 w-24 mt-3" />
+        <div v-if="quoteLoading" class="rounded-xl bg-gradient-to-br from-primary/5 to-secondary/10 p-3 sm:p-4 border border-primary/10">
+          <Skeleton class="h-4 sm:h-5 w-full" />
+          <Skeleton class="h-4 sm:h-5 w-3/4 mt-2" />
+          <Skeleton class="h-2.5 sm:h-3 w-20 sm:w-24 mt-2 sm:mt-3" />
         </div>
-        <div v-else class="rounded-xl bg-gradient-to-br from-primary/5 to-secondary/10 p-4 border border-primary/10">
-          <p class="text-base font-heading italic text-foreground/90 leading-relaxed">
+        <div v-else class="rounded-xl bg-gradient-to-br from-primary/5 to-secondary/10 p-3 sm:p-4 border border-primary/10">
+          <p class="text-sm sm:text-base font-heading italic text-foreground/90 leading-relaxed">
             "{{ quote }}"
           </p>
-          <p v-if="quoteAuthor" class="text-xs text-muted-foreground mt-3 font-medium">
+          <p v-if="quoteAuthor" class="text-xs text-muted-foreground mt-2 sm:mt-3 font-medium">
             — {{ quoteAuthor }}
           </p>
         </div>
@@ -128,12 +128,12 @@ onMounted(() => {
 
       <!-- Tip -->
       <div>
-        <div class="flex items-center gap-2 mb-3">
-          <Lightbulb class="h-4 w-4 text-yellow-500" />
-          <span class="text-sm font-medium text-yellow-500">Tip of the Day</span>
+        <div class="flex items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3">
+          <Lightbulb class="h-3.5 w-3.5 sm:h-4 sm:w-4 text-yellow-500" />
+          <span class="text-xs sm:text-sm font-medium text-yellow-500">Tip of the Day</span>
         </div>
-        <div class="rounded-xl bg-gradient-to-br from-yellow-500/5 to-amber-500/10 p-4 border border-yellow-500/10">
-          <p class="text-sm text-foreground/80 leading-relaxed">
+        <div class="rounded-xl bg-gradient-to-br from-yellow-500/5 to-amber-500/10 p-3 sm:p-4 border border-yellow-500/10">
+          <p class="text-xs sm:text-sm text-foreground/80 leading-relaxed">
             {{ tipOfTheDay }}
           </p>
         </div>
