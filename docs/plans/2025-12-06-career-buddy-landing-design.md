@@ -8,9 +8,8 @@ Career Buddy is a user-centred, web-based career preparation platform for young 
 
 - **Nuxt 3** - Vue framework with SSR, file-based routing
 - **shadcn-nuxt** - Official Nuxt module for shadcn-vue
-- **Tailwind CSS v4** - Utility-first styling
+- **Tailwind CSS 3.4** - Utility-first styling (via @nuxtjs/tailwindcss)
 - **VueUse** - Composables for animations, SSR width handling
-- **Nuxt Image** - Optimized responsive images
 
 ## Project Structure
 
@@ -116,11 +115,12 @@ Career Buddy is a user-centred, web-based career preparation platform for young 
 
 ## Visual Design
 
-### Color Palette (Warm & Supportive)
-- Primary: `#F97316` (warm orange) - CTAs, highlights
-- Secondary: `#8B5CF6` (soft purple) - accents
-- Background: `#FEF3E7` → `#F5F0FF` gradient
-- Text: `#1F2937` (dark gray)
+### Color Palette (Professional & Trustworthy)
+- Primary: `#E3B23C` (mustard yellow) - CTAs, highlights
+- Secondary: `#2B5F8A` (medium blue) - accents
+- Navy: `#243950` (dark navy) - text, emphasis
+- Background: Light blue → Mustard gradient
+- Text: `#243950` (navy)
 - Muted: `#6B7280` (secondary text)
 - Cards: `#FFFFFF` with subtle shadow
 

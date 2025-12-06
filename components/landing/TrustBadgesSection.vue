@@ -20,7 +20,7 @@ const universities = [
 </script>
 
 <template>
-  <section ref="target" class="py-8 bg-white border-y border-border/30">
+  <section ref="target" class="py-8 bg-card border-y border-border/30">
     <div class="container mx-auto px-4">
       <!-- Compact single row layout -->
       <div

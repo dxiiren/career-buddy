@@ -40,7 +40,7 @@ const steps = [
     title: 'Start Preparing',
     description: 'Access guides, templates, and AI tools. Track your progress and build confidence step by step.',
     color: 'from-green-500 to-emerald-500',
-    bgColor: 'bg-green-50',
+    bgColor: 'bg-green-500/10',
     time: 'Your pace',
     features: ['AI-powered tools', '50+ templates', '24/7 support'],
   },
@@ -48,12 +48,12 @@ const steps = [
 </script>
 
 <template>
-  <section id="how-it-works" ref="target" class="py-24 bg-white relative overflow-hidden">
+  <section id="how-it-works" ref="target" class="py-24 bg-card relative overflow-hidden">
     <!-- Background Pattern -->
     <div class="absolute inset-0 pointer-events-none">
-      <div class="absolute top-0 left-0 w-full h-full opacity-[0.02]" style="background-image: radial-gradient(circle, currentColor 1px, transparent 1px); background-size: 40px 40px;" />
-      <div class="absolute -top-20 -right-20 w-72 h-72 bg-secondary/5 rounded-full blur-3xl" />
-      <div class="absolute -bottom-20 -left-20 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
+      <div class="absolute top-0 left-0 w-full h-full opacity-[0.03]" style="background-image: radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px); background-size: 40px 40px;" />
+      <div class="absolute -top-20 -right-20 w-72 h-72 bg-secondary/10 rounded-full blur-3xl" />
+      <div class="absolute -bottom-20 -left-20 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />
     </div>
 
     <div class="container mx-auto px-4 relative z-10">
@@ -67,9 +67,9 @@ const steps = [
           <Zap class="h-4 w-4" />
           Quick & Easy
         </span>
-        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold font-heading text-foreground mb-6">
-          How Career Buddy
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold font-heading mb-6">
+          <span class="text-primary">How Career Buddy</span>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-primary">
             Works
           </span>
         </h2>
@@ -108,7 +108,7 @@ const steps = [
             <div
               :class="[
                 'absolute inset-0 rounded-2xl transition-all duration-300',
-                hoveredStep === index ? 'bg-white shadow-xl scale-105' : 'bg-transparent',
+                hoveredStep === index ? 'bg-muted/50 shadow-xl scale-105 border border-border/50' : 'bg-transparent',
               ]"
             />
 
@@ -124,7 +124,7 @@ const steps = [
                 />
                 <div
                   :class="[
-                    'relative flex h-20 w-20 items-center justify-center rounded-full bg-white shadow-lg border-2 transition-all duration-300',
+                    'relative flex h-20 w-20 items-center justify-center rounded-full bg-card shadow-lg border-2 transition-all duration-300',
                     hoveredStep === index ? 'border-primary scale-110' : 'border-border',
                   ]"
                 >
@@ -197,11 +197,11 @@ const steps = [
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8',
               ]"
             >
-              <div class="bg-white rounded-2xl shadow-lg p-6">
+              <div class="bg-card rounded-2xl shadow-lg p-6 border border-border/50">
                 <!-- Step Number Badge -->
                 <div class="relative inline-flex items-center justify-center mb-6">
                   <div :class="['absolute inset-0 bg-gradient-to-r rounded-full blur-xl scale-150 opacity-30', step.color]" />
-                  <div class="relative flex h-20 w-20 items-center justify-center rounded-full bg-white shadow-lg border-2 border-primary">
+                  <div class="relative flex h-20 w-20 items-center justify-center rounded-full bg-card shadow-lg border-2 border-primary">
                     <component :is="step.icon" class="h-8 w-8 text-primary" />
                   </div>
                   <span :class="['absolute -top-2 -right-2 flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r text-white text-sm font-bold shadow-md', step.color]">
@@ -241,7 +241,7 @@ const steps = [
         <!-- Mobile Navigation -->
         <div class="flex items-center justify-center gap-4 mt-6">
           <button
-            class="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md border border-border"
+            class="flex h-10 w-10 items-center justify-center rounded-full bg-muted shadow-md border border-border"
             @click="prevSlide"
           >
             <ChevronLeft class="h-5 w-5 text-muted-foreground" />
@@ -258,7 +258,7 @@ const steps = [
             />
           </div>
           <button
-            class="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md border border-border"
+            class="flex h-10 w-10 items-center justify-center rounded-full bg-muted shadow-md border border-border"
             @click="nextSlide"
           >
             <ChevronRight class="h-5 w-5 text-muted-foreground" />
