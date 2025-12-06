@@ -23,14 +23,14 @@ const strokeDashoffset = computed(() => {
     <!-- Skeleton Loading -->
     <div v-if="loading" class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
       <div class="flex-1">
-        <UiSkeleton class="h-9 w-64 mb-3" />
-        <UiSkeleton class="h-5 w-48" />
+        <Skeleton class="h-9 w-64 mb-3" />
+        <Skeleton class="h-5 w-48" />
       </div>
       <div class="flex items-center gap-4">
-        <UiSkeleton class="h-24 w-24 rounded-full" />
+        <Skeleton class="h-24 w-24 rounded-full" />
         <div>
-          <UiSkeleton class="h-4 w-16 mb-1" />
-          <UiSkeleton class="h-4 w-12" />
+          <Skeleton class="h-4 w-16 mb-1" />
+          <Skeleton class="h-4 w-12" />
         </div>
       </div>
     </div>

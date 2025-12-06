@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
   <div class="rounded-2xl bg-card border border-border p-6">
     <div class="flex items-center justify-between mb-4">
       <!-- Title -->
-      <UiSkeleton v-if="loading" class="h-6 w-36" />
+      <Skeleton v-if="loading" class="h-6 w-36" />
       <h2 v-else class="text-lg font-heading font-semibold">Resume Preview</h2>
       <button
         v-if="!loading"
@@ -29,14 +29,14 @@ const props = withDefaults(defineProps<Props>(), {
     <!-- Skeleton Loading -->
     <div v-if="loading" class="space-y-3">
       <div class="flex items-center gap-3">
-        <UiSkeleton class="h-12 w-12 rounded-lg" />
+        <Skeleton class="h-12 w-12 rounded-lg" />
         <div class="flex-1">
-          <UiSkeleton class="h-5 w-32 mb-1" />
-          <UiSkeleton class="h-4 w-24" />
+          <Skeleton class="h-5 w-32 mb-1" />
+          <Skeleton class="h-4 w-24" />
         </div>
       </div>
-      <UiSkeleton class="h-4 w-40" />
-      <UiSkeleton class="h-3 w-32" />
+      <Skeleton class="h-4 w-40" />
+      <Skeleton class="h-3 w-32" />
     </div>
 
     <!-- Resume Card -->

@@ -17,13 +17,13 @@ const props = withDefaults(defineProps<Props>(), {
     <!-- Skeleton Loading -->
     <div v-if="loading" class="space-y-6">
       <div>
-        <UiSkeleton class="h-5 w-32 mb-3" />
-        <UiSkeleton class="h-6 w-full" />
+        <Skeleton class="h-5 w-32 mb-3" />
+        <Skeleton class="h-6 w-full" />
       </div>
       <div>
-        <UiSkeleton class="h-5 w-24 mb-3" />
-        <UiSkeleton class="h-4 w-full" />
-        <UiSkeleton class="h-4 w-3/4 mt-1" />
+        <Skeleton class="h-5 w-24 mb-3" />
+        <Skeleton class="h-4 w-full" />
+        <Skeleton class="h-4 w-3/4 mt-1" />
       </div>
     </div>
 

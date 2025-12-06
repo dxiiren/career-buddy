@@ -153,7 +153,7 @@ describe('Skeleton component', () => {
   it('should have animation class', async () => {
     const wrapper = await mountSuspended(Skeleton)
 
-    expect(wrapper.find('div').classes()).toContain('animate-shimmer')
+    expect(wrapper.find('div').classes()).toContain('skeleton-shimmer')
   })
 
   it('should have rounded-md class', async () => {

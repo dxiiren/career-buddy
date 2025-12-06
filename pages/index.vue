@@ -46,21 +46,21 @@ useHead({
         <div class="container mx-auto px-4 py-20">
           <div class="grid lg:grid-cols-2 gap-12 items-center">
             <div class="space-y-6">
-              <UiSkeleton class="h-8 w-48 rounded-full" />
-              <UiSkeleton class="h-16 w-full max-w-lg" />
-              <UiSkeleton class="h-6 w-full max-w-md" />
+              <Skeleton class="h-8 w-48 rounded-full" />
+              <Skeleton class="h-16 w-full max-w-lg" />
+              <Skeleton class="h-6 w-full max-w-md" />
               <div class="flex gap-4">
-                <UiSkeleton class="h-12 w-40 rounded-lg" />
-                <UiSkeleton class="h-12 w-36 rounded-lg" />
+                <Skeleton class="h-12 w-40 rounded-lg" />
+                <Skeleton class="h-12 w-36 rounded-lg" />
               </div>
               <div class="flex gap-8 pt-4">
-                <UiSkeleton class="h-12 w-24" />
-                <UiSkeleton class="h-12 w-24" />
-                <UiSkeleton class="h-12 w-24" />
+                <Skeleton class="h-12 w-24" />
+                <Skeleton class="h-12 w-24" />
+                <Skeleton class="h-12 w-24" />
               </div>
             </div>
             <div class="hidden lg:block">
-              <UiSkeleton class="h-96 w-full rounded-3xl" />
+              <Skeleton class="h-96 w-full rounded-3xl" />
             </div>
           </div>
         </div>
@@ -70,10 +70,10 @@ useHead({
       <div class="py-12 bg-card">
         <div class="container mx-auto px-4">
           <div class="flex justify-center gap-8">
-            <UiSkeleton class="h-8 w-32" />
-            <UiSkeleton class="h-8 w-32" />
-            <UiSkeleton class="h-8 w-32" />
-            <UiSkeleton class="h-8 w-32" />
+            <Skeleton class="h-8 w-32" />
+            <Skeleton class="h-8 w-32" />
+            <Skeleton class="h-8 w-32" />
+            <Skeleton class="h-8 w-32" />
           </div>
         </div>
       </div>
@@ -82,13 +82,13 @@ useHead({
       <div class="py-20">
         <div class="container mx-auto px-4">
           <div class="text-center mb-12">
-            <UiSkeleton class="h-10 w-64 mx-auto mb-4" />
-            <UiSkeleton class="h-6 w-96 mx-auto" />
+            <Skeleton class="h-10 w-64 mx-auto mb-4" />
+            <Skeleton class="h-6 w-96 mx-auto" />
           </div>
           <div class="grid md:grid-cols-3 gap-8">
-            <UiSkeleton class="h-64 rounded-2xl" />
-            <UiSkeleton class="h-64 rounded-2xl" />
-            <UiSkeleton class="h-64 rounded-2xl" />
+            <Skeleton class="h-64 rounded-2xl" />
+            <Skeleton class="h-64 rounded-2xl" />
+            <Skeleton class="h-64 rounded-2xl" />
           </div>
         </div>
       </div>

@@ -19,14 +19,14 @@ const emit = defineEmits<{
 <template>
   <div class="rounded-2xl bg-card border border-border p-6 h-full">
     <!-- Title -->
-    <UiSkeleton v-if="loading" class="h-6 w-28 mb-4" />
+    <Skeleton v-if="loading" class="h-6 w-28 mb-4" />
     <h2 v-else class="text-lg font-heading font-semibold mb-4">Daily Tasks</h2>
 
     <!-- Skeleton Loading -->
     <div v-if="loading" class="space-y-3">
       <div v-for="i in 3" :key="i" class="flex items-center gap-3">
-        <UiSkeleton class="h-5 w-5 rounded-full" />
-        <UiSkeleton class="h-4 flex-1" />
+        <Skeleton class="h-5 w-5 rounded-full" />
+        <Skeleton class="h-4 flex-1" />
       </div>
     </div>
 
