@@ -8,7 +8,6 @@ definePageMeta({
 const { isAuthenticated, initAuth } = useAuth()
 const {
   isLoading,
-  interviewPurpose,
   interviewTypes,
   interviewDos,
   interviewDonts,
@@ -33,7 +32,7 @@ onMounted(async () => {
   trackPageVisit('/interview')
   await loadInterview()
 
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 5; i++) {
     setTimeout(() => animatedCards.value.add(i), i * 100)
   }
 })
@@ -52,16 +51,6 @@ onMounted(async () => {
       class="transition-all duration-500"
       :class="showCard(1) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
     >
-      <InterviewPurposeSection
-        :purpose="interviewPurpose"
-        :loading="isLoading"
-      />
-    </div>
-
-    <div
-      class="transition-all duration-500"
-      :class="showCard(2) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
-    >
       <InterviewTypesOfInterviews
         :types="interviewTypes"
         :loading="isLoading"
@@ -70,7 +59,7 @@ onMounted(async () => {
 
     <div
       class="transition-all duration-500"
-      :class="showCard(3) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
+      :class="showCard(2) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
     >
       <InterviewPrepSteps
         :steps="prepSteps"
@@ -80,7 +69,7 @@ onMounted(async () => {
 
     <div
       class="transition-all duration-500"
-      :class="showCard(4) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
+      :class="showCard(3) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
     >
       <InterviewDosAndDonts
         :dos="interviewDos"
@@ -91,7 +80,7 @@ onMounted(async () => {
 
     <div
       class="transition-all duration-500"
-      :class="showCard(5) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
+      :class="showCard(4) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
     >
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
         <NuxtLink to="/interview/questions" class="block">

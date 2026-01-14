@@ -44,7 +44,7 @@ const navigationItems = [
     icon: Mic,
     href: '/interview',
     children: [
-      { name: 'Overview', href: '/interview' },
+      { name: 'Tips', href: '/interview' },
       { name: 'Questions', href: '/interview/questions' },
       { name: 'Simulation', href: '/interview/simulation' },
     ]
