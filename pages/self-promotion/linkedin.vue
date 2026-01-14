@@ -9,7 +9,6 @@ const { isAuthenticated, initAuth } = useAuth()
 const {
   isLoading,
   headlineExamples,
-  aboutMeTemplates,
   postIdeas,
   loadSelfPromotion,
 } = useSelfPromotion()
@@ -31,7 +30,7 @@ onMounted(async () => {
   trackPageVisit('/self-promotion/linkedin')
   await loadSelfPromotion()
 
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 3; i++) {
     setTimeout(() => animatedCards.value.add(i), i * 100)
   }
 })
@@ -78,16 +77,6 @@ onMounted(async () => {
     <div
       class="transition-all duration-500"
       :class="showCard(2) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
-    >
-      <SelfPromotionAboutMeSection
-        :templates="aboutMeTemplates"
-        :loading="isLoading"
-      />
-    </div>
-
-    <div
-      class="transition-all duration-500"
-      :class="showCard(3) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
     >
       <SelfPromotionPostIdeasSection
         :ideas="postIdeas"

@@ -74,7 +74,7 @@ const navigationItems = [
     href: '/self-promotion',
     children: [
       { name: 'AR Resume', href: '/self-promotion' },
-      { name: 'LinkedIn', href: '/self-promotion/linkedin' },
+      { name: 'LinkedIn Optimization', href: '/self-promotion/linkedin' },
       { name: 'Job Expectations', href: '/self-promotion/workplace' },
     ]
   },
