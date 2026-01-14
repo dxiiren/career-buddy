@@ -39,7 +39,18 @@ defineProps<Props>()
             :key="platform.name"
             class="p-4 rounded-xl bg-muted/50 hover:bg-muted transition-colors"
           >
-            <h3 class="font-medium mb-1">{{ platform.name }}</h3>
+            <h3 class="font-medium mb-1">
+              <a
+                v-if="platform.url"
+                :href="platform.url"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-primary hover:underline"
+              >
+                {{ platform.name }}
+              </a>
+              <span v-else>{{ platform.name }}</span>
+            </h3>
             <p class="text-sm text-muted-foreground">{{ platform.description }}</p>
           </div>
         </div>

@@ -3,6 +3,7 @@ import { ref } from 'vue'
 export interface SearchPlatform {
   name: string
   description: string
+  url?: string
 }
 
 export interface CommonMistake {
@@ -56,10 +57,10 @@ export interface ScamExample {
 const isLoading = ref(false)
 
 const searchPlatforms = ref<SearchPlatform[]>([
-  { name: 'LinkedIn', description: 'Professional networking and job postings' },
-  { name: 'JobStreet', description: 'Popular job portal in Southeast Asia' },
-  { name: 'Indeed', description: 'Global job search engine with extensive listings' },
-  { name: 'Glassdoor', description: 'Company reviews and salary insights' },
+  { name: 'LinkedIn', description: 'Professional networking and job postings', url: 'https://www.linkedin.com/jobs' },
+  { name: 'JobStreet', description: 'Popular job portal in Southeast Asia', url: 'https://www.jobstreet.com' },
+  { name: 'Indeed', description: 'Global job search engine with extensive listings', url: 'https://www.indeed.com' },
+  { name: 'Glassdoor', description: 'Company reviews and salary insights', url: 'https://www.glassdoor.com' },
   { name: 'Company Websites', description: 'Direct applications to companies you admire' },
   { name: 'Career Fairs', description: 'Face-to-face networking opportunities' },
 ])
