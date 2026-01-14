@@ -10,9 +10,9 @@ interface Props {
 defineProps<Props>()
 
 function formatSalary(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('ms-MY', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'MYR',
     minimumFractionDigits: 0,
   }).format(amount)
 }
@@ -66,7 +66,7 @@ function formatSalary(amount: number): string {
           </table>
         </div>
         <p class="text-xs text-muted-foreground mt-4">
-          * These are approximate monthly salary ranges for fresh graduates in Southeast Asia. Actual salaries may vary based on location, company size, and individual qualifications.
+          * These are approximate monthly salary ranges for fresh graduates in Malaysia. Actual salaries may vary based on location, company size, and individual qualifications.
         </p>
       </div>
     </Transition>

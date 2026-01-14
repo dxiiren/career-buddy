@@ -64,7 +64,6 @@ const navigationItems = [
     href: '/job-search',
     children: [
       { name: 'Tips', href: '/job-search' },
-      { name: 'Platforms', href: '/job-search/platforms' },
       { name: 'Salary Guide', href: '/job-search/salary' },
       { name: 'Scam Awareness', href: '/job-search/scams' },
     ]
@@ -74,9 +73,9 @@ const navigationItems = [
     icon: TrendingUp,
     href: '/self-promotion',
     children: [
-      { name: 'Tips', href: '/self-promotion' },
+      { name: 'AR Resume', href: '/self-promotion' },
       { name: 'LinkedIn', href: '/self-promotion/linkedin' },
-      { name: 'Workplace', href: '/self-promotion/workplace' },
+      { name: 'Job Expectations', href: '/self-promotion/workplace' },
     ]
   },
 ]

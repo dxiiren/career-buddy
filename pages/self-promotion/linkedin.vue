@@ -10,7 +10,6 @@ const {
   isLoading,
   headlineExamples,
   aboutMeTemplates,
-  featuredSuggestions,
   postIdeas,
   loadSelfPromotion,
 } = useSelfPromotion()
@@ -32,7 +31,7 @@ onMounted(async () => {
   trackPageVisit('/self-promotion/linkedin')
   await loadSelfPromotion()
 
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 4; i++) {
     setTimeout(() => animatedCards.value.add(i), i * 100)
   }
 })
@@ -89,43 +88,6 @@ onMounted(async () => {
     <div
       class="transition-all duration-500"
       :class="showCard(3) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
-    >
-      <div class="rounded-2xl bg-card border border-border p-6">
-        <Transition
-          mode="out-in"
-          enter-active-class="transition-opacity duration-300"
-          enter-from-class="opacity-0"
-          enter-to-class="opacity-100"
-          leave-active-class="transition-opacity duration-200"
-          leave-from-class="opacity-100"
-          leave-to-class="opacity-0"
-        >
-          <div v-if="isLoading" key="skeleton" class="space-y-4">
-            <Skeleton class="h-6 w-48 skeleton-shimmer" />
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <Skeleton v-for="i in 8" :key="i" class="h-12 w-full skeleton-shimmer" />
-            </div>
-          </div>
-          <div v-else key="content">
-            <h2 class="text-lg font-heading font-semibold mb-4">Featured Section Ideas</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div
-                v-for="suggestion in featuredSuggestions"
-                :key="suggestion"
-                class="flex items-center gap-3 p-3 rounded-xl bg-muted/50"
-              >
-                <span class="text-primary">✦</span>
-                <span class="text-sm">{{ suggestion }}</span>
-              </div>
-            </div>
-          </div>
-        </Transition>
-      </div>
-    </div>
-
-    <div
-      class="transition-all duration-500"
-      :class="showCard(4) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
     >
       <SelfPromotionPostIdeasSection
         :ideas="postIdeas"

@@ -10,7 +10,6 @@ const {
   isLoading,
   scamTactics,
   scamExamples,
-  verificationChecklist,
   suspiciousActions,
   loadJobSearch,
 } = useJobSearch()
@@ -32,7 +31,7 @@ onMounted(async () => {
   trackPageVisit('/job-search/scams')
   await loadJobSearch()
 
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 5; i++) {
     setTimeout(() => animatedCards.value.add(i), i * 100)
   }
 })
@@ -89,16 +88,6 @@ onMounted(async () => {
     <div
       class="transition-all duration-500"
       :class="showCard(3) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
-    >
-      <JobSearchVerificationChecklist
-        :checklist="verificationChecklist"
-        :loading="isLoading"
-      />
-    </div>
-
-    <div
-      class="transition-all duration-500"
-      :class="showCard(4) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
     >
       <div class="rounded-2xl bg-card border border-border p-6">
         <Transition
