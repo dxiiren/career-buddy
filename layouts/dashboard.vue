@@ -54,7 +54,7 @@ const navigationItems = [
     icon: Users,
     href: '/networking',
     children: [
-      { name: 'Overview', href: '/networking' },
+      { name: 'Tips', href: '/networking' },
       { name: 'Templates', href: '/networking/templates' },
     ]
   },
@@ -63,7 +63,7 @@ const navigationItems = [
     icon: Target,
     href: '/job-search',
     children: [
-      { name: 'Overview', href: '/job-search' },
+      { name: 'Tips', href: '/job-search' },
       { name: 'Platforms', href: '/job-search/platforms' },
       { name: 'Salary Guide', href: '/job-search/salary' },
       { name: 'Scam Awareness', href: '/job-search/scams' },
@@ -74,7 +74,7 @@ const navigationItems = [
     icon: TrendingUp,
     href: '/self-promotion',
     children: [
-      { name: 'Overview', href: '/self-promotion' },
+      { name: 'Tips', href: '/self-promotion' },
       { name: 'LinkedIn', href: '/self-promotion/linkedin' },
       { name: 'Workplace', href: '/self-promotion/workplace' },
     ]
