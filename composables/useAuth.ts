@@ -26,7 +26,7 @@ export function useAuth() {
     if (username === VALID_USERNAME && password === VALID_PASSWORD) {
       user.value = {
         username: 'admin',
-        name: 'Akmal',
+        name: 'Yana',
       }
       isLoading.value = false
 

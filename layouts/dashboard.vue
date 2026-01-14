@@ -134,17 +134,12 @@ watch(() => route.path, (path) => {
     >
       <!-- Logo - Clickable to go to landing page -->
       <NuxtLink to="/" class="h-16 flex items-center px-4 border-b border-border hover:bg-muted/50 transition-colors">
-        <div class="flex items-center gap-3">
-          <div class="h-9 w-9 rounded-lg bg-primary flex items-center justify-center shrink-0">
-            <Sparkles class="h-5 w-5 text-primary-foreground" />
-          </div>
-          <span
-            v-if="!isCollapsed"
-            class="text-lg font-heading font-bold whitespace-nowrap"
-          >
-            Career Buddy
-          </span>
-        </div>
+        <img
+          src="/images/Untitled-1-01.png"
+          alt="Career Buddy"
+          class="h-14 w-auto object-contain"
+          :class="isCollapsed ? 'max-w-[48px]' : 'max-w-[220px]'"
+        />
       </NuxtLink>
 
       <!-- Navigation -->
@@ -262,14 +257,11 @@ watch(() => route.path, (path) => {
       >
         <!-- Header with close button -->
         <div class="h-16 flex items-center justify-between px-4 border-b border-border">
-          <div class="flex items-center gap-3">
-            <div class="h-9 w-9 rounded-lg bg-primary flex items-center justify-center shrink-0">
-              <Sparkles class="h-5 w-5 text-primary-foreground" />
-            </div>
-            <span class="text-lg font-heading font-bold whitespace-nowrap">
-              Career Buddy
-            </span>
-          </div>
+          <img
+            src="/images/Untitled-1-01.png"
+            alt="Career Buddy"
+            class="h-14 w-auto max-w-[220px] object-contain"
+          />
           <button
             class="h-10 w-10 rounded-lg hover:bg-muted flex items-center justify-center transition-colors"
             @click="isMobileMenuOpen = false"
@@ -394,11 +386,12 @@ watch(() => route.path, (path) => {
           </button>
 
           <!-- Mobile Logo -->
-          <NuxtLink to="/" class="lg:hidden flex items-center gap-2">
-            <div class="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-              <Sparkles class="h-4 w-4 text-primary-foreground" />
-            </div>
-            <span class="text-base font-heading font-bold hidden sm:block">Career Buddy</span>
+          <NuxtLink to="/" class="lg:hidden flex items-center">
+            <img
+              src="/images/Untitled-1-01.png"
+              alt="Career Buddy"
+              class="h-12 w-auto max-w-[180px] object-contain"
+            />
           </NuxtLink>
 
           <!-- Desktop Sidebar Toggle Button -->

@@ -56,9 +56,9 @@ const recentActivity = ref<ActivityItem[]>([
 ])
 
 const resumeInfo = ref<ResumeInfo>({
-  name: 'Akmal',
+  name: 'Yana',
   title: 'Software Engineer',
-  email: 'akmal@example.com',
+  email: 'yana@example.com',
   lastUpdated: '2 days ago',
 })
 
