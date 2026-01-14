@@ -81,26 +81,6 @@ const interviewTypes = ref<InterviewType[]>([
       'Send individual thank-you notes afterward',
     ],
   },
-  {
-    name: 'Technical Interview',
-    description: 'Assessment of technical skills through problems or coding challenges.',
-    tips: [
-      'Think out loud as you solve problems',
-      'Ask clarifying questions before diving in',
-      'It\'s okay to not know everything',
-      'Practice common problems in your field',
-    ],
-  },
-  {
-    name: 'Behavioral Interview',
-    description: 'Questions about past experiences to predict future behavior.',
-    tips: [
-      'Use the STAR method for answers',
-      'Prepare 5-6 stories that cover different competencies',
-      'Be specific with examples and outcomes',
-      'Quantify results whenever possible',
-    ],
-  },
 ])
 
 const interviewDos = ref<string[]>([
