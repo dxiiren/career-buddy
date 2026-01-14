@@ -186,11 +186,6 @@ const postIdeas = ref<PostIdea[]>([
     description: 'Comment on trends or news in your field',
     example: 'Interesting trend I\'ve noticed in [Industry]: [Observation]. As someone new to the field, here\'s my perspective... What do experienced professionals think?',
   },
-  {
-    title: 'Thank Your Mentors',
-    description: 'Publicly appreciate people who helped you',
-    example: 'Grateful for @[Name] who took the time to review my portfolio and give honest feedback. Their advice on [specific tip] was exactly what I needed to hear.',
-  },
 ])
 
 const firstDayGuide = ref<FirstDayItem[]>([
