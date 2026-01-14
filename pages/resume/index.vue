@@ -8,7 +8,6 @@ definePageMeta({
 const { isAuthenticated, initAuth } = useAuth()
 const {
   isLoading,
-  whatIsResume,
   employerLookFor,
   resumeMistakes,
   loadResume,
@@ -31,7 +30,7 @@ onMounted(async () => {
   trackPageVisit('/resume')
   await loadResume()
 
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 4; i++) {
     setTimeout(() => animatedCards.value.add(i), i * 100)
   }
 })
@@ -50,16 +49,6 @@ onMounted(async () => {
       class="transition-all duration-500"
       :class="showCard(1) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
     >
-      <ResumeWhatIsResume
-        :content="whatIsResume"
-        :loading="isLoading"
-      />
-    </div>
-
-    <div
-      class="transition-all duration-500"
-      :class="showCard(2) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
-    >
       <ResumeWhatEmployersLookFor
         :items="employerLookFor"
         :loading="isLoading"
@@ -68,7 +57,7 @@ onMounted(async () => {
 
     <div
       class="transition-all duration-500"
-      :class="showCard(3) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
+      :class="showCard(2) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
     >
       <ResumeCommonMistakes
         :mistakes="resumeMistakes"
@@ -78,7 +67,7 @@ onMounted(async () => {
 
     <div
       class="transition-all duration-500"
-      :class="showCard(4) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
+      :class="showCard(3) ? 'opacity-100 translate-y-0' : (isLoading ? 'opacity-100' : 'opacity-0 translate-y-4')"
     >
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
         <NuxtLink to="/resume/templates" class="block">
@@ -91,12 +80,6 @@ onMounted(async () => {
           <div class="rounded-2xl bg-gradient-to-r from-green-500/10 to-green-600/10 border border-border p-4 sm:p-5 lg:p-6 hover:border-primary/50 transition-all h-full">
             <h3 class="text-sm sm:text-base font-heading font-semibold mb-1 sm:mb-2">Cover Letters</h3>
             <p class="text-xs sm:text-sm text-muted-foreground">Learn to write compelling cover letters</p>
-          </div>
-        </NuxtLink>
-        <NuxtLink to="/resume/ats" class="block">
-          <div class="rounded-2xl bg-gradient-to-r from-purple-500/10 to-purple-600/10 border border-border p-4 sm:p-5 lg:p-6 hover:border-primary/50 transition-all h-full">
-            <h3 class="text-sm sm:text-base font-heading font-semibold mb-1 sm:mb-2">ATS Optimization</h3>
-            <p class="text-xs sm:text-sm text-muted-foreground">Make your resume ATS-friendly</p>
           </div>
         </NuxtLink>
       </div>

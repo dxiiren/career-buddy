@@ -34,10 +34,9 @@ const navigationItems = [
     icon: FileText,
     href: '/resume',
     children: [
-      { name: 'Overview', href: '/resume' },
+      { name: 'Tips', href: '/resume' },
       { name: 'Templates', href: '/resume/templates' },
       { name: 'Cover Letters', href: '/resume/cover-letter' },
-      { name: 'ATS Optimization', href: '/resume/ats' },
     ]
   },
   {
