@@ -9,7 +9,11 @@
       "Bash(git stash:*)",
       "Bash(git rebase:*)",
       "Bash(git checkout:*)",
-      "Bash(git restore:*)"
+      "Bash(git restore:*)",
+      "Bash(for dir in \"C:\\\\Users\\\\bunny\\\\Documents\\\\CODE\\\\carreer-buddy-proto\\\\components\"/{auth,career-chat,dashboard,help,interview,job-search,landing,networking,resume,self-promotion,settings,shared,ui})",
+      "Bash(npm run test:unit:*)",
+      "Bash(npm run test:functional:*)",
+      "Bash(npm run test:*)"
     ]
   }
 }
