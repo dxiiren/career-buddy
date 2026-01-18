@@ -145,30 +145,6 @@ onMounted(() => {
                 </Button>
               </NuxtLink>
             </template>
-            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1" target="_blank" rel="noopener noreferrer">
-              <Button variant="outline" size="lg" class="w-full sm:w-auto group bg-muted/50 backdrop-blur-sm border-border hover:bg-muted text-foreground">
-                <Play class="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
-                Watch Demo
-              </Button>
-            </a>
-          </div>
-
-          <!-- Mini Stats -->
-          <div class="flex items-center justify-center lg:justify-start gap-8 mt-10 animate-fade-up" style="animation-delay: 0.4s;">
-            <div class="text-center lg:text-left">
-              <div class="text-2xl font-bold text-foreground">{{ usersCount.toLocaleString() }}+</div>
-              <div class="text-sm text-muted-foreground">Active Users</div>
-            </div>
-            <div class="w-px h-10 bg-border" />
-            <div class="text-center lg:text-left">
-              <div class="text-2xl font-bold text-foreground">{{ successRate }}%</div>
-              <div class="text-sm text-muted-foreground">Success Rate</div>
-            </div>
-            <div class="w-px h-10 bg-border hidden sm:block" />
-            <div class="text-center lg:text-left hidden sm:block">
-              <div class="text-2xl font-bold text-foreground">4.9/5</div>
-              <div class="text-sm text-muted-foreground">User Rating</div>
-            </div>
           </div>
         </div>
 

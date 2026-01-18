@@ -101,8 +101,7 @@ useHead({
       <LandingProblemSection />
       <LandingFeaturesSection />
       <LandingHowItWorksSection />
-      <LandingTestimonialsCarousel />
-      <LandingFaqSection />
+      <!-- <LandingFaqSection /> -->
       <LandingCtaFooter />
     </div>
   </div>

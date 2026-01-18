@@ -76,7 +76,12 @@ export function useAuth() {
       const stored = localStorage.getItem('auth_user')
       if (stored) {
         try {
-          user.value = JSON.parse(stored)
+          const parsed = JSON.parse(stored) as User
+          if (parsed?.name === 'Akmal') {
+            parsed.name = 'Yana'
+            localStorage.setItem('auth_user', JSON.stringify(parsed))
+          }
+          user.value = parsed
         } catch {
           localStorage.removeItem('auth_user')
         }

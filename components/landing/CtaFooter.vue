@@ -12,8 +12,6 @@ onMounted(() => {
 
 const benefits = [
   { icon: CheckCircle2, text: 'No credit card required' },
-  { icon: Users, text: 'Join 5,000+ users' },
-  { icon: Star, text: '4.9/5 rating' },
   { icon: Zap, text: 'Instant access' },
 ]
 </script>

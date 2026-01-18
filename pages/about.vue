@@ -54,11 +54,7 @@ const values = [
   },
 ]
 
-const stats = [
-  { value: '5,000+', label: 'Active Users', icon: Users },
-  { value: '94%', label: 'Success Rate', icon: TrendingUp },
-  { value: '4.9/5', label: 'User Rating', icon: Award },
-]
+const stats = []
 </script>
 
 <template>

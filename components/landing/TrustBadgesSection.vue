@@ -4,9 +4,6 @@ import { Shield, Award, Users, Star } from 'lucide-vue-next'
 const { target, isVisible } = useScrollAnimation()
 
 const stats = [
-  { value: '5,000+', label: 'Active Users', icon: Users },
-  { value: '94%', label: 'Success Rate', icon: Award },
-  { value: '4.9/5', label: 'User Rating', icon: Star },
   { value: '100%', label: 'Free Forever', icon: Shield },
 ]
 

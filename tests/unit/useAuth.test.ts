@@ -45,7 +45,7 @@ describe('useAuth composable', () => {
     expect(result).toBe(true)
     expect(user.value).not.toBeNull()
     expect(user.value?.username).toBe('admin')
-    expect(user.value?.name).toBe('Akmal')
+    expect(user.value?.name).toBe('Yana')
     expect(isAuthenticated.value).toBe(true)
     expect(error.value).toBeNull()
   })

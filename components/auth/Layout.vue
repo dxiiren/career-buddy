@@ -72,20 +72,6 @@ import ThemeToggle from '@/components/shared/ThemeToggle.vue'
         </p>
 
         <!-- Stats -->
-        <div class="flex gap-8 mt-12">
-          <div class="text-center">
-            <div class="text-3xl font-bold">10K+</div>
-            <div class="text-white/70 text-sm">Users</div>
-          </div>
-          <div class="text-center">
-            <div class="text-3xl font-bold">85%</div>
-            <div class="text-white/70 text-sm">Success Rate</div>
-          </div>
-          <div class="text-center">
-            <div class="text-3xl font-bold">50K+</div>
-            <div class="text-white/70 text-sm">Jobs Landed</div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
