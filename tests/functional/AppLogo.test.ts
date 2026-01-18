@@ -18,48 +18,25 @@ describe('AppLogo Component', () => {
       expect(link.attributes('href')).toBe('/')
     })
 
-    it('renders the brand name', async () => {
+    it('renders the logo image', async () => {
       const wrapper = await mountSuspended(AppLogo)
 
-      expect(wrapper.text()).toContain('Career Buddy')
+      const img = wrapper.find('img')
+      expect(img.exists()).toBe(true)
     })
 
-    it('renders the logo icon container', async () => {
+    it('logo image has correct alt text for accessibility', async () => {
       const wrapper = await mountSuspended(AppLogo)
 
-      const iconContainer = wrapper.find('.bg-primary')
-      expect(iconContainer.exists()).toBe(true)
+      const img = wrapper.find('img')
+      expect(img.attributes('alt')).toBe('Career Buddy')
     })
 
-    it('renders the SVG logo icon', async () => {
+    it('logo image has correct src', async () => {
       const wrapper = await mountSuspended(AppLogo)
 
-      const svg = wrapper.find('svg')
-      expect(svg.exists()).toBe(true)
-    })
-
-    it('SVG has correct viewBox', async () => {
-      const wrapper = await mountSuspended(AppLogo)
-
-      const svg = wrapper.find('svg')
-      expect(svg.attributes('viewBox')).toBe('0 0 24 24')
-    })
-
-    it('SVG has proper stroke attributes', async () => {
-      const wrapper = await mountSuspended(AppLogo)
-
-      const svg = wrapper.find('svg')
-      expect(svg.attributes('stroke')).toBe('currentColor')
-      expect(svg.attributes('stroke-width')).toBe('2')
-      expect(svg.attributes('stroke-linecap')).toBe('round')
-      expect(svg.attributes('stroke-linejoin')).toBe('round')
-    })
-
-    it('SVG contains path elements', async () => {
-      const wrapper = await mountSuspended(AppLogo)
-
-      const paths = wrapper.findAll('svg path')
-      expect(paths.length).toBe(3)
+      const img = wrapper.find('img')
+      expect(img.attributes('src')).toBe('/images/brand/logo-full.png')
     })
   })
 
@@ -71,69 +48,31 @@ describe('AppLogo Component', () => {
       const classes = link.classes().join(' ')
       expect(classes).toContain('flex')
       expect(classes).toContain('items-center')
-      expect(classes).toContain('gap-2')
     })
 
-    it('icon container has correct dimensions', async () => {
+    it('logo image has proper sizing', async () => {
       const wrapper = await mountSuspended(AppLogo)
 
-      const iconContainer = wrapper.find('.bg-primary')
-      const classes = iconContainer.classes().join(' ')
-      expect(classes).toContain('h-9')
-      expect(classes).toContain('w-9')
+      const img = wrapper.find('img')
+      const classes = img.classes().join(' ')
+      expect(classes).toContain('h-16')
+      expect(classes).toContain('w-auto')
     })
 
-    it('icon container is rounded', async () => {
+    it('logo image has object-contain class', async () => {
       const wrapper = await mountSuspended(AppLogo)
 
-      const iconContainer = wrapper.find('.bg-primary')
-      const classes = iconContainer.classes().join(' ')
-      expect(classes).toContain('rounded-lg')
+      const img = wrapper.find('img')
+      const classes = img.classes().join(' ')
+      expect(classes).toContain('object-contain')
     })
 
-    it('icon container has flex centering', async () => {
+    it('logo image has margin top', async () => {
       const wrapper = await mountSuspended(AppLogo)
 
-      const iconContainer = wrapper.find('.bg-primary')
-      const classes = iconContainer.classes().join(' ')
-      expect(classes).toContain('flex')
-      expect(classes).toContain('items-center')
-      expect(classes).toContain('justify-center')
-    })
-
-    it('SVG icon has correct size', async () => {
-      const wrapper = await mountSuspended(AppLogo)
-
-      const svg = wrapper.find('svg')
-      const classes = svg.classes().join(' ')
-      expect(classes).toContain('h-5')
-      expect(classes).toContain('w-5')
-    })
-
-    it('SVG icon is white', async () => {
-      const wrapper = await mountSuspended(AppLogo)
-
-      const svg = wrapper.find('svg')
-      const classes = svg.classes().join(' ')
-      expect(classes).toContain('text-white')
-    })
-
-    it('brand name has correct typography', async () => {
-      const wrapper = await mountSuspended(AppLogo)
-
-      const brandName = wrapper.find('span')
-      const classes = brandName.classes().join(' ')
-      expect(classes).toContain('text-xl')
-      expect(classes).toContain('font-bold')
-      expect(classes).toContain('font-heading')
-    })
-
-    it('brand name uses foreground color', async () => {
-      const wrapper = await mountSuspended(AppLogo)
-
-      const brandName = wrapper.find('span')
-      const classes = brandName.classes().join(' ')
-      expect(classes).toContain('text-foreground')
+      const img = wrapper.find('img')
+      const classes = img.classes().join(' ')
+      expect(classes).toContain('mt-2')
     })
   })
 
@@ -159,7 +98,6 @@ describe('AppLogo Component', () => {
       const classes = link.classes().join(' ')
       expect(classes).toContain('flex')
       expect(classes).toContain('items-center')
-      expect(classes).toContain('gap-2')
     })
   })
 
@@ -172,11 +110,12 @@ describe('AppLogo Component', () => {
       expect(link.attributes('href')).toBeDefined()
     })
 
-    it('brand name is visible text content', async () => {
+    it('logo image has descriptive alt text', async () => {
       const wrapper = await mountSuspended(AppLogo)
 
-      // The brand name should be readable by screen readers
-      expect(wrapper.text()).toBe('Career Buddy')
+      const img = wrapper.find('img')
+      // Alt text should be meaningful for screen readers
+      expect(img.attributes('alt')).toBe('Career Buddy')
     })
   })
 })

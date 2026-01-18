@@ -135,7 +135,7 @@ watch(() => route.path, (path) => {
       <!-- Logo - Clickable to go to landing page -->
       <NuxtLink to="/" class="h-16 flex items-center px-4 border-b border-border hover:bg-muted/50 transition-colors">
         <img
-          src="/images/Untitled-1-01.png"
+          src="/images/brand/logo-text.png"
           alt="Career Buddy"
           class="h-14 w-auto object-contain"
           :class="isCollapsed ? 'max-w-[48px]' : 'max-w-[220px]'"
@@ -258,7 +258,7 @@ watch(() => route.path, (path) => {
         <!-- Header with close button -->
         <div class="h-16 flex items-center justify-between px-4 border-b border-border">
           <img
-            src="/images/Untitled-1-01.png"
+            src="/images/brand/logo-text.png"
             alt="Career Buddy"
             class="h-14 w-auto max-w-[220px] object-contain"
           />
@@ -388,7 +388,7 @@ watch(() => route.path, (path) => {
           <!-- Mobile Logo -->
           <NuxtLink to="/" class="lg:hidden flex items-center">
             <img
-              src="/images/Untitled-1-01.png"
+              src="/images/brand/logo-text.png"
               alt="Career Buddy"
               class="h-12 w-auto max-w-[180px] object-contain"
             />

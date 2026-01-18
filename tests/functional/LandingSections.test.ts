@@ -38,10 +38,12 @@ describe('HeroSection Component', () => {
     expect(wrapper.text()).toContain('Get Started Free')
   })
 
-  it('renders the secondary CTA', async () => {
+  it('renders feature highlight pills', async () => {
     const wrapper = await mountSuspended(HeroSection)
 
-    expect(wrapper.text()).toContain('Watch Demo')
+    // HeroSection has feature pills instead of secondary CTA
+    expect(wrapper.text()).toContain('Resume Templates')
+    expect(wrapper.text()).toContain('AI Interview Prep')
   })
 
   it('renders feature highlights', async () => {
@@ -188,11 +190,11 @@ describe('CtaFooter Component', () => {
     expect(wrapper.text()).toContain('Talk to Career Buddy AI')
   })
 
-  it('renders the free notice', async () => {
+  it('renders the benefits strip', async () => {
     const wrapper = await mountSuspended(CtaFooter)
 
     expect(wrapper.text()).toContain('No credit card required')
-    expect(wrapper.text()).toContain('5,000+')
+    expect(wrapper.text()).toContain('Instant access')
   })
 })
 
@@ -200,10 +202,8 @@ describe('TrustBadgesSection Component', () => {
   it('renders stats', async () => {
     const wrapper = await mountSuspended(TrustBadgesSection)
 
-    expect(wrapper.text()).toContain('5,000+')
-    expect(wrapper.text()).toContain('Active Users')
-    expect(wrapper.text()).toContain('94%')
-    expect(wrapper.text()).toContain('Success Rate')
+    expect(wrapper.text()).toContain('100%')
+    expect(wrapper.text()).toContain('Free Forever')
   })
 
   it('renders university logos', async () => {
@@ -413,8 +413,9 @@ describe('CtaFooter Interactions', () => {
   it('renders user avatars/trust indicators', async () => {
     const wrapper = await mountSuspended(CtaFooter)
 
-    // Check for user avatar section
-    expect(wrapper.text()).toContain('5,000+')
+    // Check for user avatar section with initials and joined text
+    expect(wrapper.text()).toContain('+5K')
+    expect(wrapper.text()).toContain('Joined this month')
   })
 
   it('benefits list is rendered', async () => {
@@ -458,9 +459,9 @@ describe('TrustBadgesSection Interactions', () => {
   it('renders all stat numbers with proper formatting', async () => {
     const wrapper = await mountSuspended(TrustBadgesSection)
 
-    // Check for formatted numbers
-    expect(wrapper.text()).toContain('5,000+')
-    expect(wrapper.text()).toContain('94%')
+    // Check for formatted numbers - now only has Free Forever stat
+    expect(wrapper.text()).toContain('100%')
+    expect(wrapper.text()).toContain('Free Forever')
   })
 })
 

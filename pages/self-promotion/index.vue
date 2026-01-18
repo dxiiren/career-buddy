@@ -68,8 +68,8 @@ onMounted(() => {
         </ul>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-        <div class="rounded-2xl bg-card border border-border p-4 sm:p-5 lg:p-6 space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="rounded-2xl bg-card border border-border p-4 sm:p-5 lg:p-6 space-y-6 flex flex-col">
           <div class="space-y-3">
             <h2 class="text-base sm:text-lg font-heading font-semibold">Step 1: Add your video</h2>
             <div class="rounded-xl border border-dashed border-border bg-muted/40 p-4">
@@ -90,7 +90,7 @@ onMounted(() => {
             <div class="rounded-xl border border-border bg-muted/30 p-4">
               <div class="aspect-video rounded-lg border border-border/60 bg-muted/40 overflow-hidden">
                 <img
-                  src="/images/image.png"
+                  src="/images/examples/avatar-placeholder.png"
                   alt="AR video resume preview"
                   class="h-full w-full object-cover"
                 />
@@ -102,19 +102,21 @@ onMounted(() => {
           </div>
         </div>
 
-        <div class="rounded-2xl bg-card border border-border p-4 sm:p-5 lg:p-6 space-y-4">
+        <div class="rounded-2xl bg-card border border-border p-4 sm:p-5 lg:p-6 space-y-4 flex flex-col">
           <h2 class="text-base sm:text-lg font-heading font-semibold">Step 3: Export</h2>
-          <div class="rounded-xl border border-border bg-muted/30 p-5">
-            <div class="mx-auto w-40 h-40 rounded-lg border border-border/60 bg-white overflow-hidden">
-              <img
-                src="/images/example-qr.png"
-                alt="AR video resume QR"
-                class="h-full w-full object-contain"
-              />
+          <div class="flex-1 flex flex-col justify-center">
+            <div class="rounded-xl border border-border bg-muted/30 p-5">
+              <div class="mx-auto w-40 h-40 rounded-lg border border-border/60 bg-white overflow-hidden">
+                <img
+                  src="/images/examples/qr-code-sample.png"
+                  alt="AR video resume QR"
+                  class="h-full w-full object-contain"
+                />
+              </div>
+              <p class="mt-3 text-xs text-center text-muted-foreground">Scan to view video resume</p>
             </div>
-            <p class="mt-3 text-xs text-center text-muted-foreground">Scan to view video resume</p>
           </div>
-          <div class="space-y-3">
+          <div class="space-y-3 mt-auto">
             <Button
               v-for="action in exportActions"
               :key="action"

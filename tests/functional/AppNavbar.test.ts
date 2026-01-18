@@ -33,7 +33,9 @@ describe('AppNavbar Component', () => {
     it('renders the logo component', async () => {
       const wrapper = await mountSuspended(AppNavbar)
 
-      expect(wrapper.text()).toContain('Career Buddy')
+      // Logo now uses an image with alt text
+      const logoImg = wrapper.find('img[alt="Career Buddy"]')
+      expect(logoImg.exists()).toBe(true)
     })
 
     it('renders desktop navigation links', async () => {

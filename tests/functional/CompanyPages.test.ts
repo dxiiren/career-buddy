@@ -85,25 +85,26 @@ describe('About Us Page', () => {
   })
 
   describe('Stats Section', () => {
-    it('displays user count stat', async () => {
+    it('displays section heading', async () => {
       const wrapper = await mountSuspended(AboutPage)
 
-      expect(wrapper.text()).toContain('5,000+')
-      expect(wrapper.text()).toContain('Active Users')
+      expect(wrapper.text()).toContain('Trusted by')
+      expect(wrapper.text()).toContain('Thousands')
     })
 
-    it('displays success rate stat', async () => {
+    it('displays community message', async () => {
       const wrapper = await mountSuspended(AboutPage)
 
-      expect(wrapper.text()).toContain('94%')
-      expect(wrapper.text()).toContain('Success Rate')
+      expect(wrapper.text()).toContain('Join the growing community')
+      expect(wrapper.text()).toContain('young Malaysians')
     })
 
-    it('displays user rating stat', async () => {
+    it('has stats section structure', async () => {
       const wrapper = await mountSuspended(AboutPage)
 
-      expect(wrapper.text()).toContain('4.9/5')
-      expect(wrapper.text()).toContain('User Rating')
+      // Stats section exists even if no individual stats are displayed
+      const sections = wrapper.findAll('section')
+      expect(sections.length).toBeGreaterThanOrEqual(3)
     })
   })
 
