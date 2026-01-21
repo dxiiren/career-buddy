@@ -5,6 +5,13 @@ definePageMeta({
   layout: 'dashboard',
 })
 
+// SEO - noindex for protected page
+useSeo({
+  title: 'LinkedIn Optimization',
+  description: 'Create a standout LinkedIn profile that attracts opportunities.',
+  noindex: true,
+})
+
 const { isAuthenticated, initAuth } = useAuth()
 const {
   isLoading,

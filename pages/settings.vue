@@ -6,6 +6,13 @@ definePageMeta({
   layout: 'dashboard',
 })
 
+// SEO - noindex for protected page
+useSeo({
+  title: 'Settings',
+  description: 'Manage your account settings and preferences.',
+  noindex: true,
+})
+
 const { user, isAuthenticated, initAuth } = useAuth()
 const {
   isLoading,

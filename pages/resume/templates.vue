@@ -5,6 +5,13 @@ definePageMeta({
   layout: 'dashboard',
 })
 
+// SEO - noindex for protected page
+useSeo({
+  title: 'Resume Templates',
+  description: 'Choose a professional resume template that matches your career stage.',
+  noindex: true,
+})
+
 const { isAuthenticated, initAuth } = useAuth()
 const {
   isLoading,

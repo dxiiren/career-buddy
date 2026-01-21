@@ -5,6 +5,13 @@ definePageMeta({
   layout: 'dashboard',
 })
 
+// SEO - noindex for protected page
+useSeo({
+  title: 'Job Scam Awareness',
+  description: 'Protect yourself from fraudulent job offers and scammers.',
+  noindex: true,
+})
+
 const { isAuthenticated, initAuth } = useAuth()
 const {
   isLoading,

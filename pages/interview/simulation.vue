@@ -6,6 +6,13 @@ definePageMeta({
   layout: 'dashboard',
 })
 
+// SEO - noindex for protected page
+useSeo({
+  title: 'Interview Simulation',
+  description: 'Practice answering interview questions under timed conditions.',
+  noindex: true,
+})
+
 const { isAuthenticated, initAuth } = useAuth()
 const {
   isLoading,

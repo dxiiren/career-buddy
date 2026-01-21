@@ -5,6 +5,13 @@ definePageMeta({
   layout: 'dashboard',
 })
 
+// SEO - noindex for protected page
+useSeo({
+  title: 'Interview Question Bank',
+  description: 'Practice common interview questions with example answers and tips.',
+  noindex: true,
+})
+
 const { isAuthenticated, initAuth } = useAuth()
 const {
   isLoading,

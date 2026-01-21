@@ -13,15 +13,18 @@ import {
   TrendingUp,
 } from 'lucide-vue-next'
 
-useHead({
-  title: 'About Us - Career Buddy',
-  meta: [
-    {
-      name: 'description',
-      content: 'Learn about Career Buddy - the all-in-one career preparation platform helping Malaysian youth navigate their career journey.',
-    },
-  ],
+// SEO
+useSeo({
+  title: 'About Us',
+  description: 'Learn about Career Buddy - the all-in-one career preparation platform helping Malaysian youth navigate their career journey.',
+  keywords: 'about career buddy, career platform Malaysia, youth career support',
 })
+
+// Structured data
+const breadcrumbSchema = useBreadcrumbSchema([
+  { name: 'Home', item: '/' },
+  { name: 'About Us', item: '/about' },
+])
 
 const values = [
   {
@@ -59,6 +62,9 @@ const stats = []
 
 <template>
   <div>
+    <!-- Structured Data -->
+    <SeoJsonLd :schema="breadcrumbSchema" />
+
     <!-- Hero Section -->
     <section class="relative gradient-bg overflow-hidden pt-24 pb-16">
       <!-- Background Elements -->

@@ -23,15 +23,18 @@ import {
   Sparkles,
 } from 'lucide-vue-next'
 
-useHead({
-  title: 'Contact Us - Career Buddy',
-  meta: [
-    {
-      name: 'description',
-      content: 'Get in touch with the Career Buddy team. We\'re here to help with any questions about your career journey.',
-    },
-  ],
+// SEO
+useSeo({
+  title: 'Contact Us',
+  description: 'Get in touch with the Career Buddy team. We\'re here to help with any questions about your career journey.',
+  keywords: 'contact career buddy, support, help, feedback',
 })
+
+// Structured data
+const breadcrumbSchema = useBreadcrumbSchema([
+  { name: 'Home', item: '/' },
+  { name: 'Contact Us', item: '/contact' },
+])
 
 const form = ref({
   name: '',
@@ -125,6 +128,9 @@ function resetForm() {
 
 <template>
   <div>
+    <!-- Structured Data -->
+    <SeoJsonLd :schema="breadcrumbSchema" />
+
     <!-- Hero Section -->
     <section class="relative gradient-bg overflow-hidden pt-24 pb-16">
       <!-- Background Elements -->

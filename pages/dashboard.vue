@@ -5,6 +5,13 @@ definePageMeta({
   layout: 'dashboard',
 })
 
+// SEO - noindex for protected page
+useSeo({
+  title: 'Dashboard',
+  description: 'Your personal career preparation dashboard.',
+  noindex: true,
+})
+
 const { user, isAuthenticated, initAuth } = useAuth()
 const {
   isLoading,

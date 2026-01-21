@@ -11,6 +11,13 @@ definePageMeta({
   layout: false,
 })
 
+// SEO
+useSeo({
+  title: 'Login',
+  description: 'Sign in to your Career Buddy account to access your personalized career preparation tools and resources.',
+  keywords: 'login, sign in, career buddy account',
+})
+
 const { login, isLoading, error, clearError, isAuthenticated, initAuth } = useAuth()
 
 // Redirect to dashboard if already authenticated

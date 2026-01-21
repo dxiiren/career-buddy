@@ -7,6 +7,13 @@ definePageMeta({
   layout: 'dashboard',
 })
 
+// SEO - noindex for protected page
+useSeo({
+  title: 'AR Video Resume',
+  description: 'Create a scannable video resume to share with employers.',
+  noindex: true,
+})
+
 const { isAuthenticated, initAuth } = useAuth()
 const { trackPageVisit } = useRecentActivity()
 

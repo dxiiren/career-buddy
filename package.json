@@ -13,9 +13,12 @@
     "test:functional": "vitest run tests/functional",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "test:coverage": "vitest run --coverage"
+    "test:seo": "playwright test tests/e2e/seo.spec.ts --project=chromium",
+    "test:coverage": "vitest run --coverage",
+    "test:all": "vitest run && playwright test"
   },
   "dependencies": {
+    "@nuxtjs/sitemap": "^7.5.2",
     "@nuxtjs/tailwindcss": "^6.11.0",
     "@vueuse/core": "^10.9.0",
     "@vueuse/nuxt": "^10.9.0",

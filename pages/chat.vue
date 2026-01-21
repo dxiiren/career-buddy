@@ -6,6 +6,13 @@ definePageMeta({
   layout: 'dashboard',
 })
 
+// SEO - noindex for protected page
+useSeo({
+  title: 'Career Chat',
+  description: 'Chat with your AI career buddy for personalized guidance.',
+  noindex: true,
+})
+
 const { isAuthenticated, initAuth } = useAuth()
 const {
   messages,

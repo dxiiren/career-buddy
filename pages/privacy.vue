@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import { Shield, ChevronRight } from 'lucide-vue-next'
 
-useHead({
-  title: 'Privacy Policy - Career Buddy',
-  meta: [
-    {
-      name: 'description',
-      content: 'Career Buddy Privacy Policy - Learn how we collect, use, and protect your personal information.',
-    },
-  ],
+// SEO
+useSeo({
+  title: 'Privacy Policy',
+  description: 'Career Buddy Privacy Policy - Learn how we collect, use, and protect your personal information.',
+  keywords: 'privacy policy, data protection, personal information',
 })
 
 const lastUpdated = 'December 1, 2024'

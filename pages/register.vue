@@ -10,6 +10,13 @@ definePageMeta({
   layout: false,
 })
 
+// SEO
+useSeo({
+  title: 'Create Account',
+  description: 'Create your free Career Buddy account and start your career journey with resume templates, interview practice, and job search strategies.',
+  keywords: 'register, sign up, create account, free career tools',
+})
+
 const { register, isLoading, error, clearError, isAuthenticated, initAuth } = useAuth()
 
 // Redirect to dashboard if already authenticated
