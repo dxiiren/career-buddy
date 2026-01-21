@@ -13,7 +13,28 @@
       "Bash(for dir in \"C:\\\\Users\\\\bunny\\\\Documents\\\\CODE\\\\carreer-buddy-proto\\\\components\"/{auth,career-chat,dashboard,help,interview,job-search,landing,networking,resume,self-promotion,settings,shared,ui})",
       "Bash(npm run test:unit:*)",
       "Bash(npm run test:functional:*)",
-      "Bash(npm run test:*)"
+      "Bash(npm run test:*)",
+      "Bash(xargs:*)",
+      "Bash(npm install:*)",
+      "Bash(npx playwright install:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run test:seo:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)",
+      "Bash(powershell -Command:*)",
+      "Bash(npm run preview:*)",
+      "Bash(curl:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npx playwright test:*)",
+      "Bash(npm ls:*)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "Bash(cmd /c \"taskkill /F /PID 13932\")",
+      "Bash(cmd /c \"rmdir /s /q .nuxt 2>nul & rmdir /s /q .output 2>nul\")",
+      "Bash(timeout /t 15 /nobreak)",
+      "Bash(npx patch-package:*)",
+      "Bash(cmd /c \"del nul 2>nul\")"
     ]
   }
 }
