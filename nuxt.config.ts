@@ -22,6 +22,7 @@ export default defineNuxtConfig({
   },
 
   sitemap: {
+    zeroRuntime: true,
     exclude: [
       '/dashboard/**',
       '/chat/**',
