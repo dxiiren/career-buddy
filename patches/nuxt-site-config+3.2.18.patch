@@ -1,0 +1,13 @@
+diff --git a/node_modules/nuxt-site-config/dist/runtime/server/middleware/init.js b/node_modules/nuxt-site-config/dist/runtime/server/middleware/init.js
+index dde6835..2de0cb2 100644
+--- a/node_modules/nuxt-site-config/dist/runtime/server/middleware/init.js
++++ b/node_modules/nuxt-site-config/dist/runtime/server/middleware/init.js
+@@ -26,7 +26,7 @@ export default eventHandler(async (e) => {
+     _priority: 0,
+     ...runtimeConfig.site || {},
+     ...runtimeConfig.public.site || {},
+-    ...envSiteConfig(import.meta.env)
++    ...envSiteConfig(import.meta.env || {})
+     // just in-case, shouldn't be needed
+   });
+   const buildStack = config.stack || [];

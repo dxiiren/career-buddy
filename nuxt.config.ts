@@ -15,14 +15,8 @@ export default defineNuxtConfig({
     name: 'Career Buddy',
   },
 
-  runtimeConfig: {
-    public: {
-      siteUrl: 'https://careerbuddy.yanasharif.com',
-    },
-  },
-
   sitemap: {
-    zeroRuntime: true,
+    // zeroRuntime: true, // Enable for production, disable for dev testing
     exclude: [
       '/dashboard/**',
       '/chat/**',
