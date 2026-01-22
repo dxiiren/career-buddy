@@ -5,16 +5,27 @@ const SITE_NAME = 'Career Buddy'
 const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`
 
 // Helper to extract JSON-LD scripts from page
+// Handles both single schemas and @graph format
 async function getJsonLdScripts(page: any): Promise<any[]> {
   return page.evaluate(() => {
     const scripts = document.querySelectorAll('script[type="application/ld+json"]')
-    return Array.from(scripts).map(script => {
+    const schemas: any[] = []
+
+    Array.from(scripts).forEach(script => {
       try {
-        return JSON.parse(script.textContent || '{}')
+        const parsed = JSON.parse(script.textContent || '{}')
+        // Handle @graph format (multiple schemas in one script)
+        if (parsed['@graph'] && Array.isArray(parsed['@graph'])) {
+          schemas.push(...parsed['@graph'])
+        } else {
+          schemas.push(parsed)
+        }
       } catch {
-        return null
+        // Ignore parse errors
       }
-    }).filter(Boolean)
+    })
+
+    return schemas.filter(Boolean)
   })
 }
 
@@ -85,37 +96,18 @@ test.describe('SEO - Public Pages', () => {
       true
     )
 
-    // Wait for Vue hydration for JSON-LD (client-side rendered)
-    await page.waitForTimeout(2000)
-
-    // Verify structured data - may be empty in SSR, populated after hydration
+    // Verify structured data (SSR-rendered via useHead)
     const jsonLd = await getJsonLdScripts(page)
 
-    // Check for Organization schema (may be in array format)
-    const hasOrganization = jsonLd.some(
-      schema => {
-        if (Array.isArray(schema)) {
-          return schema.some(s => s['@type'] === 'Organization')
-        }
-        return schema && schema['@type'] === 'Organization'
-      }
-    )
+    // Check for Organization schema
+    const hasOrganization = jsonLd.some(schema => schema && schema['@type'] === 'Organization')
 
     // Check for WebSite schema
-    const hasWebSite = jsonLd.some(
-      schema => {
-        if (Array.isArray(schema)) {
-          return schema.some(s => s['@type'] === 'WebSite')
-        }
-        return schema && schema['@type'] === 'WebSite'
-      }
-    )
+    const hasWebSite = jsonLd.some(schema => schema && schema['@type'] === 'WebSite')
 
-    // These may fail in SSR mode since JSON-LD is client-rendered
-    // Skip assertion if schemas not found (they render after hydration)
-    if (jsonLd.length > 0 && jsonLd.some(s => s && Object.keys(s).length > 0)) {
-      expect(hasOrganization || hasWebSite).toBe(true)
-    }
+    // JSON-LD should be present (SSR-rendered)
+    expect(jsonLd.length).toBeGreaterThan(0)
+    expect(hasOrganization || hasWebSite).toBe(true)
   })
 
   test('About page has correct SEO tags and breadcrumb schema', async ({ page }) => {
@@ -130,20 +122,12 @@ test.describe('SEO - Public Pages', () => {
       true
     )
 
-    // Wait for Vue hydration for JSON-LD
-    await page.waitForTimeout(2000)
-
-    // Verify breadcrumb structured data (may be client-rendered)
+    // Verify breadcrumb structured data (SSR-rendered)
     const jsonLd = await getJsonLdScripts(page)
-    const hasBreadcrumb = jsonLd.some(schema => schema && schema['@type'] === 'BreadcrumbList')
+    const breadcrumb = jsonLd.find(schema => schema && schema['@type'] === 'BreadcrumbList')
 
-    // Skip detailed validation if breadcrumb not rendered yet
-    if (hasBreadcrumb) {
-      const breadcrumb = jsonLd.find(schema => schema['@type'] === 'BreadcrumbList')
-      if (breadcrumb && breadcrumb.itemListElement) {
-        expect(breadcrumb.itemListElement.length).toBeGreaterThanOrEqual(2)
-      }
-    }
+    expect(breadcrumb).toBeDefined()
+    expect(breadcrumb.itemListElement.length).toBeGreaterThanOrEqual(2)
   })
 
   test('Contact page has correct SEO tags and breadcrumb schema', async ({ page }) => {
@@ -158,13 +142,11 @@ test.describe('SEO - Public Pages', () => {
       true
     )
 
-    // Wait for Vue hydration
-    await page.waitForTimeout(2000)
-
-    // Verify breadcrumb structured data
+    // Verify breadcrumb structured data (SSR-rendered)
     const jsonLd = await getJsonLdScripts(page)
-    const hasBreadcrumb = jsonLd.some(schema => schema && schema['@type'] === 'BreadcrumbList')
-    // Breadcrumb may be client-rendered, so we skip if not found
+    const breadcrumb = jsonLd.find(schema => schema && schema['@type'] === 'BreadcrumbList')
+
+    expect(breadcrumb).toBeDefined()
   })
 
   test('Privacy page has correct SEO tags', async ({ page }) => {
