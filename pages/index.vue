@@ -17,10 +17,39 @@ useSeo({
   keywords: 'career preparation, resume templates, interview practice, job search, networking, Malaysian youth, career buddy',
 })
 
+// FAQ data for structured data
+const faqs = [
+  {
+    question: 'Is Career Buddy completely free?',
+    answer: 'Yes! Career Buddy is free for all Malaysian youth aged 18-30. We believe everyone deserves access to quality career preparation resources, regardless of their financial situation.',
+  },
+  {
+    question: 'Who is Career Buddy for?',
+    answer: 'Career Buddy is designed for young adults aged 18-30 who are preparing to enter the workforce or looking to advance their careers. Whether you\'re a university student, fresh graduate, or someone looking to switch careers, our platform has resources tailored for you.',
+  },
+  {
+    question: 'Is this only for Malaysians?',
+    answer: 'While our content is primarily tailored for the Malaysian job market, anyone can benefit from our universal career preparation resources like resume writing, interview skills, and networking strategies.',
+  },
+  {
+    question: 'How is Career Buddy different from job listing sites?',
+    answer: 'Career Buddy is NOT a job listing site. We focus on career PREPARATION, not job listings. We help you build the skills, confidence, and materials you need to succeed in your job search.',
+  },
+  {
+    question: 'How does the AI Interview Simulation work?',
+    answer: 'Our AI Interview Simulation uses advanced AI to conduct realistic mock interviews. You\'ll receive common interview questions, practice answering them, and get instant feedback on your responses.',
+  },
+  {
+    question: 'Can I use Career Buddy on my phone?',
+    answer: 'Absolutely! Career Buddy is fully responsive and works great on mobile devices. You can access all features right from your smartphone.',
+  },
+]
+
 // Structured data (SSR-compatible)
 const organizationSchema = useOrganizationSchema()
 const websiteSchema = useWebSiteSchema()
-useJsonLd([organizationSchema, websiteSchema])
+const faqSchema = useFAQPageSchema(faqs)
+useJsonLd([organizationSchema, websiteSchema, faqSchema])
 </script>
 
 <template>

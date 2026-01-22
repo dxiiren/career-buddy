@@ -81,6 +81,22 @@ export function useBreadcrumbSchema(items: { name: string; item: string }[]) {
   }
 }
 
+// FAQPage schema for rich results
+export function useFAQPageSchema(faqs: { question: string; answer: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(faq => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  }
+}
+
 // SSR-compatible JSON-LD injection using useHead()
 export function useJsonLd(schemas: Record<string, unknown> | Record<string, unknown>[]) {
   const formattedSchema = Array.isArray(schemas)
