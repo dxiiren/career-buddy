@@ -17,16 +17,14 @@ useSeo({
   keywords: 'career preparation, resume templates, interview practice, job search, networking, Malaysian youth, career buddy',
 })
 
-// Structured data
+// Structured data (SSR-compatible)
 const organizationSchema = useOrganizationSchema()
 const websiteSchema = useWebSiteSchema()
+useJsonLd([organizationSchema, websiteSchema])
 </script>
 
 <template>
   <div>
-    <!-- Structured Data -->
-    <SeoJsonLd :schema="[organizationSchema, websiteSchema]" />
-
     <!-- Skeleton Loading -->
     <div v-if="isPageLoading" class="min-h-screen">
       <!-- Hero Skeleton -->

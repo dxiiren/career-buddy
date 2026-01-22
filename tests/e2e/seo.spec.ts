@@ -308,19 +308,6 @@ test.describe('SEO - Sitemap', () => {
     expect(body).toContain('<urlset')
   })
 
-  // Note: Routes are discovered at build time, so this test may fail in dev mode
-  // In production build, the sitemap will contain all public pages
-  test.skip('Sitemap includes public pages', async ({ request }) => {
-    const response = await request.get('/sitemap.xml')
-    const body = await response.text()
-
-    // Public pages should be in sitemap
-    const publicPages = ['/', '/about', '/contact', '/privacy', '/login', '/register']
-    for (const path of publicPages) {
-      expect(body).toContain(`${SITE_URL}${path}`)
-    }
-  })
-
   test('Sitemap excludes protected pages', async ({ request }) => {
     const response = await request.get('/sitemap.xml')
     const body = await response.text()
@@ -381,80 +368,3 @@ test.describe('SEO - robots.txt', () => {
   })
 })
 
-// Note: JSON-LD schemas are client-rendered in this implementation
-// These tests verify the schemas after Vue hydration
-test.describe('SEO - Structured Data Validation', () => {
-  test.skip('Organization schema is valid', async ({ page }) => {
-    await page.goto('/')
-    await page.waitForLoadState('domcontentloaded')
-    await page.waitForTimeout(3000) // Wait for Vue hydration
-
-    const jsonLd = await getJsonLdScripts(page)
-    const orgSchema = jsonLd.find(
-      schema => Array.isArray(schema)
-        ? schema.some(s => s && s['@type'] === 'Organization')
-        : schema && schema['@type'] === 'Organization'
-    )
-
-    // If it's an array, extract the Organization schema
-    const organization = Array.isArray(orgSchema)
-      ? orgSchema.find(s => s['@type'] === 'Organization')
-      : orgSchema
-
-    if (organization) {
-      expect(organization['@context']).toBe('https://schema.org')
-      expect(organization['@type']).toBe('Organization')
-      expect(organization.name).toBe('Career Buddy')
-      expect(organization.url).toBe(SITE_URL)
-    }
-  })
-
-  test.skip('WebSite schema is valid', async ({ page }) => {
-    await page.goto('/')
-    await page.waitForLoadState('domcontentloaded')
-    await page.waitForTimeout(3000) // Wait for Vue hydration
-
-    const jsonLd = await getJsonLdScripts(page)
-    const webSiteSchema = jsonLd.find(
-      schema => Array.isArray(schema)
-        ? schema.some(s => s && s['@type'] === 'WebSite')
-        : schema && schema['@type'] === 'WebSite'
-    )
-
-    // If it's an array, extract the WebSite schema
-    const webSite = Array.isArray(webSiteSchema)
-      ? webSiteSchema.find(s => s['@type'] === 'WebSite')
-      : webSiteSchema
-
-    if (webSite) {
-      expect(webSite['@context']).toBe('https://schema.org')
-      expect(webSite['@type']).toBe('WebSite')
-      expect(webSite.name).toBe('Career Buddy')
-      expect(webSite.url).toBe(SITE_URL)
-    }
-  })
-
-  test.skip('BreadcrumbList schema is valid on About page', async ({ page }) => {
-    await page.goto('/about')
-    await page.waitForLoadState('domcontentloaded')
-    await page.waitForTimeout(3000) // Wait for Vue hydration
-
-    const jsonLd = await getJsonLdScripts(page)
-    const breadcrumb = jsonLd.find(schema => schema && schema['@type'] === 'BreadcrumbList')
-
-    if (breadcrumb) {
-      expect(breadcrumb['@context']).toBe('https://schema.org')
-      expect(breadcrumb['@type']).toBe('BreadcrumbList')
-      expect(breadcrumb.itemListElement).toBeDefined()
-      expect(Array.isArray(breadcrumb.itemListElement)).toBe(true)
-
-      // Verify each item has required properties
-      for (const item of breadcrumb.itemListElement) {
-        expect(item['@type']).toBe('ListItem')
-        expect(item.position).toBeDefined()
-        expect(item.name).toBeDefined()
-        expect(item.item).toBeDefined()
-      }
-    }
-  })
-})

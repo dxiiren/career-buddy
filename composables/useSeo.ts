@@ -80,3 +80,25 @@ export function useBreadcrumbSchema(items: { name: string; item: string }[]) {
     })),
   }
 }
+
+// SSR-compatible JSON-LD injection using useHead()
+export function useJsonLd(schemas: Record<string, unknown> | Record<string, unknown>[]) {
+  const formattedSchema = Array.isArray(schemas)
+    ? {
+        '@context': 'https://schema.org',
+        '@graph': schemas.map(s => {
+          const { '@context': _, ...rest } = s
+          return rest
+        })
+      }
+    : schemas
+
+  useHead({
+    script: [
+      {
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify(formattedSchema),
+      },
+    ],
+  })
+}

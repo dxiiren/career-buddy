@@ -30,11 +30,12 @@ useSeo({
   keywords: 'contact career buddy, support, help, feedback',
 })
 
-// Structured data
+// Structured data (SSR-compatible)
 const breadcrumbSchema = useBreadcrumbSchema([
   { name: 'Home', item: '/' },
   { name: 'Contact Us', item: '/contact' },
 ])
+useJsonLd(breadcrumbSchema)
 
 const form = ref({
   name: '',
@@ -128,9 +129,6 @@ function resetForm() {
 
 <template>
   <div>
-    <!-- Structured Data -->
-    <SeoJsonLd :schema="breadcrumbSchema" />
-
     <!-- Hero Section -->
     <section class="relative gradient-bg overflow-hidden pt-24 pb-16">
       <!-- Background Elements -->

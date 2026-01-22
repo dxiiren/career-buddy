@@ -20,11 +20,12 @@ useSeo({
   keywords: 'about career buddy, career platform Malaysia, youth career support',
 })
 
-// Structured data
+// Structured data (SSR-compatible)
 const breadcrumbSchema = useBreadcrumbSchema([
   { name: 'Home', item: '/' },
   { name: 'About Us', item: '/about' },
 ])
+useJsonLd(breadcrumbSchema)
 
 const values = [
   {
@@ -62,9 +63,6 @@ const stats = []
 
 <template>
   <div>
-    <!-- Structured Data -->
-    <SeoJsonLd :schema="breadcrumbSchema" />
-
     <!-- Hero Section -->
     <section class="relative gradient-bg overflow-hidden pt-24 pb-16">
       <!-- Background Elements -->
