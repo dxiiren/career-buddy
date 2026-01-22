@@ -217,9 +217,27 @@ test.describe('SEO - Public Pages', () => {
 })
 
 test.describe('SEO - Protected Pages (noindex)', () => {
-  test('Dashboard page has noindex meta', async ({ page }) => {
-    await page.goto('/dashboard')
+  // Helper to authenticate before each test
+  async function authenticateUser(page: any) {
+    await page.goto('/', { waitUntil: 'networkidle' })
+    await page.evaluate(() => {
+      localStorage.setItem('auth_user', JSON.stringify({ username: 'admin', name: 'Yana' }))
+    })
+  }
+
+  // Helper to wait for robots meta tag to be present
+  async function waitForRobotsMeta(page: any) {
     await page.waitForLoadState('domcontentloaded')
+    // Wait for Vue hydration and meta tag to be set
+    await page.waitForTimeout(500)
+    // Also wait for the meta tag to actually exist (state: 'attached' since meta tags are in head)
+    await page.waitForSelector('meta[name="robots"]', { timeout: 10000, state: 'attached' })
+  }
+
+  test('Dashboard page has noindex meta', async ({ page }) => {
+    await authenticateUser(page)
+    await page.goto('/dashboard')
+    await waitForRobotsMeta(page)
 
     // Check robots meta disallows indexing
     const robots = page.locator('meta[name="robots"]')
@@ -231,8 +249,9 @@ test.describe('SEO - Protected Pages (noindex)', () => {
   })
 
   test('Chat page has noindex meta', async ({ page }) => {
+    await authenticateUser(page)
     await page.goto('/chat')
-    await page.waitForLoadState('domcontentloaded')
+    await waitForRobotsMeta(page)
 
     // Check robots meta disallows indexing
     const robots = page.locator('meta[name="robots"]')
@@ -240,8 +259,9 @@ test.describe('SEO - Protected Pages (noindex)', () => {
   })
 
   test('Help page has noindex meta', async ({ page }) => {
+    await authenticateUser(page)
     await page.goto('/help')
-    await page.waitForLoadState('domcontentloaded')
+    await waitForRobotsMeta(page)
 
     // Check robots meta disallows indexing
     const robots = page.locator('meta[name="robots"]')
@@ -249,8 +269,9 @@ test.describe('SEO - Protected Pages (noindex)', () => {
   })
 
   test('Settings page has noindex meta', async ({ page }) => {
+    await authenticateUser(page)
     await page.goto('/settings')
-    await page.waitForLoadState('domcontentloaded')
+    await waitForRobotsMeta(page)
 
     // Check robots meta disallows indexing
     const robots = page.locator('meta[name="robots"]')
@@ -258,16 +279,18 @@ test.describe('SEO - Protected Pages (noindex)', () => {
   })
 
   test('Resume pages have noindex meta', async ({ page }) => {
+    await authenticateUser(page)
     await page.goto('/resume')
-    await page.waitForLoadState('domcontentloaded')
+    await waitForRobotsMeta(page)
 
     const robots = page.locator('meta[name="robots"]')
     await expect(robots).toHaveAttribute('content', 'noindex, nofollow')
   })
 
   test('Interview pages have noindex meta', async ({ page }) => {
+    await authenticateUser(page)
     await page.goto('/interview')
-    await page.waitForLoadState('domcontentloaded')
+    await waitForRobotsMeta(page)
 
     const robots = page.locator('meta[name="robots"]')
     await expect(robots).toHaveAttribute('content', 'noindex, nofollow')

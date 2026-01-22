@@ -1,5 +1,23 @@
 import { test, expect } from '@playwright/test'
 
+// Helper to check if we're on a mobile viewport
+async function isMobileViewport(page: any): Promise<boolean> {
+  const viewport = page.viewportSize()
+  return viewport && viewport.width < 768
+}
+
+// Helper to open mobile menu if needed
+async function openMobileMenuIfNeeded(page: any): Promise<void> {
+  const isMobile = await isMobileViewport(page)
+  if (isMobile) {
+    const menuButton = page.locator('button.md\\:hidden').first()
+    if (await menuButton.isVisible()) {
+      await menuButton.click()
+      await page.waitForTimeout(300)
+    }
+  }
+}
+
 test.describe('Theme Toggle', () => {
   test.beforeEach(async ({ page }) => {
     // Clear localStorage before each test
@@ -9,20 +27,45 @@ test.describe('Theme Toggle', () => {
   })
 
   test('should display theme toggle button in navbar', async ({ page }) => {
+    // Open mobile menu if on mobile
+    await openMobileMenuIfNeeded(page)
+
     // Find the theme toggle button by its sr-only text
     const themeToggle = page.getByRole('button', { name: 'Toggle theme' })
     await expect(themeToggle.first()).toBeVisible()
   })
 
-  test('should start in dark mode by default', async ({ page }) => {
-    // Check that html element does NOT have 'light' class (meaning dark mode)
+  test('should start in light mode by default', async ({ page }) => {
+    // Check that html element has 'light' class (meaning light mode)
+    const html = page.locator('html')
+    await expect(html).toHaveClass(/light/)
+  })
+
+  test('should toggle to dark mode when clicked', async ({ page }) => {
+    // Open mobile menu if on mobile
+    await openMobileMenuIfNeeded(page)
+
+    const themeToggle = page.getByRole('button', { name: 'Toggle theme' }).first()
+
+    await themeToggle.click()
+    await page.waitForTimeout(100)
+
+    // Check that html element does NOT have 'light' class (dark mode)
     const html = page.locator('html')
     await expect(html).not.toHaveClass(/light/)
   })
 
-  test('should toggle to light mode when clicked', async ({ page }) => {
+  test('should toggle back to light mode on second click', async ({ page }) => {
+    // Open mobile menu if on mobile
+    await openMobileMenuIfNeeded(page)
+
     const themeToggle = page.getByRole('button', { name: 'Toggle theme' }).first()
 
+    // Toggle to dark
+    await themeToggle.click()
+    await page.waitForTimeout(100)
+
+    // Toggle back to light
     await themeToggle.click()
     await page.waitForTimeout(100)
 
@@ -31,39 +74,29 @@ test.describe('Theme Toggle', () => {
     await expect(html).toHaveClass(/light/)
   })
 
-  test('should toggle back to dark mode on second click', async ({ page }) => {
+  test('should display Moon icon in light mode', async ({ page }) => {
+    // Open mobile menu if on mobile
+    await openMobileMenuIfNeeded(page)
+
+    // In light mode, Moon icon should be visible (to switch to dark)
     const themeToggle = page.getByRole('button', { name: 'Toggle theme' }).first()
 
-    // Toggle to light
-    await themeToggle.click()
-    await page.waitForTimeout(100)
-
-    // Toggle back to dark
-    await themeToggle.click()
-    await page.waitForTimeout(100)
-
-    // Check that html element does NOT have 'light' class
-    const html = page.locator('html')
-    await expect(html).not.toHaveClass(/light/)
-  })
-
-  test('should display Sun icon in dark mode', async ({ page }) => {
-    // In dark mode, Sun icon should be visible (to switch to light)
-    const themeToggle = page.getByRole('button', { name: 'Toggle theme' }).first()
-
-    // The button should contain an SVG (the Sun icon)
+    // The button should contain an SVG (the Moon icon)
     const svg = themeToggle.locator('svg')
     await expect(svg).toBeVisible()
   })
 
-  test('should display Moon icon in light mode', async ({ page }) => {
+  test('should display Sun icon in dark mode', async ({ page }) => {
+    // Open mobile menu if on mobile
+    await openMobileMenuIfNeeded(page)
+
     const themeToggle = page.getByRole('button', { name: 'Toggle theme' }).first()
 
-    // Toggle to light mode
+    // Toggle to dark mode
     await themeToggle.click()
     await page.waitForTimeout(100)
 
-    // The button should contain an SVG (the Moon icon)
+    // The button should contain an SVG (the Sun icon)
     const svg = themeToggle.locator('svg')
     await expect(svg).toBeVisible()
   })
@@ -71,13 +104,14 @@ test.describe('Theme Toggle', () => {
 
 test.describe('Theme Persistence', () => {
   test('should persist light mode preference after page reload', async ({ page }) => {
+    // Start fresh by clearing localStorage and setting explicit preference
     await page.goto('/', { waitUntil: 'networkidle' })
+    await page.evaluate(() => localStorage.clear())
 
-    const themeToggle = page.getByRole('button', { name: 'Toggle theme' }).first()
-
-    // Toggle to light mode
-    await themeToggle.click()
-    await page.waitForTimeout(100)
+    // Set light mode explicitly via localStorage
+    await page.evaluate(() => localStorage.setItem('color-mode', 'light'))
+    await page.reload({ waitUntil: 'networkidle' })
+    await page.waitForTimeout(200)
 
     // Verify light mode is active
     const htmlBefore = page.locator('html')
@@ -97,13 +131,12 @@ test.describe('Theme Persistence', () => {
   test('should persist dark mode preference after page reload', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
 
+    // Open mobile menu if on mobile
+    await openMobileMenuIfNeeded(page)
+
     const themeToggle = page.getByRole('button', { name: 'Toggle theme' }).first()
 
-    // Toggle to light mode first
-    await themeToggle.click()
-    await page.waitForTimeout(100)
-
-    // Then toggle back to dark mode
+    // Toggle to dark mode
     await themeToggle.click()
     await page.waitForTimeout(100)
 
@@ -123,15 +156,18 @@ test.describe('Theme Persistence', () => {
   test('should save preference to localStorage', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
 
+    // Open mobile menu if on mobile
+    await openMobileMenuIfNeeded(page)
+
     const themeToggle = page.getByRole('button', { name: 'Toggle theme' }).first()
 
-    // Toggle to light mode
+    // Toggle from light mode (default) to dark mode
     await themeToggle.click()
     await page.waitForTimeout(100)
 
-    // Check localStorage
+    // Check localStorage - should be 'dark' after toggling from light
     const colorMode = await page.evaluate(() => localStorage.getItem('color-mode'))
-    expect(colorMode).toBe('light')
+    expect(colorMode).toBe('dark')
   })
 
   test('should read preference from localStorage on page load', async ({ page }) => {
@@ -153,45 +189,51 @@ test.describe('Theme Visual Changes', () => {
   test('should change background color when toggling theme', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
 
-    // Get initial background color (dark mode)
-    const darkBgColor = await page.evaluate(() => {
-      return window.getComputedStyle(document.body).backgroundColor
-    })
-
-    // Toggle to light mode
-    const themeToggle = page.getByRole('button', { name: 'Toggle theme' }).first()
-    await themeToggle.click()
-    await page.waitForTimeout(200)
-
-    // Get new background color (light mode)
+    // Get initial background color (light mode)
     const lightBgColor = await page.evaluate(() => {
       return window.getComputedStyle(document.body).backgroundColor
     })
 
+    // Open mobile menu if on mobile
+    await openMobileMenuIfNeeded(page)
+
+    // Toggle to dark mode
+    const themeToggle = page.getByRole('button', { name: 'Toggle theme' }).first()
+    await themeToggle.click()
+    await page.waitForTimeout(200)
+
+    // Get new background color (dark mode)
+    const darkBgColor = await page.evaluate(() => {
+      return window.getComputedStyle(document.body).backgroundColor
+    })
+
     // Colors should be different
-    expect(darkBgColor).not.toBe(lightBgColor)
+    expect(lightBgColor).not.toBe(darkBgColor)
   })
 
   test('should change text color when toggling theme', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
 
-    // Get initial text color (dark mode)
-    const darkTextColor = await page.evaluate(() => {
-      return window.getComputedStyle(document.body).color
-    })
-
-    // Toggle to light mode
-    const themeToggle = page.getByRole('button', { name: 'Toggle theme' }).first()
-    await themeToggle.click()
-    await page.waitForTimeout(200)
-
-    // Get new text color (light mode)
+    // Get initial text color (light mode)
     const lightTextColor = await page.evaluate(() => {
       return window.getComputedStyle(document.body).color
     })
 
+    // Open mobile menu if on mobile
+    await openMobileMenuIfNeeded(page)
+
+    // Toggle to dark mode
+    const themeToggle = page.getByRole('button', { name: 'Toggle theme' }).first()
+    await themeToggle.click()
+    await page.waitForTimeout(200)
+
+    // Get new text color (dark mode)
+    const darkTextColor = await page.evaluate(() => {
+      return window.getComputedStyle(document.body).color
+    })
+
     // Colors should be different
-    expect(darkTextColor).not.toBe(lightTextColor)
+    expect(lightTextColor).not.toBe(darkTextColor)
   })
 })
 
@@ -207,7 +249,7 @@ test.describe('Theme Toggle in Mobile Menu', () => {
     await page.waitForTimeout(300)
 
     // Check for theme toggle in mobile menu
-    await expect(page.getByText('Theme')).toBeVisible()
+    await expect(page.getByText('Theme', { exact: true })).toBeVisible()
   })
 
   test('should toggle theme from mobile menu', async ({ page }) => {
@@ -223,9 +265,9 @@ test.describe('Theme Toggle in Mobile Menu', () => {
     await mobileThemeToggle.click()
     await page.waitForTimeout(100)
 
-    // Check that light mode is active
+    // Check that dark mode is active (toggled from default light mode)
     const html = page.locator('html')
-    await expect(html).toHaveClass(/light/)
+    await expect(html).not.toHaveClass(/light/)
   })
 })
 
@@ -273,11 +315,8 @@ test.describe('Theme Accessibility', () => {
   test('theme toggle should be keyboard accessible', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
 
-    // Tab to the theme toggle button
-    await page.keyboard.press('Tab')
-    await page.keyboard.press('Tab')
-    await page.keyboard.press('Tab')
-    await page.keyboard.press('Tab') // Navigate to theme toggle area
+    // Open mobile menu if on mobile
+    await openMobileMenuIfNeeded(page)
 
     // Find and focus the theme toggle
     const themeToggle = page.getByRole('button', { name: 'Toggle theme' }).first()
@@ -287,13 +326,16 @@ test.describe('Theme Accessibility', () => {
     await page.keyboard.press('Enter')
     await page.waitForTimeout(100)
 
-    // Check that theme was toggled
+    // Check that theme was toggled to dark mode (from default light mode)
     const html = page.locator('html')
-    await expect(html).toHaveClass(/light/)
+    await expect(html).not.toHaveClass(/light/)
   })
 
   test('theme toggle should have accessible name', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
+
+    // Open mobile menu if on mobile
+    await openMobileMenuIfNeeded(page)
 
     const themeToggle = page.getByRole('button', { name: 'Toggle theme' }).first()
     await expect(themeToggle).toBeVisible()

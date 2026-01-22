@@ -16,7 +16,7 @@ export default defineNuxtConfig({
   },
 
   sitemap: {
-    // zeroRuntime: true, // Enable for production, disable for dev testing
+    zeroRuntime: true, // Enable for production, disable for dev testing
     exclude: [
       '/dashboard/**',
       '/chat/**',
@@ -62,17 +62,24 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: 'Career Buddy is your all-in-one career preparation platform. Get resume templates, AI interview practice, networking guides, and job search strategies tailored for young adults.' },
         { name: 'author', content: 'Career Buddy' },
+        { name: 'theme-color', content: '#6366f1' },
+        { property: 'og:type', content: 'website' },
         { property: 'og:site_name', content: 'Career Buddy' },
         { property: 'og:locale', content: 'en_MY' },
         { property: 'og:image', content: 'https://careerbuddy.yanasharif.com/og-image.png' },
         { property: 'og:image:width', content: '1200' },
         { property: 'og:image:height', content: '630' },
+        { property: 'og:image:type', content: 'image/png' },
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:image', content: 'https://careerbuddy.yanasharif.com/og-image.png' },
         { name: 'geo.region', content: 'MY' },
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
+        { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
+        { rel: 'manifest', href: '/site.webmanifest' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap' },

@@ -1,56 +1,48 @@
 import { test, expect } from '@playwright/test'
 
-// Mobile viewport dimensions (iPhone 12)
-const mobileViewport = { width: 390, height: 844 }
-
-// Tablet viewport dimensions (iPad Mini)
-const tabletViewport = { width: 768, height: 1024 }
-
-// Desktop viewport dimensions
-const desktopViewport = { width: 1440, height: 900 }
-
 test.describe('Mobile Responsive Design', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.setViewportSize(mobileViewport)
-  })
+  // Set mobile viewport for all tests in this describe block
+  test.use({ viewport: { width: 390, height: 844 } })
 
   test('should display mobile navigation menu button', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
 
-    // Desktop nav links should be hidden
-    await expect(page.getByRole('link', { name: 'Features' })).not.toBeVisible()
+    // Desktop nav links (in navbar) should be hidden on mobile
+    // AppNavbar uses md:flex so links are hidden below 768px
+    const navDesktopLinks = page.locator('nav .hidden.md\\:flex a')
+    await expect(navDesktopLinks.first()).not.toBeVisible()
 
-    // Mobile menu button should be visible
-    const menuButton = page.locator('button').filter({ has: page.locator('svg') }).first()
+    // Mobile menu button should be visible (has md:hidden class)
+    const menuButton = page.locator('nav button.md\\:hidden, nav .md\\:hidden button').first()
     await expect(menuButton).toBeVisible()
   })
 
   test('should open mobile menu when clicking menu button', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
 
-    // Click the mobile menu button
-    const menuButton = page.locator('nav button').first()
+    // Click the mobile menu button (has md:hidden class)
+    const menuButton = page.locator('nav button.md\\:hidden, nav .md\\:hidden button').first()
     await menuButton.click()
 
     await page.waitForTimeout(300)
 
-    // Mobile menu should be visible with nav links
-    await expect(page.getByRole('link', { name: 'Features' })).toBeVisible()
+    // Mobile menu should be visible with nav links (Home, About Us, Contact, Privacy)
+    await expect(page.getByRole('link', { name: 'Home' })).toBeVisible()
   })
 
   test('should close mobile menu when clicking nav link', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
 
     // Open mobile menu
-    const menuButton = page.locator('nav button').first()
+    const menuButton = page.locator('nav button.md\\:hidden, nav .md\\:hidden button').first()
     await menuButton.click()
     await page.waitForTimeout(300)
 
-    // Click a nav link
-    await page.getByRole('link', { name: 'Features' }).click()
+    // Click a nav link (Home link in mobile menu)
+    await page.getByRole('link', { name: 'Home' }).click()
     await page.waitForTimeout(500)
 
-    // Menu should close (Features link no longer visible in dropdown)
+    // Menu should close (mobile menu dropdown no longer visible)
     const menuDropdown = page.locator('nav').locator('div.absolute')
     await expect(menuDropdown).not.toBeVisible()
   })
@@ -65,57 +57,66 @@ test.describe('Mobile Responsive Design', () => {
   test('should display features in single column on mobile', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
     await page.locator('#features').scrollIntoViewIfNeeded()
+    await page.waitForTimeout(500) // Wait for scroll animation
 
-    // All feature cards should be visible
-    await expect(page.getByText('Resume & Cover Letter')).toBeVisible()
-    await expect(page.getByText('AI Interview Simulation')).toBeVisible()
+    // On mobile (<640px), the mobile slider is visible (sm:hidden class)
+    // Check for the mobile slider container and its content
+    const mobileSlider = page.locator('#features .sm\\:hidden')
+    await expect(mobileSlider).toBeVisible()
+
+    // First feature card should be visible in the slider (index 0 is shown by default)
+    await expect(mobileSlider.getByText('Resume & Cover Letter')).toBeVisible()
   })
 
   test('should display steps vertically on mobile', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
     await page.locator('#how-it-works').scrollIntoViewIfNeeded()
+    await page.waitForTimeout(500) // Wait for scroll animation
 
-    // All steps should be visible
-    await expect(page.getByText('Sign Up Free')).toBeVisible()
-    await expect(page.getByText('Choose Your Focus')).toBeVisible()
-    await expect(page.getByText('Start Preparing')).toBeVisible()
+    // On mobile (<1024px), the mobile slider is visible (lg:hidden class)
+    const mobileSlider = page.locator('#how-it-works .lg\\:hidden')
+    await expect(mobileSlider).toBeVisible()
+
+    // First step should be visible in the slider (index 0 is shown by default)
+    await expect(mobileSlider.getByText('Sign Up Free')).toBeVisible()
   })
 })
 
 test.describe('Tablet Responsive Design', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.setViewportSize(tabletViewport)
-  })
+  // Set tablet viewport for all tests in this describe block
+  test.use({ viewport: { width: 768, height: 1024 } })
 
   test('should display desktop navigation on tablet', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
 
-    // Nav links should be visible
-    await expect(page.getByRole('link', { name: 'Features' })).toBeVisible()
-    await expect(page.getByRole('link', { name: 'How It Works' })).toBeVisible()
+    // Nav links should be visible (Home, About Us from AppNavbar)
+    await expect(page.locator('nav').getByRole('link', { name: 'Home' })).toBeVisible()
+    await expect(page.locator('nav').getByRole('link', { name: 'About Us' })).toBeVisible()
   })
 
   test('should display features in 2 columns on tablet', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
     await page.locator('#features').scrollIntoViewIfNeeded()
+    await page.waitForTimeout(500) // Wait for scroll animation
 
-    // All feature cards should be visible
-    await expect(page.getByText('Resume & Cover Letter')).toBeVisible()
-    await expect(page.getByText('Career Buddy AI Chat')).toBeVisible()
+    // All feature cards should be visible (use locator within the features section)
+    const featuresSection = page.locator('#features')
+    await expect(featuresSection.getByText('Resume & Cover Letter').first()).toBeVisible()
+    await expect(featuresSection.getByText('Career Buddy AI Chat').first()).toBeVisible()
   })
 })
 
 test.describe('Desktop Responsive Design', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.setViewportSize(desktopViewport)
-  })
+  // Set desktop viewport for all tests in this describe block
+  test.use({ viewport: { width: 1440, height: 900 } })
 
   test('should display full navigation on desktop', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
 
-    await expect(page.getByRole('link', { name: 'Features' })).toBeVisible()
-    await expect(page.getByRole('link', { name: 'How It Works' })).toBeVisible()
-    await expect(page.getByRole('link', { name: 'FAQ' })).toBeVisible()
+    // AppNavbar links: Home, About Us, Contact, Privacy
+    await expect(page.locator('nav').getByRole('link', { name: 'Home' })).toBeVisible()
+    await expect(page.locator('nav').getByRole('link', { name: 'About Us' })).toBeVisible()
+    await expect(page.locator('nav').getByRole('link', { name: 'Contact' })).toBeVisible()
     await expect(page.getByRole('button', { name: 'Log In' })).toBeVisible()
     await expect(page.getByRole('button', { name: 'Get Started' }).first()).toBeVisible()
   })
@@ -123,8 +124,10 @@ test.describe('Desktop Responsive Design', () => {
   test('should display features in 3 columns on desktop', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
     await page.locator('#features').scrollIntoViewIfNeeded()
+    await page.waitForTimeout(500) // Wait for scroll animation
 
-    // All 6 feature cards should be visible
+    // All 6 feature cards should be visible (use locator within the features section)
+    const featuresSection = page.locator('#features')
     const featureTitles = [
       'Resume & Cover Letter',
       'AI Interview Simulation',
@@ -135,18 +138,20 @@ test.describe('Desktop Responsive Design', () => {
     ]
 
     for (const title of featureTitles) {
-      await expect(page.getByText(title)).toBeVisible()
+      await expect(featuresSection.getByText(title).first()).toBeVisible()
     }
   })
 
   test('should display horizontal stepper on desktop', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
     await page.locator('#how-it-works').scrollIntoViewIfNeeded()
+    await page.waitForTimeout(500) // Wait for scroll animation
 
-    // Steps should be visible horizontally
-    await expect(page.getByText('01')).toBeVisible()
-    await expect(page.getByText('02')).toBeVisible()
-    await expect(page.getByText('03')).toBeVisible()
+    // Steps should be visible horizontally (use locator within the how-it-works section)
+    const howItWorksSection = page.locator('#how-it-works')
+    await expect(howItWorksSection.getByText('01').first()).toBeVisible()
+    await expect(howItWorksSection.getByText('02').first()).toBeVisible()
+    await expect(howItWorksSection.getByText('03').first()).toBeVisible()
   })
 
   test('should display 3 testimonial cards on desktop', async ({ page }) => {
@@ -162,9 +167,10 @@ test.describe('Desktop Responsive Design', () => {
     await page.goto('/', { waitUntil: 'networkidle' })
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
 
-    // Footer sections should be visible
-    await expect(page.getByText('Product')).toBeVisible()
-    await expect(page.getByText('Resources')).toBeVisible()
-    await expect(page.getByText('Company')).toBeVisible()
+    // Footer sections should be visible (use heading role to be specific)
+    const footer = page.locator('footer')
+    await expect(footer.getByRole('heading', { name: 'Product' })).toBeVisible()
+    await expect(footer.getByRole('heading', { name: 'Resources' })).toBeVisible()
+    await expect(footer.getByRole('heading', { name: 'Company' })).toBeVisible()
   })
 })

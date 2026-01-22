@@ -1,5 +1,23 @@
 import { test, expect } from '@playwright/test'
 
+// Helper to check if we're on a mobile viewport
+async function isMobileViewport(page: any): Promise<boolean> {
+  const viewport = page.viewportSize()
+  return viewport && viewport.width < 768
+}
+
+// Helper to open mobile menu if needed
+async function openMobileMenuIfNeeded(page: any): Promise<void> {
+  const isMobile = await isMobileViewport(page)
+  if (isMobile) {
+    const menuButton = page.locator('button.md\\:hidden').first()
+    if (await menuButton.isVisible()) {
+      await menuButton.click()
+      await page.waitForTimeout(300)
+    }
+  }
+}
+
 test.describe('Accessibility', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
@@ -37,28 +55,39 @@ test.describe('Accessibility', () => {
   })
 
   test('buttons should be keyboard accessible', async ({ page }) => {
-    // Focus on the first CTA button using Tab
-    await page.keyboard.press('Tab')
-    await page.keyboard.press('Tab')
-    await page.keyboard.press('Tab')
+    // For mobile, we need to find a visible button
+    const isMobile = await isMobileViewport(page)
 
-    // Get the focused element
-    const focusedElement = page.locator(':focus')
-    await expect(focusedElement).toBeVisible()
+    if (isMobile) {
+      // On mobile, the menu button is always visible
+      const menuButton = page.locator('button.md\\:hidden').first()
+      await menuButton.focus()
+      await expect(menuButton).toBeFocused()
+    } else {
+      // Focus on the first CTA button using Tab
+      await page.keyboard.press('Tab')
+      await page.keyboard.press('Tab')
+      await page.keyboard.press('Tab')
+
+      // Get the focused element
+      const focusedElement = page.locator(':focus')
+      await expect(focusedElement).toBeVisible()
+    }
   })
 
   test('navigation links should be keyboard accessible', async ({ page }) => {
-    // Navigate to a link and press Enter
-    const featuresLink = page.getByRole('link', { name: 'Features' })
-    await featuresLink.focus()
-    await expect(featuresLink).toBeFocused()
+    // On mobile, open the menu first to access nav links
+    await openMobileMenuIfNeeded(page)
+
+    // Navigate to a navbar link and press Enter
+    const aboutLink = page.locator('nav').getByRole('link', { name: 'About Us' })
+    await aboutLink.focus()
+    await expect(aboutLink).toBeFocused()
 
     await page.keyboard.press('Enter')
-    await page.waitForTimeout(500)
 
-    // Should scroll to features section
-    const featuresSection = page.locator('#features')
-    await expect(featuresSection).toBeInViewport()
+    // Wait for navigation to complete
+    await page.waitForURL('**/about', { timeout: 5000 })
   })
 
   test('accordion should be keyboard accessible', async ({ page }) => {
@@ -129,7 +158,7 @@ test.describe('SEO', () => {
   })
 
   test('should have favicon', async ({ page }) => {
-    const favicon = page.locator('link[rel="icon"]')
+    const favicon = page.locator('link[rel="icon"]').first()
     await expect(favicon).toHaveAttribute('href', /.+/)
   })
 })

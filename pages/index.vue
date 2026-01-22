@@ -89,7 +89,8 @@ const websiteSchema = useWebSiteSchema()
       <LandingProblemSection />
       <LandingFeaturesSection />
       <LandingHowItWorksSection />
-      <!-- <LandingFaqSection /> -->
+      <LandingTestimonialsCarousel />
+      <LandingFaqSection />
       <LandingCtaFooter />
     </div>
   </div>

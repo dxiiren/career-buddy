@@ -1,5 +1,23 @@
 import { test, expect } from '@playwright/test'
 
+// Helper to check if we're on a mobile viewport
+async function isMobileViewport(page: any): Promise<boolean> {
+  const viewport = page.viewportSize()
+  return viewport && viewport.width < 768
+}
+
+// Helper to open mobile menu if needed
+async function openMobileMenuIfNeeded(page: any): Promise<void> {
+  const isMobile = await isMobileViewport(page)
+  if (isMobile) {
+    const menuButton = page.locator('button.md\\:hidden').first()
+    if (await menuButton.isVisible()) {
+      await menuButton.click()
+      await page.waitForTimeout(300)
+    }
+  }
+}
+
 test.describe('Landing Page', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
@@ -16,9 +34,14 @@ test.describe('Landing Page', () => {
 
   test('should display the navigation bar', async ({ page }) => {
     await expect(page.getByText('Career Buddy').first()).toBeVisible()
-    await expect(page.getByRole('link', { name: 'Features' })).toBeVisible()
-    await expect(page.getByRole('link', { name: 'How It Works' })).toBeVisible()
-    await expect(page.getByRole('link', { name: 'FAQ' })).toBeVisible()
+
+    // On mobile, nav links are inside mobile menu
+    await openMobileMenuIfNeeded(page)
+
+    // AppNavbar links: Home, About Us, Contact, Privacy
+    await expect(page.locator('nav').getByRole('link', { name: 'Home' })).toBeVisible()
+    await expect(page.locator('nav').getByRole('link', { name: 'About Us' })).toBeVisible()
+    await expect(page.locator('nav').getByRole('link', { name: 'Contact' })).toBeVisible()
   })
 
   test('should display Get Started button in hero', async ({ page }) => {
@@ -56,7 +79,12 @@ test.describe('Navigation', () => {
   })
 
   test('should scroll to features section when clicking Features link', async ({ page }) => {
-    await page.getByRole('link', { name: 'Features' }).click()
+    // Scroll to footer first to access the Features link (it's in footer, not navbar)
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
+    await page.waitForTimeout(300)
+
+    // Click Features link in footer
+    await page.locator('footer').getByRole('link', { name: 'Features' }).click()
 
     // Wait for scroll animation
     await page.waitForTimeout(500)
@@ -67,7 +95,12 @@ test.describe('Navigation', () => {
   })
 
   test('should scroll to how-it-works section when clicking How It Works link', async ({ page }) => {
-    await page.getByRole('link', { name: 'How It Works' }).click()
+    // Scroll to footer first to access the How It Works link (it's in footer, not navbar)
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
+    await page.waitForTimeout(300)
+
+    // Click How It Works link in footer
+    await page.locator('footer').getByRole('link', { name: 'How It Works' }).click()
 
     await page.waitForTimeout(500)
 
@@ -76,7 +109,12 @@ test.describe('Navigation', () => {
   })
 
   test('should scroll to FAQ section when clicking FAQ link', async ({ page }) => {
-    await page.getByRole('link', { name: 'FAQ' }).click()
+    // Scroll to footer first to access the FAQ link (it's in footer, not navbar)
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
+    await page.waitForTimeout(300)
+
+    // Click FAQ link in footer
+    await page.locator('footer').getByRole('link', { name: 'FAQ' }).click()
 
     await page.waitForTimeout(500)
 
@@ -99,16 +137,33 @@ test.describe('Navigation', () => {
 test.describe('Features Section', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
+    // Scroll directly to features section and wait for animation
     await page.locator('#features').scrollIntoViewIfNeeded()
+    await page.waitForTimeout(1000) // Wait for scroll animation to trigger visibility
   })
 
   test('should display all 6 feature cards', async ({ page }) => {
-    await expect(page.getByText('Resume & Cover Letter')).toBeVisible()
-    await expect(page.getByText('AI Interview Simulation')).toBeVisible()
-    await expect(page.getByText('Networking Guides')).toBeVisible()
-    await expect(page.getByText('Job Search Strategies')).toBeVisible()
-    await expect(page.getByText('Self-Promotion Tools')).toBeVisible()
-    await expect(page.getByText('Career Buddy AI Chat')).toBeVisible()
+    const isMobile = await isMobileViewport(page)
+    const featuresSection = page.locator('#features')
+
+    if (isMobile) {
+      // On mobile, features are in a slider - all features exist in DOM
+      // The slider container might have animation, so we check attachment
+      await expect(featuresSection.getByText('Resume & Cover Letter').first()).toBeAttached({ timeout: 10000 })
+      await expect(featuresSection.getByText('AI Interview Simulation').first()).toBeAttached()
+      await expect(featuresSection.getByText('Networking Guides').first()).toBeAttached()
+      await expect(featuresSection.getByText('Job Search Strategies').first()).toBeAttached()
+      await expect(featuresSection.getByText('Self-Promotion Tools').first()).toBeAttached()
+      await expect(featuresSection.getByText('Career Buddy AI Chat').first()).toBeAttached()
+    } else {
+      // On desktop, all cards should be visible
+      await expect(featuresSection.getByText('Resume & Cover Letter').first()).toBeVisible({ timeout: 10000 })
+      await expect(featuresSection.getByText('AI Interview Simulation').first()).toBeVisible({ timeout: 10000 })
+      await expect(featuresSection.getByText('Networking Guides').first()).toBeVisible({ timeout: 10000 })
+      await expect(featuresSection.getByText('Job Search Strategies').first()).toBeVisible({ timeout: 10000 })
+      await expect(featuresSection.getByText('Self-Promotion Tools').first()).toBeVisible({ timeout: 10000 })
+      await expect(featuresSection.getByText('Career Buddy AI Chat').first()).toBeVisible({ timeout: 10000 })
+    }
   })
 })
 
@@ -154,27 +209,58 @@ test.describe('Testimonials Carousel', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
     await page.getByText('Hear From Our').scrollIntoViewIfNeeded()
+    await page.waitForTimeout(500) // Wait for scroll animation
   })
 
   test('should display testimonial cards', async ({ page }) => {
     // At least one testimonial should be visible
-    await expect(page.getByText('Sarah Ahmad').or(page.getByText('Muhammad Haziq'))).toBeVisible()
+    await expect(page.getByText('Sarah Ahmad').first()).toBeVisible({ timeout: 10000 })
   })
 
   test('should have navigation dots', async ({ page }) => {
-    const dots = page.locator('.h-2.rounded-full')
-    await expect(dots.first()).toBeVisible()
+    // Scroll down more to ensure dots are in view
+    await page.evaluate(() => window.scrollBy(0, 300))
+    await page.waitForTimeout(500)
+
+    // Check for navigation dots in testimonials section using parent container
+    const testimonialsSection = page.locator('#feedback')
+
+    // Dots are buttons with h-2 class (small height)
+    const dots = testimonialsSection.locator('button.h-2')
+    await expect(dots.first()).toBeAttached({ timeout: 10000 })
+    expect(await dots.count()).toBeGreaterThan(0)
   })
 
   test('should change testimonial when clicking navigation dot', async ({ page }) => {
-    const dots = page.locator('button.h-2.rounded-full')
+    const isMobile = await isMobileViewport(page)
+
+    // Scroll to the dots section to ensure they're visible
+    await page.evaluate(() => window.scrollBy(0, 300))
+    await page.waitForTimeout(300)
+
+    let dots
+    if (isMobile) {
+      // Mobile carousel dots
+      const mobileCarousel = page.locator('.md\\:hidden')
+      dots = mobileCarousel.locator('button.h-2.rounded-full')
+    } else {
+      // Desktop carousel dots
+      const desktopCarousel = page.locator('.hidden.md\\:block')
+      dots = desktopCarousel.locator('button.h-2.rounded-full')
+    }
+
     const secondDot = dots.nth(1)
 
+    await secondDot.scrollIntoViewIfNeeded()
     await secondDot.click()
     await page.waitForTimeout(500)
 
-    // The second dot should now be active (wider)
-    await expect(secondDot).toHaveClass(/w-8/)
+    // The second dot should now be active (wider - w-8 for desktop, w-6 for mobile)
+    if (isMobile) {
+      await expect(secondDot).toHaveClass(/w-6/)
+    } else {
+      await expect(secondDot).toHaveClass(/w-8/)
+    }
   })
 })
 
