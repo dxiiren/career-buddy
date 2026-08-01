@@ -21,10 +21,10 @@ _require-node:
 install: _require-node
     if (Test-Path package-lock.json) { npm ci } else { npm install }
 
-# Start the dev server on http://localhost:{{port}} (background window).
 # Runs `stop` first so a previous run's server doesn't linger. The dev server's node
 # process carries this repo's node_modules path on its command line — that's how
 # `stop` scopes the kill to THIS project.
+# Start the dev server on http://localhost:{{port}} (background window).
 start: _require-node stop
     Start-Process powershell -ArgumentList "-NoProfile", "-Command", "cd '{{justfile_directory()}}'; npm run dev -- --port {{port}}"
     Start-Sleep -Seconds 2
@@ -34,8 +34,8 @@ start: _require-node stop
 dev: _require-node
     npm run dev -- --port {{port}}
 
-# Stop only THIS project's node.exe processes, not every node on the box.
 # Matches node whose command line contains this repo's path (trailing '\').
+# Stop only THIS project's node.exe processes, not every node on the box.
 stop:
     $procs = @(Get-CimInstance Win32_Process -Filter "Name = 'node.exe'" | Where-Object { $_.CommandLine -like '*{{justfile_directory()}}\*' }); $procs | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }; Write-Host "Stopped $($procs.Count) project node.exe process(es)"
 
