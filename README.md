@@ -1,103 +1,103 @@
 # Career Buddy
 
-A comprehensive career preparation platform designed for Malaysian youth aged 18-30. Career Buddy provides AI-powered guidance, resume building tools, interview preparation, networking strategies, and job search resources—all in one place.
+A frontend-only prototype of Career Buddy — a career-preparation platform for Malaysian youth
+aged 18–30. A public landing page plus a mock-auth app shell with dashboard, AI career chat,
+resume builder, interview prep (including an AI simulation), job search, networking, and
+self-promotion modules. All data is mock data served from composables — no backend, no
+database, no `.env`.
 
-## Features
+> **New developer? Start with [`.docs/tldr.md`](.docs/tldr.md)** — every doc summarised on one
+> page. The full guide lives in [`.docs/`](.docs/README.md).
 
-- **Dashboard** — Personalized progress tracking with daily tasks and motivational content
-- **AI Career Chat** — Interactive chat assistant for career guidance and advice
-- **Resume Builder** — Templates, ATS optimization tips, and cover letter guides
-- **Interview Prep** — STAR method training, common questions, and AI-powered simulation
-- **Job Search** — Platform recommendations, salary ranges, and scam detection
-- **Networking** — Message templates, introduction guides, and LinkedIn strategies
-- **Self-Promotion** — Personal branding, workplace visibility, and LinkedIn headline ideas
+## Prerequisites
 
-## Tech Stack
+| Tool | Version | Installed by |
+| --- | --- | --- |
+| PowerShell + winget | Windows 10/11 stock | — (the only true prerequisites) |
+| Git | any recent | `setup.ps1` |
+| Node.js + npm | LTS (verified on v24) | `setup.ps1` |
+| just | any recent | `setup.ps1` |
+| Claude Code CLI | latest | `setup.ps1` (optional, for AI-assisted dev) |
 
-- **Framework:** [Nuxt 3](https://nuxt.com) with Vue 3
-- **Styling:** [Tailwind CSS](https://tailwindcss.com) with [shadcn-vue](https://www.shadcn-vue.com/)
-- **Icons:** [Lucide Vue](https://lucide.dev)
-- **Utilities:** [VueUse](https://vueuse.org)
-- **Testing:** [Vitest](https://vitest.dev) (unit/functional) + [Playwright](https://playwright.dev) (E2E)
+## Quick start
 
-## Project Structure
+```powershell
+# 1. One-time machine setup (idempotent — safe to re-run)
+pwsh ./setup.ps1
 
-```
-├── app/                 # App entry point
-├── assets/css/          # Global styles
-├── components/
-│   ├── auth/            # Authentication components
-│   ├── career-chat/     # AI chat interface
-│   ├── dashboard/       # Dashboard widgets
-│   ├── help/            # FAQ and support
-│   ├── interview/       # Interview preparation
-│   ├── job-search/      # Job search resources
-│   ├── landing/         # Landing page sections
-│   ├── networking/      # Networking guides
-│   ├── resume/          # Resume building
-│   ├── self-promotion/  # Personal branding
-│   ├── settings/        # User settings
-│   ├── shared/          # Navbar, footer, etc.
-│   └── ui/              # shadcn-vue components
-├── composables/         # Shared Vue composables
-├── layouts/             # Page layouts
-├── pages/               # File-based routing
-└── tests/
-    ├── e2e/             # Playwright E2E tests
-    ├── functional/      # Component tests
-    └── unit/            # Composable tests
+# 2. Close and reopen PowerShell so PATH updates land
+# 3. Install dependencies (npm ci + patch-package + nuxt prepare)
+just install
+
+# 4. Start the dev server
+just start
 ```
 
-## Getting Started
+The app is now at **http://localhost:8114**. Stop it with `just stop`.
 
-### Prerequisites
+## Commands
 
-- Node.js 18+ or Bun
+Run `just` with no arguments to list every recipe. The ones you'll use daily:
 
-### Installation
+| Command | What it does |
+| --- | --- |
+| `just install` | Install dependencies (`npm ci`; runs patch-package + `nuxt prepare`) |
+| `just start` | Dev server on http://localhost:8114 in a background window |
+| `just dev` | Dev server in the foreground (Ctrl+C to stop) |
+| `just stop` | Stop only THIS repo's node processes |
+| `just build` | Production build (Nitro server bundle in `.output/`) |
+| `just preview` | Serve the production build on http://localhost:8114 (after `just build`) |
+| `just test` | Run ALL Vitest tests once (unit + functional) |
+| `just test-unit` | Unit tests only (`tests/unit` — composables) |
+| `just test-functional` | Functional tests only (`tests/functional` — components) |
+| `just claudex` | Launch Claude Code (Sonnet, all permissions) |
 
-```bash
-# Install dependencies
-npm install
+## Troubleshooting
 
-# Start development server
-npm run dev
+### `npm run test` hangs and never exits
+
+Bare `npm run test` runs `vitest` in watch mode. Use `just test` (which forces `--run`) or the
+scoped scripts `npm run test:unit` / `npm run test:functional`.
+
+### Dev server takes a long time before the page loads
+
+The first request after `just start` triggers Vite transforms — allow 30–120 seconds before
+`http://localhost:8114` returns 200. Poll with
+`curl.exe -s -o NUL -w "%{http_code}" http://localhost:8114/` rather than assuming failure.
+Also use `localhost`, not `127.0.0.1` — on Windows the dev server binds the IPv6 loopback.
+
+### `npx nuxt typecheck` reports errors on a fresh clone
+
+Known baseline: 26 pre-existing TypeScript errors (landing-section transition bindings,
+`user.email` usages, `routeRules.robots` typing, some test fixtures). The app builds and all
+834 Vitest tests pass regardless. Treat new errors as regressions; see
+[`.docs/06-troubleshooting/common-issues.md`](.docs/06-troubleshooting/common-issues.md).
+
+### `npm run test:e2e` fails immediately
+
+Playwright needs its browsers once: `npx playwright install`. The e2e config boots its own dev
+server on `localhost:3000` (independent of the :8114 kit server) and runs five browser
+projects — use `--project=chromium` for a faster local run.
+
+More in [`.docs/06-troubleshooting/common-issues.md`](.docs/06-troubleshooting/common-issues.md).
+
+## Project layout
+
 ```
-
-The app will be available at `http://localhost:3000`.
-
-### Build for Production
-
-```bash
-# Build the application
-npm run build
-
-# Preview production build
-npm run preview
+carreer-buddy-proto/
+  nuxt.config.ts              # modules, SEO/sitemap, routeRules, fonts
+  tailwind.config.ts, tsconfig.json, vitest.config.ts, playwright.config.ts
+  error.vue                   # active error page (app/ pair is unused — see .docs FAQ)
+  pages/                      # file-based routes: landing, auth, dashboard, chat, help,
+                              # settings, about/contact/privacy + resume/, interview/,
+                              # job-search/, networking/, self-promotion/
+  layouts/                    # default (navbar+footer), dashboard (sidebar)
+  components/                 # per-module folders + shared/ + ui/ (shadcn-vue) + landing/
+  composables/                # one useX.ts per module — ALL app data is mocked here
+  lib/utils.ts                # cn() class merge
+  assets/css/, public/        # global styles; favicons, og-image, robots.txt
+  patches/                    # patch-package (applied on npm install)
+  tests/                      # unit/ + functional/ (Vitest) + e2e/ (Playwright)
+  docs/plans/, PLAN.md        # historical design notes
+  .docs/                      # developer documentation (start at .docs/tldr.md)
 ```
-
-## Testing
-
-```bash
-# Run all tests
-npm test
-
-# Unit tests only
-npm run test:unit
-
-# Functional (component) tests
-npm run test:functional
-
-# E2E tests
-npm run test:e2e
-
-# E2E tests with UI
-npm run test:e2e:ui
-
-# Coverage report
-npm run test:coverage
-```
-
-## License
-
-Private

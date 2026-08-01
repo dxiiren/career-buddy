@@ -1,0 +1,13 @@
+Test the Context7 docs MCP server (version-specific library docs for Nuxt/Vue/Tailwind/shadcn-vue).
+
+Call `mcp__context7__resolve-library-id` with { "query": "vue", "libraryName": "vue" }.
+Then optionally `mcp__context7__query-docs` with the returned libraryId + a query
+(e.g. "defineProps script setup").
+
+Reply with:
+1. Connected? — is the context7 MCP available? (yes/no)
+2. Raw result — the resolved library id (e.g. `/vuejs/vue` or `/vuejs/core`) (or the error).
+3. Verdict — PASS if it resolves a library id; else FAIL.
+
+Notes: remote HTTP (https://mcp.context7.com/mcp), keyless. Pass BOTH `query` and `libraryName`
+(both required). A one-time OAuth prompt may appear but it still works keyless.

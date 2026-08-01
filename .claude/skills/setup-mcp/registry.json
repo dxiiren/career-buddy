@@ -1,0 +1,32 @@
+{
+  "_doc": "One record per MCP server for carreer-buddy-proto. Read by the setup-mcp skill. installType: http|npx|sse|node. secret: none|PAT|OAuth|seat. enableTier: turnkey|per-dev|conditional. Enablement targets: turnkey -> enabledMcpjsonServers in committed .claude/settings.json; per-dev/conditional -> git-ignored .claude/settings.local.json. Config (command/args/url/headers) lives in .mcp.json.stub (committed placeholders) + .mcp.json (git-ignored real). Smoke tests live in test-all-mcp/checks/{server}.txt.",
+  "servers": {
+    "context7": {
+      "name": "context7",
+      "purpose": "Up-to-date, version-specific docs for Nuxt 3 / Vue 3 / Tailwind CSS / shadcn-vue (radix-vue) / VueUse and any library. Call resolve-library-id then query-docs instead of recalling APIs from memory.",
+      "installType": "http",
+      "secret": "none",
+      "enableTier": "turnkey",
+      "endpointOrPackage": "https://mcp.context7.com/mcp",
+      "setup": "Keyless remote HTTP; nothing to install. Already in the committed enable list. Optional: add a personal CONTEXT7_API_KEY header in the git-ignored .mcp.json only to raise rate limits."
+    },
+    "playwright": {
+      "name": "playwright",
+      "purpose": "Drive a real browser through the accessibility tree to debug the running app on http://localhost:8114 (landing page, dashboard, career modules).",
+      "installType": "npx",
+      "secret": "none",
+      "enableTier": "turnkey",
+      "endpointOrPackage": "npx @playwright/mcp@latest --caps=testing",
+      "setup": "npx, no secret. First run needs the Chromium binary: `npx playwright install chromium`. Launched with --caps=testing. Already in the committed enable list. Needs `just start` for localhost:8114 to resolve."
+    },
+    "github": {
+      "name": "github",
+      "purpose": "Official GitHub MCP - repo / PR / issue on github.com/dxiiren/carreer-buddy-proto. Used by create-pr.",
+      "installType": "http",
+      "secret": "PAT",
+      "enableTier": "per-dev",
+      "endpointOrPackage": "https://api.githubcopilot.com/mcp/",
+      "setup": "Create a GitHub PAT (fine-grained: Contents R/W, Pull requests R/W, Issues R/W; or a classic token with `repo`). Put it in the Authorization: Bearer header of the git-ignored .mcp.json (placeholder REPLACE_WITH_YOUR_GITHUB_PAT stays in the stub). Opt in by adding \"github\" to enabledMcpjsonServers in git-ignored .claude/settings.local.json."
+    }
+  }
+}

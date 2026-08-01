@@ -1,0 +1,14 @@
+Test the GitHub MCP server (repo / PR / issue on dxiiren/carreer-buddy-proto).
+
+Call `mcp__github__get_me` (returns the authenticated GitHub user).
+Optionally list repos or PRs for owner "dxiiren", repo "carreer-buddy-proto".
+
+Reply with:
+1. Connected? — is the github MCP available? (yes/no)
+2. Raw result — your GitHub login (or the error).
+3. Verdict — PASS if it returns your GitHub identity/login; else FAIL.
+
+Notes: per-dev, PAT auth. A 401/403 = the PAT in the Authorization header of .mcp.json is
+wrong/expired or missing scopes (needs repo Contents R/W, Pull requests, Issues) →
+re-run /setup-mcp github. If tools are absent: opt in by adding "github" to enabledMcpjsonServers
+in the git-ignored .claude/settings.local.json, then restart Claude (SKIP if not enabled for this dev).

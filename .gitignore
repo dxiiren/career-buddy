@@ -26,3 +26,8 @@ playwright-report
 test-results
 nul
 problems
+# Claude Code — per-dev secrets & local overrides (NEVER commit)
+# Real MCP config holds live tokens; commit .mcp.json.stub instead.
+.mcp.json
+.claude/settings.local.json
+.claude/workspace/
