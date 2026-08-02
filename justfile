@@ -15,6 +15,14 @@ default:
 _require-node:
     @if (-not (Get-Command npm -ErrorAction SilentlyContinue)) { Write-Error "Node/npm not found on PATH.`n  -> Run setup.ps1 first:  pwsh ./setup.ps1"; exit 1 }
 
+# npm install does NOT fetch browser engines, so a fresh clone reds every e2e spec
+# with "Executable doesn't exist" until someone runs this by hand. It is a ~3s
+# no-op once the engines are on disk, so `e2e` just depends on it.
+# Chromium/Firefox/WebKit engines for Playwright (downloads on first run).
+[private]
+_require-browsers: _require-node
+    npx playwright install
+
 # ─── App lifecycle ───────────────────────────────────────
 
 # Install dependencies (npm ci when the lockfile allows, else npm install).
@@ -69,11 +77,18 @@ test-functional: _require-node
 test-coverage: _require-node
     npm run test:coverage
 
-# Boots its OWN dev server on :3000 (playwright.config.ts webServer) across five
-# browser projects, and needs the browsers once: `npx playwright install`.
+# Boots its OWN dev server on :8115 (playwright.config.ts webServer) across five
+# browser projects; _require-browsers fetches the engines on first run. The port
+# is ours alone and never reused if occupied, so a stray server from another
+# project cannot silently become the system under test — it errors instead.
 # Playwright end-to-end specs (tests/e2e). Not part of `verify` — see verify-all.
-e2e *flags: _require-node
+e2e *flags: _require-node _require-browsers
     npm run test:e2e -- {{flags}}
+
+# Same specs, chromium only — the fast feedback loop while fixing a spec.
+# Playwright e2e on chromium alone (~2 min instead of ~10 for all five).
+e2e-chromium *flags: _require-node _require-browsers
+    npm run test:e2e -- --project=chromium {{flags}}
 
 # Full-project TypeScript check (vue-tsc via nuxt). Baseline is ZERO errors.
 typecheck: _require-node

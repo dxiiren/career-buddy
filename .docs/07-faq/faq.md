@@ -13,18 +13,26 @@ the same way — introducing real network calls changes the nature of the repo.
 `admin` / `admin` (`composables/useAuth.ts` — the user is named "Yana"). Register accepts any
 well-formed input. The session persists in `localStorage` (`auth_user`).
 
-## Why does the kit serve on 8114 but e2e uses 3000?
+## Why does the kit serve on 8114 but e2e uses 8115?
 
 Port **8114** is this repo's assigned port in the multi-repo onboarding standard — `just
-start`/`dev`/`preview` all use it so parallel repos never collide. The **Playwright config
-predates the kit** and boots its own `npm run dev` on `localhost:3000` for tests; it manages
-that server itself, so the two never conflict (different ports, different lifecycles).
+start`/`dev`/`preview` all use it so parallel repos never collide. Playwright manages a
+*separate* server with its own lifecycle (started and torn down per run), so it takes the next
+port along, **8115**, rather than sharing the one a developer may already be serving on.
 
-## Why is there no `just` recipe for e2e tests?
+It used to use `:3000` — Nuxt's default, and therefore also the default of every other Node
+project on the machine. Combined with the old `reuseExistingServer: !process.env.CI`, that let
+Playwright silently adopt a stray server belonging to a *different repo* and run the whole
+matrix against the wrong app (77 failures, 2 passes, no hint of the real cause in the output).
+The config now pins :8115 and sets `reuseExistingServer: false`, so an occupied port is a loud
+error. Override with `$env:E2E_PORT` if 8115 is taken.
 
-Deliberate: `npm run test:e2e` needs a one-time browser download (`npx playwright install`),
-runs five browser projects, and manages its own server on :3000. That's an explicit,
-occasional command rather than a daily recipe — see
+## Why isn't e2e part of `just verify`?
+
+`just e2e` exists and is a first-class recipe (plus `just e2e-chromium` for the fast loop), but
+it stays out of the pre-push gate: five browser projects over 79 specs is ~10 minutes and needs
+three browser engines on disk, versus seconds for Vitest + typecheck. `just verify-all` is
+`verify` + `e2e` when you want everything — see
 [`../05-reference/commands.md`](../05-reference/commands.md).
 
 ## Why is there no ESLint / Prettier?

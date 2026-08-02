@@ -19,7 +19,8 @@
 | `just test-unit` | `tests/unit` only (composables) |
 | `just test-functional` | `tests/functional` only (components/pages) |
 | `just test-coverage` | ALL Vitest tests once with v8 coverage → git-ignored `coverage/`; **enforces** the thresholds in `vitest.config.ts` (96% statements / 96% lines / 90% branches / 72% functions) |
-| `just e2e [flags]` | Playwright specs in `tests/e2e` — boots its own dev server on :3000; needs `npx playwright install` once |
+| `just e2e [flags]` | All 79 Playwright specs in `tests/e2e` × 5 browser projects — boots its own dev server on :8115 and fetches the browser engines if missing |
+| `just e2e-chromium [flags]` | The same specs, chromium only (~2 min vs ~10) |
 | `just claudex` / `claudeo` / `claudeh` | Claude Code with all permissions — Sonnet / Opus / Haiku |
 
 `PORT` is overridable per invocation: `$env:PORT='8200'; just start` (default 8114).
@@ -32,15 +33,17 @@
 | `npm run build` / `generate` / `preview` | build · static generate (unused day-to-day) · preview |
 | `npm run test` | **watch mode — hangs a terminal; prefer `just test`** |
 | `npm run test:unit` / `test:functional` | run-once scoped suites |
-| `npm run test:e2e` | Playwright, all 5 browser projects; boots its own dev server on **:3000**; needs `npx playwright install` once |
+| `npm run test:e2e` | Playwright, all 5 browser projects; boots its own dev server on **:8115**; needs `npx playwright install` once (`just e2e` does it for you) |
 | `npm run test:e2e:ui` | Playwright UI mode |
 | `npm run test:seo` | just the SEO spec on chromium |
 | `npm run test:coverage` | run-once full suite with v8 coverage (`just test-coverage`); reports land in the git-ignored `coverage/` |
 | `npm run test:all` | vitest run + full playwright |
 
-`just e2e` wraps the Playwright run, which still manages its own server on a different port
-(:3000) and needs a one-time browser download (`npx playwright install`). It is a recipe for
-convenience, not part of the pre-push gate — see below.
+`just e2e` wraps the Playwright run, which manages its own server on a different port (:8115,
+overridable with `$env:E2E_PORT`) and downloads the browser engines on first use via the
+`_require-browsers` guard. It is a recipe for convenience, not part of the pre-push gate — see
+below. The config sets `reuseExistingServer: false`: an occupied :8115 is an immediate error
+rather than a silent swap of the system under test.
 
 ## Quality commands
 
@@ -56,9 +59,10 @@ convenience, not part of the pre-push gate — see below.
 time here.
 
 Playwright is deliberately outside `verify`: it runs every spec across chromium, firefox,
-webkit and two mobile profiles, which is minutes rather than seconds and fails on any machine
-that has not downloaded three browser engines — a red gate for reasons unrelated to the change
-being pushed. Reach for `just verify-all` before a release or after touching the UI.
+webkit and two mobile profiles, which is minutes rather than seconds and needs three browser
+engines on disk — a slow gate for reasons usually unrelated to the change being pushed. Reach
+for `just verify-all` before a release or after touching the UI, or `just e2e-chromium` for a
+quick browser sanity check.
 
 ## Health probe
 

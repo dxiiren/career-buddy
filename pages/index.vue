@@ -98,7 +98,12 @@ useJsonLd([organizationSchema, websiteSchema, faqSchema])
         <div class="container mx-auto px-4">
           <div class="text-center mb-12">
             <Skeleton class="h-10 w-64 mx-auto mb-4" />
-            <Skeleton class="h-6 w-96 mx-auto" />
+            <!-- w-full max-w-sm, not w-96: max-w-sm is the same 384px on wide screens,
+                 but a bare w-96 is a hard 384px inside a ~361px `container px-4` on a
+                 393px phone. It is not a flex item so it cannot shrink, and the overflow
+                 widened the mobile layout viewport (393 -> 400) until the skeleton was
+                 swapped out, shifting every right-aligned element as it went. -->
+            <Skeleton class="h-6 w-full max-w-sm mx-auto" />
           </div>
           <div class="grid md:grid-cols-3 gap-8">
             <Skeleton class="h-64 rounded-2xl" />

@@ -6,6 +6,40 @@ async function isMobileViewport(page: any): Promise<boolean> {
   return viewport && viewport.width < 768
 }
 
+// AppNavbar opens the mobile menu behind a Vue <Transition> with
+// `transition-all duration-300`, so waiting a flat 300ms races the animation
+// exactly and a click can land mid-slide. Wait for the panel to settle instead.
+async function waitForMobileMenu(page: any): Promise<void> {
+  await expect(page.locator('nav div.absolute.md\\:hidden')).toHaveCSS('opacity', '1')
+}
+
+// The landing page nearly TRIPLES in height as its scroll-reveal sections mount
+// (measured on iPhone 12: scrollHeight 2829 -> 7746 while scrolling down). A single
+// `scrollTo(0, document.body.scrollHeight)` therefore lands on a stale bottom, and
+// an in-page anchor clicked from there resolves against a document that is still
+// growing — WebKit then leaves the scroll position untouched and the target section
+// never enters the viewport. Scroll repeatedly until the height stops changing.
+async function scrollToSettledBottom(page: any): Promise<void> {
+  let previous = -1
+  for (let pass = 0; pass < 15; pass++) {
+    // Walk down a viewport at a time rather than jumping: the sections mount as they
+    // intersect, and jumping straight to the bottom skips the middle ones so they
+    // never realize their height.
+    const height = await page.evaluate(async () => {
+      const step = Math.max(1, Math.floor(window.innerHeight / 2))
+      for (let y = 0; y <= document.documentElement.scrollHeight; y += step) {
+        window.scrollTo(0, y)
+        await new Promise((resolve) => requestAnimationFrame(() => resolve(null)))
+      }
+      window.scrollTo(0, document.documentElement.scrollHeight)
+      return document.documentElement.scrollHeight
+    })
+    if (height === previous) return
+    previous = height
+    await page.waitForTimeout(150)
+  }
+}
+
 // Helper to open mobile menu if needed
 async function openMobileMenuIfNeeded(page: any): Promise<void> {
   const isMobile = await isMobileViewport(page)
@@ -13,7 +47,7 @@ async function openMobileMenuIfNeeded(page: any): Promise<void> {
     const menuButton = page.locator('button.md\\:hidden').first()
     if (await menuButton.isVisible()) {
       await menuButton.click()
-      await page.waitForTimeout(300)
+      await waitForMobileMenu(page)
     }
   }
 }
@@ -80,8 +114,7 @@ test.describe('Navigation', () => {
 
   test('should scroll to features section when clicking Features link', async ({ page }) => {
     // Scroll to footer first to access the Features link (it's in footer, not navbar)
-    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
-    await page.waitForTimeout(300)
+    await scrollToSettledBottom(page)
 
     // Click Features link in footer
     await page.locator('footer').getByRole('link', { name: 'Features' }).click()
@@ -96,8 +129,7 @@ test.describe('Navigation', () => {
 
   test('should scroll to how-it-works section when clicking How It Works link', async ({ page }) => {
     // Scroll to footer first to access the How It Works link (it's in footer, not navbar)
-    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
-    await page.waitForTimeout(300)
+    await scrollToSettledBottom(page)
 
     // Click How It Works link in footer
     await page.locator('footer').getByRole('link', { name: 'How It Works' }).click()
@@ -110,8 +142,7 @@ test.describe('Navigation', () => {
 
   test('should scroll to FAQ section when clicking FAQ link', async ({ page }) => {
     // Scroll to footer first to access the FAQ link (it's in footer, not navbar)
-    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
-    await page.waitForTimeout(300)
+    await scrollToSettledBottom(page)
 
     // Click FAQ link in footer
     await page.locator('footer').getByRole('link', { name: 'FAQ' }).click()
@@ -171,6 +202,13 @@ test.describe('FAQ Section', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
     await page.locator('#faq').scrollIntoViewIfNeeded()
+
+    // FaqSection reveals on scroll with `transition-all duration-700` and a 200ms
+    // delay on the accordion wrapper. Clicking a trigger mid-transition makes the
+    // section's own `.container` intercept the pointer (Mobile Safari loses this
+    // race every run), so wait for the reveal to actually finish. Opacity and the
+    // translate share one duration+delay, so opacity 1 means the panel has settled.
+    await expect(page.locator('#faq div.transition-all').last()).toHaveCSS('opacity', '1')
   })
 
   test('should display FAQ questions', async ({ page }) => {
@@ -252,6 +290,12 @@ test.describe('Testimonials Carousel', () => {
     const secondDot = dots.nth(1)
 
     await secondDot.scrollIntoViewIfNeeded()
+    // TestimonialsCarousel auto-advances every 5000ms, and the assertion below also
+    // retries for 5000ms — so without pausing, the check can straddle an auto-advance
+    // and see dot 3 active instead of dot 2. The carousel pauses on mouseenter (the
+    // dots live inside that container), so hovering first is both what a real user
+    // does and what makes the assertion deterministic.
+    await secondDot.hover()
     await secondDot.click()
     await page.waitForTimeout(500)
 
@@ -267,8 +311,7 @@ test.describe('Testimonials Carousel', () => {
 test.describe('Footer', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
-    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
-    await page.waitForTimeout(500)
+    await scrollToSettledBottom(page)
   })
 
   test('should display footer with logo', async ({ page }) => {

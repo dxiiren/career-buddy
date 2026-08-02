@@ -59,10 +59,11 @@ Run `just` with no arguments to list every recipe. The ones you'll use daily:
 | `just test-unit` | Unit tests only (`tests/unit` — composables) |
 | `just test-functional` | Functional tests only (`tests/functional` — components) |
 | `just test-coverage` | ALL Vitest tests with v8 coverage, enforcing the thresholds in `vitest.config.ts` |
-| `just e2e` | Playwright end-to-end specs (boots its own dev server on :3000) |
+| `just e2e` | Playwright end-to-end specs — 79 specs × 5 browsers (boots its own dev server on :8115) |
+| `just e2e-chromium` | The same specs on chromium only (~2 min) — the loop while fixing a spec |
 | `just typecheck` | Full-project TypeScript check (`npx nuxt typecheck`) — expect 0 errors |
 | `just verify` | Full quality gate: `just test-coverage` + `just typecheck` |
-| `just verify-all` | `just verify` + `just e2e` (minutes; needs `npx playwright install`) |
+| `just verify-all` | `just verify` + `just e2e` (minutes — downloads browser engines on first run) |
 | `just claudex` | Launch Claude Code (Sonnet, all permissions) |
 
 ## Troubleshooting
@@ -86,11 +87,21 @@ The typecheck baseline is **zero errors** (the historical 26-error baseline was 
 it before pushing (`just verify` runs tests + typecheck together); see
 [`.docs/06-troubleshooting/common-issues.md`](.docs/06-troubleshooting/common-issues.md).
 
-### `npm run test:e2e` fails immediately
+### Every e2e spec fails with "Executable doesn't exist"
 
-Playwright needs its browsers once: `npx playwright install`. The e2e config boots its own dev
-server on `localhost:3000` (independent of the :8114 kit server) and runs five browser
-projects — use `--project=chromium` for a faster local run.
+Playwright's npm package ships no browser engines. `just e2e` now downloads them for you
+(`_require-browsers`, a ~3s no-op once they are on disk); if you invoke `npx playwright test`
+directly, run `npx playwright install` first.
+
+### e2e reports "http://localhost:8115 is already used"
+
+That is the guard working. The suite boots its **own** dev server on `:8115` (separate from the
+:8114 kit server) and deliberately never reuses a server it did not start — silently adopting
+whatever answers on the port is how this suite once ran its entire matrix against a *different
+project's* app and reported 77 meaningless failures. Free the port (`just stop`, or kill the
+stray process) or point the run elsewhere with `$env:E2E_PORT='8125'`.
+
+Use `just e2e-chromium` for a faster local run than the full five-browser matrix.
 
 More in [`.docs/06-troubleshooting/common-issues.md`](.docs/06-troubleshooting/common-issues.md).
 

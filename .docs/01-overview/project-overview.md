@@ -61,8 +61,8 @@ features get mock composables, not network calls.
 - `just typecheck` (`npx nuxt typecheck`) — **green, 0 errors** (the historical 26-error
   baseline was cleared in 2026-08; see
   [`../06-troubleshooting/common-issues.md`](../06-troubleshooting/common-issues.md)).
-- Playwright e2e — 5 specs exist; they need `npx playwright install` once and boot their own
-  dev server on `:3000`.
+- Playwright e2e — 5 spec files (79 specs), green on all five browser projects. `just e2e`
+  downloads the browser engines on first run and boots its own dev server on `:8115`.
 
 ## Related docs
 

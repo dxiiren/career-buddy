@@ -1,5 +1,12 @@
 import { test, expect } from '@playwright/test'
 
+// AppNavbar opens the mobile menu behind a Vue <Transition> with
+// `transition-all duration-300`, so waiting a flat 300ms races the animation
+// exactly and a click can land mid-slide. Wait for the panel to settle instead.
+async function waitForMobileMenu(page: any): Promise<void> {
+  await expect(page.locator('nav div.absolute.md\\:hidden')).toHaveCSS('opacity', '1')
+}
+
 test.describe('Mobile Responsive Design', () => {
   // Set mobile viewport for all tests in this describe block
   test.use({ viewport: { width: 390, height: 844 } })
@@ -24,7 +31,7 @@ test.describe('Mobile Responsive Design', () => {
     const menuButton = page.locator('nav button.md\\:hidden, nav .md\\:hidden button').first()
     await menuButton.click()
 
-    await page.waitForTimeout(300)
+    await waitForMobileMenu(page)
 
     // Mobile menu should be visible with nav links (Home, About Us, Contact, Privacy)
     await expect(page.getByRole('link', { name: 'Home' })).toBeVisible()
@@ -36,7 +43,7 @@ test.describe('Mobile Responsive Design', () => {
     // Open mobile menu
     const menuButton = page.locator('nav button.md\\:hidden, nav .md\\:hidden button').first()
     await menuButton.click()
-    await page.waitForTimeout(300)
+    await waitForMobileMenu(page)
 
     // Click a nav link (Home link in mobile menu)
     await page.getByRole('link', { name: 'Home' }).click()

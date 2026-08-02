@@ -71,13 +71,13 @@ OVERALL: PASS | FAIL
 - Run from the **repo root** — `tsconfig.json` extends the generated
   `.nuxt/tsconfig.json`, so `just install` (which runs `nuxt prepare` via postinstall)
   must have run at least once.
-- **Known baseline (2026-08-01):** the typecheck layer currently FAILS with 26
-  pre-existing errors (landing sections, `layouts/dashboard.vue` `user.email`,
-  `nuxt.config.ts` `routeRules.robots`, several test fixture shapes) — see
-  `.docs/06-troubleshooting/common-issues.md`. Report against that baseline: new
-  errors are regressions; don't claim the layer green until the baseline is cleared.
-- Playwright e2e (`npm run test:e2e`) is NOT part of this quality sweep — it boots its
-  own dev server and needs browsers installed (`npx playwright install`); run it only
-  when e2e coverage is the point (see `/generate-playwright-tests`).
+- **Baseline: ZERO errors.** The historical 26-error baseline was cleared in 2026-08,
+  so `just typecheck` must come back completely clean — any error it reports is a
+  regression your change introduced, not a known issue to report around. See
+  `.docs/06-troubleshooting/common-issues.md` and `/fix-typecheck`.
+- Playwright e2e (`just e2e` / `just e2e-chromium`) is NOT part of this quality sweep — it
+  boots its own dev server on :8115 and downloads browser engines on first run, so it is
+  minutes not seconds; run it only when e2e coverage is the point (see
+  `/generate-playwright-tests`).
 - There are no pre-commit hooks in this repo — nothing runs these automatically. Run
   this skill before `/commit` on any non-trivial change.

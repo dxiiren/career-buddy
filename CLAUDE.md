@@ -27,7 +27,7 @@ prep (including an AI simulation page), job search, networking, and self-promoti
 | Utilities | **VueUse 10** | `@vueuse/nuxt` auto-imports |
 | SEO | `@nuxtjs/sitemap` + `useSeo` composable | site `careerbuddy.yanasharif.com`; app routes noindex'd + sitemap-excluded in `nuxt.config.ts`; FAQ JSON-LD on the landing page |
 | Data | Mock composables | one `useX.ts` per module in `composables/` — the entire "backend" |
-| Tests | **Vitest 3** (`@nuxt/test-utils`, happy-dom) + **Playwright 1.57** | `tests/unit` + `tests/functional` (41 files / 916 tests, green; coverage thresholds enforced in `vitest.config.ts`) · `tests/e2e` (5 specs, boots its own dev server on **:3000**) |
+| Tests | **Vitest 3** (`@nuxt/test-utils`, happy-dom) + **Playwright 1.57** | `tests/unit` + `tests/functional` (41 files / 916 tests, green; coverage thresholds enforced in `vitest.config.ts`) · `tests/e2e` (5 files / 79 specs × 5 browsers, green; boots its own dev server on **:8115**) |
 | Package manager | **npm** | Node LTS (verified on v24); `package-lock.json`; postinstall runs **patch-package** (`patches/nuxt-site-config+3.2.18.patch`) + `nuxt prepare` |
 | Task runner | `just` | wraps npm scripts (`justfile`), port 8114 |
 
@@ -81,12 +81,16 @@ career-buddy/
   are the only thing enforcing them, and instrumenting costs no measurable time here. The
   numbers are a ratchet set just under what the suite measures — raise them when the real
   number rises, never lower one to go green.
-- Playwright e2e (`just e2e`, `npm run test:e2e`) boots its **own** dev server on
-  `localhost:3000` (see `playwright.config.ts` `webServer`) and needs browsers once:
-  `npx playwright install`. It is independent of the :8114 kit server. Deliberately **not**
-  part of `just verify`: it runs every spec across chromium, firefox, webkit and two mobile
-  profiles, so it is minutes rather than seconds and reds on any machine that has not
-  downloaded three browser engines. `just verify-all` is `verify` + `e2e` for when you want it.
+- Playwright e2e (`just e2e`, or `just e2e-chromium` for the fast loop) boots its **own** dev
+  server on `localhost:8115` (see `playwright.config.ts` `webServer`), independent of the :8114
+  kit server. Both recipes fetch the browser engines via the `_require-browsers` guard, so a
+  fresh clone works. Deliberately **not** part of `just verify`: 79 specs across chromium,
+  firefox, webkit and two mobile profiles is minutes rather than seconds. `just verify-all` is
+  `verify` + `e2e`.
+- **Never** set `reuseExistingServer` back to true, and never move e2e back to `:3000`. The
+  suite spent a period reporting 77 failures / 2 passes purely because a stray dev server from
+  a *different repo* held :3000 and Playwright silently adopted it as the system under test.
+  A busy port must fail loudly. Override the port per-run with `$env:E2E_PORT` instead.
 - `npm install` must run `patch-package` (postinstall) — if `nuxt-site-config` behaves oddly,
   check the patch applied (`patches/nuxt-site-config+3.2.18.patch`).
 - Mock login is `admin` / `admin` (`composables/useAuth.ts`); register accepts anything.

@@ -14,7 +14,8 @@ career-buddy/
 ├── tailwind.config.ts        # theme tokens, dark mode, animations
 ├── tsconfig.json             # extends generated .nuxt/tsconfig.json
 ├── vitest.config.ts          # nuxt env + happy-dom; includes tests/unit + tests/functional
-├── playwright.config.ts      # testDir tests/e2e; webServer `npm run dev` on :3000;
+├── playwright.config.ts      # testDir tests/e2e; webServer `npm run dev` on :8115
+│                             # (E2E_PORT overrides; never reuses a foreign server);
 │                             # 5 projects (desktop x3 + mobile x2)
 ├── package.json              # scripts; postinstall = patch-package && nuxt prepare
 ├── setup.ps1                 # one-time machine bootstrap (idempotent)

@@ -80,7 +80,7 @@ Composables are SSR-rendered, so browser APIs (`localStorage`, `document`) are g
 | --- | --- | --- | --- |
 | Unit (composables) | Vitest 3 + `@nuxt/test-utils` (nuxt env, happy-dom) | `tests/unit/` | 15 files / 257 tests, green |
 | Functional (components/pages/layouts) | same | `tests/functional/` | 26 files / 659 tests, green |
-| E2E | Playwright 1.57 | `tests/e2e/` | 5 specs; boots its own dev server on `:3000`, five browser projects |
+| E2E | Playwright 1.57 | `tests/e2e/` | 5 spec files / 79 specs; boots its own dev server on `:8115` (never reuses a foreign one), five browser projects |
 
 `vitest.config.ts` runs unit+functional with a 15 s timeout; coverage uses the v8 provider
 (`@vitest/coverage-v8`, in devDependencies) — `just test-coverage` writes text + json + html

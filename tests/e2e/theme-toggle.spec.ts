@@ -6,6 +6,16 @@ async function isMobileViewport(page: any): Promise<boolean> {
   return viewport && viewport.width < 768
 }
 
+// AppNavbar opens the mobile menu behind a Vue <Transition> with
+// `transition-all duration-300`. Waiting a flat 300ms races that duration exactly,
+// so a click can land while the panel is still sliding and a neighbouring row
+// ("Theme", the Privacy link) swallows the pointer. Wait for the panel to settle
+// instead — opacity and the translate share one transition, so opacity 1 means the
+// menu has stopped moving.
+async function waitForMobileMenu(page: any): Promise<void> {
+  await expect(page.locator('nav div.absolute.md\\:hidden')).toHaveCSS('opacity', '1')
+}
+
 // Helper to open mobile menu if needed
 async function openMobileMenuIfNeeded(page: any): Promise<void> {
   const isMobile = await isMobileViewport(page)
@@ -13,7 +23,7 @@ async function openMobileMenuIfNeeded(page: any): Promise<void> {
     const menuButton = page.locator('button.md\\:hidden').first()
     if (await menuButton.isVisible()) {
       await menuButton.click()
-      await page.waitForTimeout(300)
+      await waitForMobileMenu(page)
     }
   }
 }
@@ -246,7 +256,7 @@ test.describe('Theme Toggle in Mobile Menu', () => {
     // Open mobile menu
     const menuButton = page.locator('button.md\\:hidden').first()
     await menuButton.click()
-    await page.waitForTimeout(300)
+    await waitForMobileMenu(page)
 
     // Check for theme toggle in mobile menu
     await expect(page.getByText('Theme', { exact: true })).toBeVisible()
@@ -258,7 +268,7 @@ test.describe('Theme Toggle in Mobile Menu', () => {
     // Open mobile menu
     const menuButton = page.locator('button.md\\:hidden').first()
     await menuButton.click()
-    await page.waitForTimeout(300)
+    await waitForMobileMenu(page)
 
     // Find and click theme toggle in mobile menu
     const mobileThemeToggle = page.getByRole('button', { name: 'Toggle theme' }).last()

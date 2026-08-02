@@ -37,15 +37,35 @@ with typed `X-Robots-Tag` headers in `nuxt.config.ts`, typing `pages/about.vue`'
 and correcting test fixtures. If a similar cross-cutting error shows up, fix the type at its
 definition — not with `any` or `@ts-ignore` at every call site.
 
-### `npm run test:e2e` errors immediately
+### Every e2e spec fails with "Executable doesn't exist at ...chrome-headless-shell.exe"
 
-Two usual causes:
+The Playwright npm package ships no browser engines, and nothing in `npm install` fetches
+them — so a fresh clone reds all 79 specs for a reason unrelated to the code. `just e2e` and
+`just e2e-chromium` now run `npx playwright install` for you via the `_require-browsers`
+guard (~3s once the engines are on disk). Only a raw `npx playwright test` still needs the
+manual install.
 
-1. **Browsers not installed** — run `npx playwright install` once (chromium alone is enough
-   for local authoring: `--project=chromium`).
-2. **Port 3000 occupied** — the Playwright `webServer` boots `npm run dev` on `localhost:3000`
-   (and reuses an existing :3000 server outside CI). If another project owns :3000, stop it
-   first. This is separate from the kit's :8114 server.
+### e2e fails with "http://localhost:8115 is already used"
+
+That is the guard working, not a bug. Free the port — `just stop` for this repo's own
+processes, otherwise find the squatter:
+
+```powershell
+Get-NetTCPConnection -LocalPort 8115 -State Listen |
+  ForEach-Object { Get-CimInstance Win32_Process -Filter "ProcessId = $($_.OwningProcess)" } |
+  Select-Object ProcessId, CommandLine
+```
+
+Or move the run: `$env:E2E_PORT='8125'; just e2e`.
+
+**Why the config refuses to reuse a running server.** The suite used to sit on `:3000` with
+`reuseExistingServer: !process.env.CI`. On a dev box where several Node projects all default
+to :3000, that meant Playwright would silently adopt *another project's* app as the system
+under test — which it did, producing 77 failures and 2 passes (the 2 were the `request`-based
+sitemap checks, which pass against any site serving a valid `sitemap.xml`). Nothing in that
+output pointed at the real cause. The suite now owns `:8115` and sets
+`reuseExistingServer: false` everywhere, so a busy port is a loud, immediate error instead of
+a matrix-wide false failure.
 
 ### `npm run test:coverage` fails asking for a package
 

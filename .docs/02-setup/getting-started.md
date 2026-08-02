@@ -78,11 +78,14 @@ All three were green at verification time
 ## Optional: e2e browsers
 
 ```powershell
-npx playwright install     # once; then:
-npm run test:e2e -- --project=chromium
+just e2e-chromium   # chromium only, ~2 min — downloads browser engines on first run
+just e2e            # all five browser projects, ~10 min
 ```
 
-The e2e run boots its own dev server on `localhost:3000` — it does not use the :8114 server.
+Both recipes fetch the Playwright browser engines if they are missing (npm install does not
+ship them), then boot their **own** dev server on `localhost:8115` — not the :8114 kit server,
+and never a server they did not start. All 79 specs were green on all five projects at
+verification time (2026-08-02).
 
 ## Related docs
 

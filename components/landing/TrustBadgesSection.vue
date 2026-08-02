@@ -47,7 +47,11 @@ const universities = [
         <div class="hidden md:block w-px h-8 bg-border" />
 
         <!-- Universities -->
-        <div class="flex items-center gap-4">
+        <!-- flex-wrap/justify-center to match the Stats row above: the label is
+             whitespace-nowrap and the five logos are fixed h-10 w-10, so without
+             wrapping this row has a hard ~459px minimum and overflowed any phone
+             viewport, widening the mobile layout viewport past the visible width. -->
+        <div class="flex flex-wrap items-center justify-center gap-4">
           <span class="text-xs text-muted-foreground whitespace-nowrap">Trusted by students from</span>
           <div class="flex items-center gap-3">
             <a

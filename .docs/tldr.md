@@ -14,7 +14,7 @@ Nuxt 3 + TypeScript + Tailwind v3 + shadcn-vue. File-based routes in `pages/`, t
 (`default` public, `dashboard` app shell), per-module component folders, and one `useX.ts`
 composable per module acting as that module's mock backend. SEO via `useSeo` + `@nuxtjs/sitemap`
 with app routes noindex'd. Tests in three layers: unit (composables), functional (components,
-happy-dom), e2e (Playwright, own server on :3000).
+happy-dom), e2e (Playwright, own server on :8115).
 
 ## [02-setup/getting-started.md](02-setup/getting-started.md)
 
@@ -41,8 +41,8 @@ deployment would build on.
 ## [05-reference/commands.md](05-reference/commands.md)
 
 The daily table: `just install` / `start` / `dev` / `stop` / `build` / `preview` / `test` /
-`test-unit` / `test-functional`, plus every underlying npm script (including the e2e family
-that the justfile deliberately does not wrap) and the copy-paste health-check probe.
+`test-unit` / `test-functional` / `e2e` / `e2e-chromium`, plus every underlying npm script and
+the copy-paste health-check probe.
 
 ## [05-reference/project-layout.md](05-reference/project-layout.md)
 
@@ -53,12 +53,12 @@ live, and which generated folders (`.nuxt/`, `.output/`) never get committed.
 ## [06-troubleshooting/common-issues.md](06-troubleshooting/common-issues.md)
 
 Real symptoms with fixes: Vitest watch-mode hang, slow first page load (poll, use `localhost`
-not `127.0.0.1`), the pre-existing 26-error typecheck baseline, Playwright browser install +
-:3000 web server, patch-package on install, port 8114 conflicts, and the localStorage mock
-session.
+not `127.0.0.1`), typecheck regressions, missing Playwright browser engines, an occupied :8115
+e2e port (and why the config refuses to reuse a server it did not start), patch-package on
+install, port 8114 conflicts, and the localStorage mock session.
 
 ## [07-faq/faq.md](07-faq/faq.md)
 
 Quick answers: why everything is mocked, the `admin`/`admin` login, why the kit serves :8114
-while e2e uses :3000, where the "AI" content comes from, why there's no ESLint/Prettier, and
-what `patches/` is for.
+while e2e uses :8115, why e2e stays out of `just verify`, where the "AI" content comes from,
+why there's no ESLint/Prettier, and what `patches/` is for.

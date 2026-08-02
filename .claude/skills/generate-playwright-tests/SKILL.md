@@ -7,10 +7,11 @@ model: opus
 # generate-playwright-tests — Authoring Rulebook (this repo's `tests/e2e/`)
 
 Write clean, non-brittle Playwright specs for Career Buddy. Specs live in `tests/e2e/` and run
-against the dev server on `http://localhost:3000` (see `playwright.config.ts` — its `webServer`
-runs `npm run dev` and reuses an already-running :3000 server outside CI, so the final run needs
-no manual server). Five projects run by default (chromium, firefox, webkit, Mobile Chrome,
-Mobile Safari) — author against `--project=chromium` first. Key targets:
+against a dev server on `http://localhost:8115` that `playwright.config.ts` starts and stops
+itself (`webServer`), so the final run needs no manual server. It deliberately does **not**
+reuse a server it did not start — if :8115 is busy the run errors instead of quietly testing
+whatever is there. Five projects run by default (chromium, firefox, webkit, Mobile Chrome,
+Mobile Safari) — author against `just e2e-chromium` first. Key targets:
 
 - **`pages/index.vue`** — public landing page: hero, problem, features, how-it-works,
   testimonials carousel, trust badges, FAQ accordion, CTA footer (sections under
@@ -52,8 +53,8 @@ action** — the element was probably already visible.
    just start           # http://localhost:8114 (background)
    # poll: curl.exe -s -o NUL -w "%{http_code}" http://localhost:8114/
    ```
-   (The final `npm run test:e2e` run boots its own dev server on **:3000** via the config's
-   `webServer` — `just start`'s :8114 instance is only for interactive locator derivation.)
+   (The final `just e2e` run boots its own dev server on **:8115** via the config's `webServer`
+   — `just start`'s :8114 instance is only for interactive locator derivation.)
 3. **Derive selectors via the MCP** — never hand-write brittle CSS:
    - `mcp__playwright__browser_navigate` to the page (on :8114).
    - `mcp__playwright__browser_snapshot` — read the accessibility tree, find the target node.
@@ -157,14 +158,19 @@ test('navbar links scroll to section', async ({ page, isMobile }) => {
 Never claim success from reading the code alone.
 
 ```bash
-npm run test:e2e -- tests/e2e/<page>.spec.ts --project=chromium
-# one test:      npx playwright test tests/e2e/<page>.spec.ts -g "faq accordion expands"
-# interactive:   npm run test:e2e:ui  ·  report: npx playwright show-report
+just e2e-chromium tests/e2e/<page>.spec.ts
+# one test:      just e2e-chromium tests/e2e/<page>.spec.ts -g "faq accordion expands"
+# full matrix:   just e2e   ·  interactive: npm run test:e2e:ui  ·  report: npx playwright show-report
 ```
 
-First-ever run needs browsers: `npx playwright install` (chromium alone is enough for authoring).
+Use the `just` recipes: they fetch the browser engines on first run, so a fresh clone doesn't
+red every spec with "Executable doesn't exist". A raw `npx playwright test` still needs
+`npx playwright install` first.
+
 Paste the final `N passed, N failed, N skipped` line in your reply. If you didn't run it, the claim is
-unverified.
+unverified. **Sanity-check what you tested**: `N failed` where N is nearly the whole file usually
+means the server, not the specs — confirm the run booted its own :8115 server rather than
+erroring on a busy port.
 
 ## Companion skills
 

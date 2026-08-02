@@ -6,6 +6,13 @@ async function isMobileViewport(page: any): Promise<boolean> {
   return viewport && viewport.width < 768
 }
 
+// AppNavbar opens the mobile menu behind a Vue <Transition> with
+// `transition-all duration-300`, so waiting a flat 300ms races the animation
+// exactly and a click can land mid-slide. Wait for the panel to settle instead.
+async function waitForMobileMenu(page: any): Promise<void> {
+  await expect(page.locator('nav div.absolute.md\\:hidden')).toHaveCSS('opacity', '1')
+}
+
 // Helper to open mobile menu if needed
 async function openMobileMenuIfNeeded(page: any): Promise<void> {
   const isMobile = await isMobileViewport(page)
@@ -13,7 +20,7 @@ async function openMobileMenuIfNeeded(page: any): Promise<void> {
     const menuButton = page.locator('button.md\\:hidden').first()
     if (await menuButton.isVisible()) {
       await menuButton.click()
-      await page.waitForTimeout(300)
+      await waitForMobileMenu(page)
     }
   }
 }
