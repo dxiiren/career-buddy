@@ -27,6 +27,57 @@ export interface CoverLetterExample {
   content: string
 }
 
+export interface ResumeBuilderState {
+  selectedTemplateId: string | null
+  selectedCategory: string
+}
+
+/**
+ * Minimal storage contract the builder persists through. `localStorage`
+ * satisfies it on the client; tests inject a stub so the composable's
+ * persistence logic stays pure and synchronously verifiable.
+ */
+export interface BuilderStorage {
+  getItem(key: string): string | null
+  setItem(key: string, value: string): void
+  removeItem(key: string): void
+}
+
+export const RESUME_BUILDER_STORAGE_KEY = 'careerbuddy_resume_builder'
+
+const DEFAULT_BUILDER_STATE: ResumeBuilderState = {
+  selectedTemplateId: null,
+  selectedCategory: 'all',
+}
+
+/** Pure: serialize builder state for storage. */
+export function serializeBuilderState(state: ResumeBuilderState): string {
+  return JSON.stringify(state)
+}
+
+/** Pure: parse a stored payload, returning null for corrupt or wrong-shape data. */
+export function parseBuilderState(raw: string | null): ResumeBuilderState | null {
+  if (!raw) return null
+  try {
+    const parsed: unknown = JSON.parse(raw)
+    if (typeof parsed !== 'object' || parsed === null) return null
+    const candidate = parsed as Record<string, unknown>
+    const { selectedTemplateId, selectedCategory } = candidate
+    if (selectedTemplateId !== null && typeof selectedTemplateId !== 'string') return null
+    if (typeof selectedCategory !== 'string') return null
+    return {
+      selectedTemplateId: selectedTemplateId ?? null,
+      selectedCategory,
+    }
+  } catch {
+    return null
+  }
+}
+
+function defaultBuilderStorage(): BuilderStorage | null {
+  return import.meta.client ? localStorage : null
+}
+
 const isLoading = ref(false)
 
 const whatIsResume = ref<string[]>([
@@ -218,11 +269,40 @@ const atsKeywords = ref<string[]>([
   'Include tools and software mentioned in the job ad',
 ])
 
-export function useResume() {
+const builderState = ref<ResumeBuilderState>({ ...DEFAULT_BUILDER_STATE })
+
+export function useResume(storage: BuilderStorage | null = defaultBuilderStorage()) {
   async function loadResume() {
     isLoading.value = true
     await new Promise(resolve => setTimeout(resolve, 1000))
     isLoading.value = false
+  }
+
+  function persistBuilder() {
+    storage?.setItem(RESUME_BUILDER_STORAGE_KEY, serializeBuilderState(builderState.value))
+  }
+
+  /** Rehydrate builder state from storage (call on page mount). */
+  function initBuilder() {
+    const restored = parseBuilderState(storage?.getItem(RESUME_BUILDER_STORAGE_KEY) ?? null)
+    if (restored) {
+      builderState.value = restored
+    }
+  }
+
+  function selectTemplate(templateId: string | null) {
+    builderState.value = { ...builderState.value, selectedTemplateId: templateId }
+    persistBuilder()
+  }
+
+  function selectCategory(category: string) {
+    builderState.value = { ...builderState.value, selectedCategory: category }
+    persistBuilder()
+  }
+
+  function resetBuilder() {
+    builderState.value = { ...DEFAULT_BUILDER_STATE }
+    storage?.removeItem(RESUME_BUILDER_STORAGE_KEY)
   }
 
   return {
@@ -242,6 +322,12 @@ export function useResume() {
     // ATS
     atsTips,
     atsKeywords,
+    // Builder (persisted via BuilderStorage)
+    builderState,
+    initBuilder,
+    selectTemplate,
+    selectCategory,
+    resetBuilder,
     // Methods
     loadResume,
   }

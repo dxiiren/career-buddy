@@ -17,12 +17,16 @@ const {
   isLoading,
   templates,
   templateCategories,
+  builderState,
+  initBuilder,
+  selectTemplate,
+  selectCategory,
   loadResume,
 } = useResume()
 const { trackPageVisit } = useRecentActivity()
 
 const animatedCards = ref<Set<number>>(new Set())
-const selectedCategory = ref('all')
+const selectedCategory = computed(() => builderState.value.selectedCategory)
 
 const filteredTemplates = computed(() => {
   if (selectedCategory.value === 'all') return templates.value
@@ -34,8 +38,8 @@ const showCard = (index: number) => {
 }
 
 function handleSelectTemplate(template: { id: string, name: string }) {
-  // In a real app, this would open a download or builder
-  console.log('Selected template:', template)
+  // Persisted to localStorage so a refresh keeps the choice.
+  selectTemplate(template.id)
 }
 
 onMounted(async () => {
@@ -45,6 +49,7 @@ onMounted(async () => {
     return
   }
 
+  initBuilder()
   trackPageVisit('/resume/templates')
   await loadResume()
 
@@ -96,7 +101,7 @@ onMounted(async () => {
               ? 'bg-primary text-primary-foreground'
               : 'bg-muted hover:bg-muted/80'
           ]"
-          @click="selectedCategory = cat"
+          @click="selectCategory(cat)"
         >
           {{ cat.replace('-', ' ') }}
         </button>
