@@ -1133,8 +1133,8 @@ describe('MotivationalSection - Daily Tips', () => {
 
 describe('ProgressModules - Skeleton Loading', () => {
   const mockModules = [
-    { id: '1', name: 'Resume', progress: 60, cta: 'Continue', icon: 'FileText', color: 'from-blue-500 to-blue-600' },
-    { id: '2', name: 'Cover Letter', progress: 30, cta: 'Start', icon: 'Mail', color: 'from-purple-500 to-purple-600' },
+    { id: '1', name: 'Resume', progress: 60, cta: 'Continue', icon: 'FileText', color: 'from-blue-500 to-blue-600', href: '/resume' },
+    { id: '2', name: 'Cover Letter', progress: 30, cta: 'Start', icon: 'Mail', color: 'from-purple-500 to-purple-600', href: '/resume/cover-letter' },
   ]
 
   it('renders modules when not loading', async () => {

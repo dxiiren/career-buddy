@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { defineComponent, h } from 'vue'
+import type { FAQCategoryInfo } from '../../composables/useHelp'
 
 // Create stub components
 const Skeleton = defineComponent({
@@ -159,7 +160,7 @@ describe('FAQSearchBar', () => {
 })
 
 describe('FAQCategoryFilter', () => {
-  const mockCategories = [
+  const mockCategories: FAQCategoryInfo[] = [
     { id: 'getting-started', name: 'Getting Started', icon: 'Rocket', description: '' },
     { id: 'resume', name: 'Resume', icon: 'FileText', description: '' },
   ]

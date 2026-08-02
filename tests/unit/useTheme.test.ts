@@ -136,9 +136,11 @@ describe('useTheme composable', () => {
       colorMode.value = 'dark'
       toggleTheme()
 
-      if (colorMode.value === 'light') {
-        expect(documentClassListMock.add).toHaveBeenCalledWith('light')
-      }
+      // toggleTheme flips dark -> light; read via the ref getter so TS doesn't
+      // keep the pre-toggle 'dark' narrowing from the assignment above.
+      const mode: 'light' | 'dark' = colorMode.value
+      expect(mode).toBe('light')
+      expect(documentClassListMock.add).toHaveBeenCalledWith('light')
     })
 
     it('should save preference after toggle', async () => {

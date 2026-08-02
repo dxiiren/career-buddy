@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 interface User {
   username: string
   name: string
+  email?: string
 }
 
 const user = ref<User | null>(null)
@@ -54,6 +55,7 @@ export function useAuth() {
     user.value = {
       username: email.split('@')[0],
       name: name,
+      email: email,
     }
     isLoading.value = false
 

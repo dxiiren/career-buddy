@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Component } from 'vue'
 import { Button } from '@/components/ui/button'
 import {
   Sparkles,
@@ -58,7 +59,13 @@ const values = [
   },
 ]
 
-const stats = []
+interface AboutStat {
+  icon: Component
+  value: string
+  label: string
+}
+
+const stats: AboutStat[] = []
 </script>
 
 <template>

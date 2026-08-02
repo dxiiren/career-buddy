@@ -30,16 +30,19 @@ export default defineNuxtConfig({
     ],
   },
 
+  // App (mock-auth) routes must not be indexed. The `robots` route-rule key belongs to the
+  // @nuxtjs/robots module (not installed), so we send the equivalent X-Robots-Tag header —
+  // fully typed by Nitro and honoured by crawlers. Pages also set <meta name="robots"> via useSeo.
   routeRules: {
-    '/dashboard/**': { robots: 'noindex, nofollow' },
-    '/chat/**': { robots: 'noindex, nofollow' },
-    '/help': { robots: 'noindex, nofollow' },
-    '/settings': { robots: 'noindex, nofollow' },
-    '/resume/**': { robots: 'noindex, nofollow' },
-    '/interview/**': { robots: 'noindex, nofollow' },
-    '/job-search/**': { robots: 'noindex, nofollow' },
-    '/networking/**': { robots: 'noindex, nofollow' },
-    '/self-promotion/**': { robots: 'noindex, nofollow' },
+    '/dashboard/**': { headers: { 'X-Robots-Tag': 'noindex, nofollow' } },
+    '/chat/**': { headers: { 'X-Robots-Tag': 'noindex, nofollow' } },
+    '/help': { headers: { 'X-Robots-Tag': 'noindex, nofollow' } },
+    '/settings': { headers: { 'X-Robots-Tag': 'noindex, nofollow' } },
+    '/resume/**': { headers: { 'X-Robots-Tag': 'noindex, nofollow' } },
+    '/interview/**': { headers: { 'X-Robots-Tag': 'noindex, nofollow' } },
+    '/job-search/**': { headers: { 'X-Robots-Tag': 'noindex, nofollow' } },
+    '/networking/**': { headers: { 'X-Robots-Tag': 'noindex, nofollow' } },
+    '/self-promotion/**': { headers: { 'X-Robots-Tag': 'noindex, nofollow' } },
   },
 
   shadcn: {
