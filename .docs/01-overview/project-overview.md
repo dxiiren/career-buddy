@@ -55,7 +55,9 @@ features get mock composables, not network calls.
 ## Quality snapshot (verified 2026-08-02)
 
 - `just build` — green (Nuxt 3.17.5 / Nitro 2.12.4 / Vue 3.5.25, Node v24).
-- `just test` — green: 39 Vitest files, **843 tests passing** (223 unit + 620 functional).
+- `just test` — green: 41 Vitest files, **916 tests passing** (257 unit + 659 functional).
+- `just test-coverage` — green against the enforced thresholds (96% statements / 96% lines /
+  90% branches / 72% functions); measured 97.08 / 97.08 / 91.89 / 74.22.
 - `just typecheck` (`npx nuxt typecheck`) — **green, 0 errors** (the historical 26-error
   baseline was cleared in 2026-08; see
   [`../06-troubleshooting/common-issues.md`](../06-troubleshooting/common-issues.md)).

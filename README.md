@@ -55,11 +55,14 @@ Run `just` with no arguments to list every recipe. The ones you'll use daily:
 | `just stop` | Stop only THIS repo's node processes |
 | `just build` | Production build (Nitro server bundle in `.output/`) |
 | `just preview` | Serve the production build on http://localhost:8114 (after `just build`) |
-| `just test` | Run ALL Vitest tests once (unit + functional — 843 tests) |
+| `just test` | Run ALL Vitest tests once (unit + functional — 916 tests) |
 | `just test-unit` | Unit tests only (`tests/unit` — composables) |
 | `just test-functional` | Functional tests only (`tests/functional` — components) |
+| `just test-coverage` | ALL Vitest tests with v8 coverage, enforcing the thresholds in `vitest.config.ts` |
+| `just e2e` | Playwright end-to-end specs (boots its own dev server on :3000) |
 | `just typecheck` | Full-project TypeScript check (`npx nuxt typecheck`) — expect 0 errors |
-| `just verify` | Full quality gate: `just test` + `just typecheck` |
+| `just verify` | Full quality gate: `just test-coverage` + `just typecheck` |
+| `just verify-all` | `just verify` + `just e2e` (minutes; needs `npx playwright install`) |
 | `just claudex` | Launch Claude Code (Sonnet, all permissions) |
 
 ## Troubleshooting

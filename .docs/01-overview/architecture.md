@@ -78,13 +78,20 @@ Composables are SSR-rendered, so browser APIs (`localStorage`, `document`) are g
 
 | Layer | Tool | Location | Status (2026-08-02) |
 | --- | --- | --- | --- |
-| Unit (composables) | Vitest 3 + `@nuxt/test-utils` (nuxt env, happy-dom) | `tests/unit/` | 14 files / 223 tests, green |
-| Functional (components/pages) | same | `tests/functional/` | 25 files / 620 tests, green |
+| Unit (composables) | Vitest 3 + `@nuxt/test-utils` (nuxt env, happy-dom) | `tests/unit/` | 15 files / 257 tests, green |
+| Functional (components/pages/layouts) | same | `tests/functional/` | 26 files / 659 tests, green |
 | E2E | Playwright 1.57 | `tests/e2e/` | 5 specs; boots its own dev server on `:3000`, five browser projects |
 
 `vitest.config.ts` runs unit+functional with a 15 s timeout; coverage uses the v8 provider
 (`@vitest/coverage-v8`, in devDependencies) — `just test-coverage` writes text + json + html
-reports into the git-ignored `coverage/`. No thresholds are configured.
+reports into the git-ignored `coverage/`.
+
+Coverage scope is `components/`, `composables/`, `layouts/` and `lib/`, and the thresholds are
+**enforced**: 96% statements, 96% lines, 90% branches, 72% functions. They are a ratchet set
+just under the measured 97.08 / 97.08 / 91.89 / 74.22, with only enough slack that unrelated
+churn does not red the gate. `just verify` runs `test-coverage`, not a plain run, because a
+threshold nothing enforces is a comment — and instrumenting costs no measurable time here.
+Raise a number when the real one rises; never lower one to go green.
 
 ## Build & patching
 

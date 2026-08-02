@@ -124,6 +124,161 @@ describe('useInterview', () => {
     })
   })
 
+  describe('answering during a simulation', () => {
+    beforeEach(async () => {
+      // The composable's state is module-level, so every run starts from a
+      // fresh simulation rather than the previous test's leftovers.
+      const { useInterview } = await import('../../composables/useInterview')
+      useInterview().startSimulation()
+    })
+
+    it('should record an answer and advance to the next question', async () => {
+      const { useInterview } = await import('../../composables/useInterview')
+      const { simulationState, submitAnswer } = useInterview()
+
+      submitAnswer('I led the debugging session and we shipped on time.')
+
+      expect(simulationState.value.answers).toEqual([
+        'I led the debugging session and we shipped on time.',
+      ])
+      expect(simulationState.value.currentQuestionIndex).toBe(1)
+    })
+
+    it('should keep answers in the order they were given', async () => {
+      const { useInterview } = await import('../../composables/useInterview')
+      const { simulationState, submitAnswer } = useInterview()
+
+      submitAnswer('first')
+      submitAnswer('second')
+      submitAnswer('third')
+
+      expect(simulationState.value.answers).toEqual([
+        'first',
+        'second',
+        'third',
+      ])
+      expect(simulationState.value.currentQuestionIndex).toBe(3)
+    })
+
+    it('should stay active while the candidate is answering', async () => {
+      const { useInterview } = await import('../../composables/useInterview')
+      const { simulationState, submitAnswer } = useInterview()
+
+      submitAnswer('an answer')
+
+      expect(simulationState.value.isActive).toBe(true)
+    })
+
+    it('should advance past a skipped question', async () => {
+      const { useInterview } = await import('../../composables/useInterview')
+      const { simulationState, submitAnswer } = useInterview()
+
+      submitAnswer('')
+
+      // A blank answer is still a recorded turn — the index has to move or the
+      // simulation sits on the same question forever.
+      expect(simulationState.value.answers).toEqual([''])
+      expect(simulationState.value.currentQuestionIndex).toBe(1)
+    })
+
+    it('should keep the answers after the simulation ends, for review', async () => {
+      const { useInterview } = await import('../../composables/useInterview')
+      const { simulationState, submitAnswer, endSimulation } = useInterview()
+
+      submitAnswer('an answer')
+      endSimulation()
+
+      expect(simulationState.value.isActive).toBe(false)
+      expect(simulationState.value.answers).toEqual(['an answer'])
+    })
+
+    it('should carry nothing over into the next simulation', async () => {
+      const { useInterview } = await import('../../composables/useInterview')
+      const { simulationState, submitAnswer, endSimulation, startSimulation } =
+        useInterview()
+
+      submitAnswer('an answer from the previous run')
+      endSimulation()
+      startSimulation()
+
+      expect(simulationState.value.answers).toEqual([])
+      expect(simulationState.value.currentQuestionIndex).toBe(0)
+    })
+  })
+
+  describe('updating simulation settings', () => {
+    const DEFAULTS = { mode: 'text' as const, category: 'all', timeLimit: 120 }
+
+    afterEach(async () => {
+      // Shared module state again: leave the defaults as they were found.
+      const { useInterview } = await import('../../composables/useInterview')
+      useInterview().updateSettings(DEFAULTS)
+    })
+
+    it('should apply a partial change without clearing the rest', async () => {
+      const { useInterview } = await import('../../composables/useInterview')
+      const { simulationSettings, updateSettings } = useInterview()
+
+      updateSettings({ mode: 'voice' })
+
+      expect(simulationSettings.value).toEqual({
+        mode: 'voice',
+        category: 'all',
+        timeLimit: 120,
+      })
+    })
+
+    it('should narrow the simulation to one question category', async () => {
+      const { useInterview } = await import('../../composables/useInterview')
+      const { simulationSettings, updateSettings } = useInterview()
+
+      updateSettings({ category: 'behavioral' })
+
+      expect(simulationSettings.value.category).toBe('behavioral')
+      expect(simulationSettings.value.mode).toBe('text')
+    })
+
+    it('should change the per-question time limit', async () => {
+      const { useInterview } = await import('../../composables/useInterview')
+      const { simulationSettings, updateSettings } = useInterview()
+
+      updateSettings({ timeLimit: 60 })
+
+      expect(simulationSettings.value.timeLimit).toBe(60)
+    })
+
+    it('should apply several changes at once', async () => {
+      const { useInterview } = await import('../../composables/useInterview')
+      const { simulationSettings, updateSettings } = useInterview()
+
+      updateSettings({ mode: 'voice', category: 'salary', timeLimit: 180 })
+
+      expect(simulationSettings.value).toEqual({
+        mode: 'voice',
+        category: 'salary',
+        timeLimit: 180,
+      })
+    })
+
+    it('should leave settings untouched when given nothing to change', async () => {
+      const { useInterview } = await import('../../composables/useInterview')
+      const { simulationSettings, updateSettings } = useInterview()
+
+      updateSettings({})
+
+      expect(simulationSettings.value).toEqual(DEFAULTS)
+    })
+
+    it('should be visible to every caller of the composable', async () => {
+      // The settings ref lives at module scope, so the settings panel and the
+      // simulation page are looking at the same object, not two copies.
+      const { useInterview } = await import('../../composables/useInterview')
+      useInterview().updateSettings({ timeLimit: 45 })
+
+      expect(useInterview().simulationSettings.value.timeLimit).toBe(45)
+    })
+  })
+
   describe('loading state', () => {
     it('should have isLoading state', async () => {
       const { useInterview } = await import('../../composables/useInterview')

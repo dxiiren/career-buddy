@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { h } from 'vue'
 import Accordion from '../../components/ui/accordion/Accordion.vue'
@@ -8,18 +8,28 @@ import AccordionContent from '../../components/ui/accordion/AccordionContent.vue
 
 describe('Accordion Component', () => {
   describe('rendering', () => {
-    it('renders the accordion root element', async () => {
-      const wrapper = await mountSuspended(Accordion, {
-        props: {
-          type: 'single',
-          collapsible: true,
-        },
-        slots: {
-          default: '<div>Accordion content</div>',
-        },
-      })
+    it('forwards radix-vue events back out to the caller', async () => {
+      // The root's entire job is useForwardPropsEmits. Props are covered by the
+      // class and default-value specs below; the emit half was covered nowhere,
+      // and a v-model on the FAQ accordion depends on it.
+      const onUpdate = vi.fn()
+      const TestComponent = {
+        components: { Accordion, AccordionItem, AccordionTrigger, AccordionContent },
+        setup: () => ({ onUpdate }),
+        template: `
+          <Accordion type="single" collapsible @update:model-value="onUpdate">
+            <AccordionItem value="item-1">
+              <AccordionTrigger>Question 1</AccordionTrigger>
+              <AccordionContent>Answer 1</AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        `,
+      }
+      const wrapper = await mountSuspended(TestComponent)
 
-      expect(wrapper.exists()).toBe(true)
+      await wrapper.find('button').trigger('click')
+
+      expect(onUpdate).toHaveBeenCalledWith('item-1')
     })
 
     it('renders slot content', async () => {
@@ -97,12 +107,15 @@ describe('Accordion with nested components', () => {
       expect(wrapper.text()).toContain('Question 2')
     })
 
-    it('accordion items have border-b styling', async () => {
+    it('separates accordion items with a bottom border', async () => {
       const TestComponent = createAccordionWithItems()
       const wrapper = await mountSuspended(TestComponent)
 
       const items = wrapper.findAllComponents(AccordionItem)
       expect(items.length).toBe(2)
+      for (const item of items) {
+        expect(item.classes()).toContain('border-b')
+      }
     })
   })
 
@@ -133,44 +146,48 @@ describe('Accordion with nested components', () => {
   })
 
   describe('AccordionContent within Accordion', () => {
-    it('renders accordion content components', async () => {
+    it('keeps every answer collapsed until asked', async () => {
       const TestComponent = createAccordionWithItems()
       const wrapper = await mountSuspended(TestComponent)
 
-      // AccordionContent components are rendered (content may be collapsed by default)
-      const contentComponents = wrapper.findAllComponents(AccordionContent)
-      expect(contentComponents.length).toBe(2)
+      expect(wrapper.findAllComponents(AccordionContent)).toHaveLength(2)
+      expect(wrapper.text()).not.toContain('Answer 1')
+      expect(wrapper.text()).not.toContain('Answer 2')
     })
   })
 
   describe('Accordion interactions', () => {
-    it('clicking trigger expands content', async () => {
+    it('clicking a trigger reveals its answer', async () => {
       const TestComponent = createAccordionWithItems()
       const wrapper = await mountSuspended(TestComponent)
 
       const firstTrigger = wrapper.findAll('button')[0]
+      expect(firstTrigger.attributes('aria-expanded')).toBe('false')
+
       await firstTrigger.trigger('click')
 
-      // After clicking, the accordion should have an open state
-      const accordionContent = wrapper.findAllComponents(AccordionContent)
-      expect(accordionContent.length).toBeGreaterThan(0)
+      expect(firstTrigger.attributes('aria-expanded')).toBe('true')
+      expect(firstTrigger.attributes('data-state')).toBe('open')
+      expect(wrapper.text()).toContain('Answer 1')
     })
 
-    it('can toggle between items in single mode', async () => {
+    it('closes the open item when another is opened, in single mode', async () => {
       const TestComponent = createAccordionWithItems()
       const wrapper = await mountSuspended(TestComponent)
 
-      const buttons = wrapper.findAll('button')
-      expect(buttons.length).toBeGreaterThanOrEqual(2)
+      const [first, second] = wrapper.findAll('button')
 
-      // Click first item
-      await buttons[0].trigger('click')
+      await first.trigger('click')
+      expect(first.attributes('aria-expanded')).toBe('true')
 
-      // Click second item
-      await buttons[1].trigger('click')
+      await second.trigger('click')
 
-      // In single mode, only one should be open at a time
-      expect(wrapper.exists()).toBe(true)
+      // "single" is the whole reason this mode exists — two open panels here
+      // would be the bug.
+      expect(first.attributes('aria-expanded')).toBe('false')
+      expect(second.attributes('aria-expanded')).toBe('true')
+      expect(wrapper.text()).toContain('Answer 2')
+      expect(wrapper.text()).not.toContain('Answer 1')
     })
   })
 })
@@ -194,24 +211,28 @@ describe('Accordion with multiple mode', () => {
     }
   }
 
-  it('renders multiple mode accordion', async () => {
+  it('starts with every item closed', async () => {
     const TestComponent = createMultipleAccordion()
     const wrapper = await mountSuspended(TestComponent)
 
-    expect(wrapper.exists()).toBe(true)
+    for (const button of wrapper.findAll('button')) {
+      expect(button.attributes('aria-expanded')).toBe('false')
+    }
   })
 
-  it('allows multiple items to be open', async () => {
+  it('allows multiple items to be open at once', async () => {
     const TestComponent = createMultipleAccordion()
     const wrapper = await mountSuspended(TestComponent)
 
-    const buttons = wrapper.findAll('button')
+    const [first, second] = wrapper.findAll('button')
 
-    // Click both items
-    await buttons[0].trigger('click')
-    await buttons[1].trigger('click')
+    await first.trigger('click')
+    await second.trigger('click')
 
-    expect(wrapper.exists()).toBe(true)
+    expect(first.attributes('aria-expanded')).toBe('true')
+    expect(second.attributes('aria-expanded')).toBe('true')
+    expect(wrapper.text()).toContain('Answer 1')
+    expect(wrapper.text()).toContain('Answer 2')
   })
 })
 
@@ -257,7 +278,10 @@ describe('Accordion styling', () => {
     const wrapper = await mountSuspended(TestComponent)
 
     const button = wrapper.find('button')
-    expect(button.exists()).toBe(true)
+    expect(button.classes()).toContain('hover:underline')
+    // The chevron flips via a data-state selector rather than a bound class,
+    // so it only works while that exact selector is on the trigger.
+    expect(button.classes()).toContain('[&[data-state=open]>svg]:rotate-180')
   })
 })
 
@@ -341,7 +365,8 @@ describe('Accordion default values', () => {
     }
     const wrapper = await mountSuspended(TestComponent)
 
-    expect(wrapper.text()).toContain('Open by default')
+    expect(wrapper.find('button').attributes('aria-expanded')).toBe('true')
+    expect(wrapper.text()).toContain('This should be visible')
   })
 
   it('collapsible accordion can close all items', async () => {
@@ -360,12 +385,13 @@ describe('Accordion default values', () => {
 
     const button = wrapper.find('button')
 
-    // Open
+    await button.trigger('click')
+    expect(button.attributes('aria-expanded')).toBe('true')
+
+    // Without `collapsible`, this second click would be a no-op.
     await button.trigger('click')
 
-    // Close (collapsible allows this)
-    await button.trigger('click')
-
-    expect(wrapper.exists()).toBe(true)
+    expect(button.attributes('aria-expanded')).toBe('false')
+    expect(wrapper.text()).not.toContain('Can be closed')
   })
 })

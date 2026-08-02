@@ -62,19 +62,37 @@ test-unit: _require-node
 test-functional: _require-node
     npm run test:functional
 
-# Reporters come from vitest.config.ts (text to console; json + html into the
-# git-ignored coverage/). No thresholds configured — the gate is "runs green".
-# Run all Vitest tests once with coverage (vitest run --coverage).
+# Reporters and thresholds come from vitest.config.ts (text to console; json +
+# html into the git-ignored coverage/). The thresholds are set just under the
+# measured numbers, so a drop fails here instead of going unnoticed.
+# Run all Vitest tests once with coverage, enforcing the thresholds.
 test-coverage: _require-node
     npm run test:coverage
+
+# Boots its OWN dev server on :3000 (playwright.config.ts webServer) across five
+# browser projects, and needs the browsers once: `npx playwright install`.
+# Playwright end-to-end specs (tests/e2e). Not part of `verify` — see verify-all.
+e2e *flags: _require-node
+    npm run test:e2e -- {{flags}}
 
 # Full-project TypeScript check (vue-tsc via nuxt). Baseline is ZERO errors.
 typecheck: _require-node
     npx nuxt typecheck
 
-# Full quality gate: all Vitest tests + typecheck. Run before pushing.
-verify: test typecheck
-    Write-Host "verify OK: tests green + typecheck clean"
+# Coverage instead of a plain run because it costs no measurable time here and
+# is the only thing enforcing the thresholds.
+# Full quality gate: all Vitest tests (coverage-gated) + typecheck. Before pushing.
+verify: test-coverage typecheck
+    Write-Host "verify OK: tests green + coverage above thresholds + typecheck clean"
+
+# Deliberately separate from `verify`: Playwright here runs every spec across
+# chromium, firefox, webkit and two mobile profiles, so it is minutes rather
+# than seconds and needs three browser engines downloaded. Making the pre-push
+# gate depend on that reds the repo on any machine that has not run
+# `npx playwright install`, for reasons unrelated to the change being pushed.
+# Everything, browsers included. Run before a release or after touching the UI.
+verify-all: verify e2e
+    Write-Host "verify-all OK: verify gate + Playwright e2e green"
 
 # ─── Tools ───────────────────────────────────────────────
 

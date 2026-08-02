@@ -18,7 +18,8 @@
 | `just test [flags]` | ALL Vitest tests once (`vitest --run`; extra flags pass through) |
 | `just test-unit` | `tests/unit` only (composables) |
 | `just test-functional` | `tests/functional` only (components/pages) |
-| `just test-coverage` | ALL Vitest tests once with v8 coverage → git-ignored `coverage/` (no thresholds) |
+| `just test-coverage` | ALL Vitest tests once with v8 coverage → git-ignored `coverage/`; **enforces** the thresholds in `vitest.config.ts` (96% statements / 96% lines / 90% branches / 72% functions) |
+| `just e2e [flags]` | Playwright specs in `tests/e2e` — boots its own dev server on :3000; needs `npx playwright install` once |
 | `just claudex` / `claudeo` / `claudeh` | Claude Code with all permissions — Sonnet / Opus / Haiku |
 
 `PORT` is overridable per invocation: `$env:PORT='8200'; just start` (default 8114).
@@ -37,16 +38,27 @@
 | `npm run test:coverage` | run-once full suite with v8 coverage (`just test-coverage`); reports land in the git-ignored `coverage/` |
 | `npm run test:all` | vitest run + full playwright |
 
-The justfile intentionally has no e2e recipe: the Playwright run manages its own server on a
-different port (:3000) and needs a one-time browser download — keep it an explicit npm call.
+`just e2e` wraps the Playwright run, which still manages its own server on a different port
+(:3000) and needs a one-time browser download (`npx playwright install`). It is a recipe for
+convenience, not part of the pre-push gate — see below.
 
 ## Quality commands
 
 | Command | Notes |
 | --- | --- |
 | `just typecheck` (`npx nuxt typecheck`) | vue-tsc over the whole project; **baseline: 0 errors** — any error is a regression |
-| `just verify` | full quality gate: `just test` + `just typecheck` |
+| `just verify` | pre-push gate: `just test-coverage` + `just typecheck` |
+| `just verify-all` | `just verify` + `just e2e` — the browser layer too |
 | `npx nuxt prepare` | regenerate `.nuxt/` types (runs automatically on install) |
+
+`verify` runs the suite **with coverage** rather than plain, because the thresholds in
+`vitest.config.ts` are the only thing enforcing them and instrumenting costs no measurable
+time here.
+
+Playwright is deliberately outside `verify`: it runs every spec across chromium, firefox,
+webkit and two mobile profiles, which is minutes rather than seconds and fails on any machine
+that has not downloaded three browser engines — a red gate for reasons unrelated to the change
+being pushed. Reach for `just verify-all` before a release or after touching the UI.
 
 ## Health probe
 

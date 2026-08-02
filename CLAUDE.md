@@ -27,7 +27,7 @@ prep (including an AI simulation page), job search, networking, and self-promoti
 | Utilities | **VueUse 10** | `@vueuse/nuxt` auto-imports |
 | SEO | `@nuxtjs/sitemap` + `useSeo` composable | site `careerbuddy.yanasharif.com`; app routes noindex'd + sitemap-excluded in `nuxt.config.ts`; FAQ JSON-LD on the landing page |
 | Data | Mock composables | one `useX.ts` per module in `composables/` — the entire "backend" |
-| Tests | **Vitest 3** (`@nuxt/test-utils`, happy-dom) + **Playwright 1.57** | `tests/unit` + `tests/functional` (39 files / 843 tests, green) · `tests/e2e` (5 specs, boots its own dev server on **:3000**) |
+| Tests | **Vitest 3** (`@nuxt/test-utils`, happy-dom) + **Playwright 1.57** | `tests/unit` + `tests/functional` (41 files / 916 tests, green; coverage thresholds enforced in `vitest.config.ts`) · `tests/e2e` (5 specs, boots its own dev server on **:3000**) |
 | Package manager | **npm** | Node LTS (verified on v24); `package-lock.json`; postinstall runs **patch-package** (`patches/nuxt-site-config+3.2.18.patch`) + `nuxt prepare` |
 | Task runner | `just` | wraps npm scripts (`justfile`), port 8114 |
 
@@ -76,10 +76,17 @@ career-buddy/
   (forces `--run`) or the scoped `npm run test:unit` / `npm run test:functional`.
 - `just typecheck` (`npx nuxt typecheck`) passes with **ZERO errors** — the historical
   26-error baseline was cleared in 2026-08. Any typecheck error is a regression; `just verify`
-  runs tests + typecheck as the pre-push gate.
-- Playwright e2e (`npm run test:e2e`) boots its **own** dev server on `localhost:3000` (see
-  `playwright.config.ts` `webServer`) and needs browsers once: `npx playwright install`. It is
-  independent of the :8114 kit server.
+  runs `test-coverage` + typecheck as the pre-push gate.
+- `just verify` runs the suite **with coverage** because the thresholds in `vitest.config.ts`
+  are the only thing enforcing them, and instrumenting costs no measurable time here. The
+  numbers are a ratchet set just under what the suite measures — raise them when the real
+  number rises, never lower one to go green.
+- Playwright e2e (`just e2e`, `npm run test:e2e`) boots its **own** dev server on
+  `localhost:3000` (see `playwright.config.ts` `webServer`) and needs browsers once:
+  `npx playwright install`. It is independent of the :8114 kit server. Deliberately **not**
+  part of `just verify`: it runs every spec across chromium, firefox, webkit and two mobile
+  profiles, so it is minutes rather than seconds and reds on any machine that has not
+  downloaded three browser engines. `just verify-all` is `verify` + `e2e` for when you want it.
 - `npm install` must run `patch-package` (postinstall) — if `nuxt-site-config` behaves oddly,
   check the patch applied (`patches/nuxt-site-config+3.2.18.patch`).
 - Mock login is `admin` / `admin` (`composables/useAuth.ts`); register accepts anything.

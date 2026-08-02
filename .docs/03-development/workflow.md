@@ -38,9 +38,10 @@ effects, and SSR-safe browser-API access (`import.meta.client` / `onMounted`).
 
 | Gate | Command | Expectation |
 | --- | --- | --- |
-| Unit + functional tests | `just test` | 100% pass (843 baseline) — never weaken an assertion to go green |
-| Typecheck | `just typecheck` | **0 errors** is the baseline; any error is a regression (see `/fix-typecheck`). `just verify` = tests + typecheck |
-| E2E (when relevant) | `npm run test:e2e -- --project=chromium` | pass; needs `npx playwright install` once |
+| Unit + functional tests | `just test` | 100% pass (916 baseline) — never weaken an assertion to go green |
+| Coverage | `just test-coverage` | above the thresholds in `vitest.config.ts` (96/96/90/72) — raise them when the real number rises, never lower one to go green |
+| Typecheck | `just typecheck` | **0 errors** is the baseline; any error is a regression (see `/fix-typecheck`). `just verify` = test-coverage + typecheck |
+| E2E (when relevant) | `just e2e --project=chromium` | pass; needs `npx playwright install` once. `just verify-all` = verify + the full five-browser run |
 
 There is no ESLint or Prettier in this repo — don't invent `npm run lint`; `/lint-check` runs
 the two real layers above.
