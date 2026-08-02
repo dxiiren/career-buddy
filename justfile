@@ -62,6 +62,14 @@ test-unit: _require-node
 test-functional: _require-node
     npm run test:functional
 
+# Full-project TypeScript check (vue-tsc via nuxt). Baseline is ZERO errors.
+typecheck: _require-node
+    npx nuxt typecheck
+
+# Full quality gate: all Vitest tests + typecheck. Run before pushing.
+verify: test typecheck
+    Write-Host "verify OK: tests green + typecheck clean"
+
 # ─── Tools ───────────────────────────────────────────────
 
 # Launch Claude Code with all permissions — Sonnet (latest)
