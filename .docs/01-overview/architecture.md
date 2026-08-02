@@ -76,9 +76,9 @@ Composables are SSR-rendered, so browser APIs (`localStorage`, `document`) are g
 
 ## Testing
 
-| Layer | Tool | Location | Status (2026-08-01) |
+| Layer | Tool | Location | Status (2026-08-02) |
 | --- | --- | --- | --- |
-| Unit (composables) | Vitest 3 + `@nuxt/test-utils` (nuxt env, happy-dom) | `tests/unit/` | 14 files / 214 tests, green |
+| Unit (composables) | Vitest 3 + `@nuxt/test-utils` (nuxt env, happy-dom) | `tests/unit/` | 14 files / 223 tests, green |
 | Functional (components/pages) | same | `tests/functional/` | 25 files / 620 tests, green |
 | E2E | Playwright 1.57 | `tests/e2e/` | 5 specs; boots its own dev server on `:3000`, five browser projects |
 

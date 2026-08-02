@@ -43,7 +43,8 @@ different port (:3000) and needs a one-time browser download — keep it an expl
 
 | Command | Notes |
 | --- | --- |
-| `npx nuxt typecheck` | vue-tsc over the whole project; **baseline: 26 pre-existing errors** — new ones are regressions |
+| `just typecheck` (`npx nuxt typecheck`) | vue-tsc over the whole project; **baseline: 0 errors** — any error is a regression |
+| `just verify` | full quality gate: `just test` + `just typecheck` |
 | `npx nuxt prepare` | regenerate `.nuxt/` types (runs automatically on install) |
 
 ## Health probe

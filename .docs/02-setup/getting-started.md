@@ -65,12 +65,13 @@ Stop with `just stop` — it kills only this repo's node processes.
 ## 4. Verify the toolchain
 
 ```powershell
-just test         # all Vitest tests once — expect 834 passed
+just test         # all Vitest tests once — expect 843 passed
+just typecheck    # full-project TypeScript check — expect 0 errors
 just build        # production build — expect "Build complete!"
 ```
 
-Both were green at kit-verification time (2026-08-01). Note `npx nuxt typecheck` is **expected
-to fail** with 26 pre-existing errors — see
+(`just verify` runs test + typecheck in one go.) All three were green at verification time
+(2026-08-02); a typecheck error means your working tree introduced a regression — see
 [`../06-troubleshooting/common-issues.md`](../06-troubleshooting/common-issues.md).
 
 ## Optional: e2e browsers

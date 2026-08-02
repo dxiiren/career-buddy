@@ -13,8 +13,8 @@ prep (including an AI simulation page), job search, networking, and self-promoti
 `.env`; the "AI" features return canned content.
 
 - **Repo:** GitHub — `github.com/dxiiren/carreer-buddy-proto`
-- **Runs locally only** — no CI/CD, no deployment target. `just start` serves on
-  `http://localhost:8114`.
+- **Live demo:** https://carreer-buddy-proto.vercel.app (Vercel). Local dev via `just start`
+  on `http://localhost:8114` — no CI/CD.
 
 ### Tech Stack Quick Reference
 
@@ -27,7 +27,7 @@ prep (including an AI simulation page), job search, networking, and self-promoti
 | Utilities | **VueUse 10** | `@vueuse/nuxt` auto-imports |
 | SEO | `@nuxtjs/sitemap` + `useSeo` composable | site `careerbuddy.yanasharif.com`; app routes noindex'd + sitemap-excluded in `nuxt.config.ts`; FAQ JSON-LD on the landing page |
 | Data | Mock composables | one `useX.ts` per module in `composables/` — the entire "backend" |
-| Tests | **Vitest 3** (`@nuxt/test-utils`, happy-dom) + **Playwright 1.57** | `tests/unit` + `tests/functional` (39 files / 834 tests, green) · `tests/e2e` (5 specs, boots its own dev server on **:3000**) |
+| Tests | **Vitest 3** (`@nuxt/test-utils`, happy-dom) + **Playwright 1.57** | `tests/unit` + `tests/functional` (39 files / 843 tests, green) · `tests/e2e` (5 specs, boots its own dev server on **:3000**) |
 | Package manager | **npm** | Node LTS (verified on v24); `package-lock.json`; postinstall runs **patch-package** (`patches/nuxt-site-config+3.2.18.patch`) + `nuxt prepare` |
 | Task runner | `just` | wraps npm scripts (`justfile`), port 8114 |
 
@@ -74,10 +74,9 @@ carreer-buddy-proto/
   line) — safe to run while other projects are serving.
 - Bare `npm run test` starts Vitest in **watch mode** and hangs the terminal — use `just test`
   (forces `--run`) or the scoped `npm run test:unit` / `npm run test:functional`.
-- `npx nuxt typecheck` currently FAILS with **26 pre-existing errors** (landing sections'
-  transition bindings, `user.email` in `layouts/dashboard.vue` + `pages/settings.vue`,
-  `routeRules.robots` typing in `nuxt.config.ts`, a few test fixtures). Treat that as the
-  baseline: new errors are regressions. Details in `.docs/06-troubleshooting/common-issues.md`.
+- `just typecheck` (`npx nuxt typecheck`) passes with **ZERO errors** — the historical
+  26-error baseline was cleared in 2026-08. Any typecheck error is a regression; `just verify`
+  runs tests + typecheck as the pre-push gate.
 - Playwright e2e (`npm run test:e2e`) boots its **own** dev server on `localhost:3000` (see
   `playwright.config.ts` `webServer`) and needs browsers once: `npx playwright install`. It is
   independent of the :8114 kit server.

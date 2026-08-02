@@ -20,14 +20,15 @@ happy-dom), e2e (Playwright, own server on :3000).
 
 `pwsh ./setup.ps1` once (installs Git, Node LTS, just, uv, Claude CLI; seeds `.mcp.json`),
 reopen the shell, `just install`, `just start`, open http://localhost:8114. First page load
-can take up to two minutes while Vite warms up. Verify with `just test` (834 tests, green).
+can take up to two minutes while Vite warms up. Verify with `just verify` (843 tests +
+typecheck, all green).
 
 ## [03-development/workflow.md](03-development/workflow.md)
 
 Branch off `main`, run the dev server with `just start`/`just dev`, add tests mirroring the
-existing `tests/` layout, gate with `just test` (+ `npx nuxt typecheck` against the known
-26-error baseline), commit with Conventional Commits (no AI attribution footers), PR into
-`main`. The `.claude/skills/` catalog automates most of this.
+existing `tests/` layout, gate with `just verify` (`just test` + `just typecheck`, both fully
+green — the typecheck baseline is 0 errors), commit with Conventional Commits (no AI
+attribution footers), PR into `main`. The `.claude/skills/` catalog automates most of this.
 
 ## [04-deployment/deployment.md](04-deployment/deployment.md)
 

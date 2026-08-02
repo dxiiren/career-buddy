@@ -24,22 +24,18 @@ Two gotchas baked into that line: use **`curl.exe`** (the PowerShell `curl` alia
 (`[::1]`) on Windows, so `127.0.0.1` can refuse connections while the server is perfectly
 healthy.
 
-### `npx nuxt typecheck` fails on a clean clone (26 errors)
+### `just typecheck` reports errors
 
-Known pre-existing baseline, present before the onboarding kit (verified 2026-08-01). The app
-builds and all 834 Vitest tests pass despite it. The buckets:
+The baseline is **zero errors** — `just typecheck` (`npx nuxt typecheck`) was verified clean
+on 2026-08-02, so any error it prints is a regression from your working tree. Fix it before
+pushing (see `/fix-typecheck`); `just verify` runs tests + typecheck as one gate.
 
-| Where | Error |
-| --- | --- |
-| `components/landing/{FeaturesSection,ProblemSection,TestimonialsCarousel}.vue` | TS2345 — transition/class/style binding objects not assignable (6 errors) |
-| `layouts/dashboard.vue`, `pages/settings.vue` | TS2339 — `user.email` doesn't exist on the `{ username, name }` user type |
-| `nuxt.config.ts` | TS2353 — `robots` not a known `routeRules` property (9 errors; the runtime accepts it via the sitemap module) |
-| `pages/about.vue` | TS7034 — implicit `any[]` for `stats` |
-| `tests/functional/{DashboardComponents,HelpComponents}.test.ts`, `tests/unit/useTheme.test.ts` | fixture shapes / literal-type comparison (8 errors) |
-
-Treat this as the baseline: **new errors are regressions** and should be fixed (see
-`/fix-typecheck`). Clearing the baseline itself is a worthwhile standalone chore, not a
-side-effect of unrelated work.
+For history: the repo carried a documented 26-error baseline until 2026-08. It was cleared by
+typing the shadcn `Card` `class` prop as `HTMLAttributes['class']` (landing sections), adding
+the optional `email` to the auth `User`, replacing the uninstalled-module `robots` route rule
+with typed `X-Robots-Tag` headers in `nuxt.config.ts`, typing `pages/about.vue`'s `stats`,
+and correcting test fixtures. If a similar cross-cutting error shows up, fix the type at its
+definition — not with `any` or `@ts-ignore` at every call site.
 
 ### `npm run test:e2e` errors immediately
 

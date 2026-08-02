@@ -1,8 +1,8 @@
 # Development Workflow
 
 > **TL;DR** Branch off `main`, code against the running dev server, mirror the existing
-> test layout for anything logic-bearing, gate with `just test` (+ typecheck vs the known
-> baseline), commit Conventional-style with no AI attribution, PR into `main`.
+> test layout for anything logic-bearing, gate with `just verify` (tests + typecheck, both
+> expected fully green), commit Conventional-style with no AI attribution, PR into `main`.
 
 ## Daily loop
 
@@ -38,8 +38,8 @@ effects, and SSR-safe browser-API access (`import.meta.client` / `onMounted`).
 
 | Gate | Command | Expectation |
 | --- | --- | --- |
-| Unit + functional tests | `just test` | 100% pass (834 baseline) — never weaken an assertion to go green |
-| Typecheck | `npx nuxt typecheck` | 26 pre-existing errors is the baseline; **new** errors are regressions (see `/fix-typecheck`) |
+| Unit + functional tests | `just test` | 100% pass (843 baseline) — never weaken an assertion to go green |
+| Typecheck | `just typecheck` | **0 errors** is the baseline; any error is a regression (see `/fix-typecheck`). `just verify` = tests + typecheck |
 | E2E (when relevant) | `npm run test:e2e -- --project=chromium` | pass; needs `npx playwright install` once |
 
 There is no ESLint or Prettier in this repo — don't invent `npm run lint`; `/lint-check` runs

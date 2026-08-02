@@ -30,9 +30,9 @@ occasional command rather than a daily recipe — see
 ## Why is there no ESLint / Prettier?
 
 The repo shipped without them, and the onboarding kit documents reality rather than adding
-tooling. The quality layers that exist are the TypeScript typecheck (`npx nuxt typecheck`,
-with a known 26-error baseline) and the Vitest suite (`just test`). Adding a linter would be
-a deliberate, separate decision.
+tooling. The quality layers that exist are the TypeScript typecheck (`just typecheck`,
+baseline 0 errors) and the Vitest suite (`just test`) — `just verify` runs both. Adding a
+linter would be a deliberate, separate decision.
 
 ## What is `patches/` and why does install run `patch-package`?
 

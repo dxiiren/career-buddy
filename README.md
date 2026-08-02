@@ -1,13 +1,21 @@
 # Career Buddy
 
+**Live demo: <https://carreer-buddy-proto.vercel.app>**
+
 A frontend-only prototype of Career Buddy — a career-preparation platform for Malaysian youth
 aged 18–30. A public landing page plus a mock-auth app shell with dashboard, AI career chat,
 resume builder, interview prep (including an AI simulation), job search, networking, and
 self-promotion modules. All data is mock data served from composables — no backend, no
-database, no `.env`.
+database, no `.env`. Log in with `admin` / `admin` to explore the app shell.
 
 > **New developer? Start with [`.docs/tldr.md`](.docs/tldr.md)** — every doc summarised on one
 > page. The full guide lives in [`.docs/`](.docs/README.md).
+
+## Screenshots
+
+| Dashboard | Interview simulation | Resume builder |
+| --- | --- | --- |
+| ![Dashboard](docs/images/dashboard.png) | ![Interview simulation](docs/images/interview-simulation.png) | ![Resume builder](docs/images/resume-builder.png) |
 
 ## Prerequisites
 
@@ -47,9 +55,11 @@ Run `just` with no arguments to list every recipe. The ones you'll use daily:
 | `just stop` | Stop only THIS repo's node processes |
 | `just build` | Production build (Nitro server bundle in `.output/`) |
 | `just preview` | Serve the production build on http://localhost:8114 (after `just build`) |
-| `just test` | Run ALL Vitest tests once (unit + functional) |
+| `just test` | Run ALL Vitest tests once (unit + functional — 843 tests) |
 | `just test-unit` | Unit tests only (`tests/unit` — composables) |
 | `just test-functional` | Functional tests only (`tests/functional` — components) |
+| `just typecheck` | Full-project TypeScript check (`npx nuxt typecheck`) — expect 0 errors |
+| `just verify` | Full quality gate: `just test` + `just typecheck` |
 | `just claudex` | Launch Claude Code (Sonnet, all permissions) |
 
 ## Troubleshooting
@@ -66,11 +76,11 @@ The first request after `just start` triggers Vite transforms — allow 30–120
 `curl.exe -s -o NUL -w "%{http_code}" http://localhost:8114/` rather than assuming failure.
 Also use `localhost`, not `127.0.0.1` — on Windows the dev server binds the IPv6 loopback.
 
-### `npx nuxt typecheck` reports errors on a fresh clone
+### `just typecheck` reports errors
 
-Known baseline: 26 pre-existing TypeScript errors (landing-section transition bindings,
-`user.email` usages, `routeRules.robots` typing, some test fixtures). The app builds and all
-834 Vitest tests pass regardless. Treat new errors as regressions; see
+The typecheck baseline is **zero errors** (the historical 26-error baseline was cleared in
+2026-08). Any error `just typecheck` reports is a regression introduced by your change — fix
+it before pushing (`just verify` runs tests + typecheck together); see
 [`.docs/06-troubleshooting/common-issues.md`](.docs/06-troubleshooting/common-issues.md).
 
 ### `npm run test:e2e` fails immediately

@@ -52,11 +52,12 @@ features get mock composables, not network calls.
 - License: none published — the old README declared the project **Private** (no open-source
   license file exists).
 
-## Quality snapshot (verified 2026-08-01)
+## Quality snapshot (verified 2026-08-02)
 
 - `just build` — green (Nuxt 3.17.5 / Nitro 2.12.4 / Vue 3.5.25, Node v24).
-- `just test` — green: 39 Vitest files, **834 tests passing** (214 unit + 620 functional).
-- `npx nuxt typecheck` — **fails with 26 pre-existing errors** (documented baseline; see
+- `just test` — green: 39 Vitest files, **843 tests passing** (223 unit + 620 functional).
+- `just typecheck` (`npx nuxt typecheck`) — **green, 0 errors** (the historical 26-error
+  baseline was cleared in 2026-08; see
   [`../06-troubleshooting/common-issues.md`](../06-troubleshooting/common-issues.md)).
 - Playwright e2e — 5 specs exist; they need `npx playwright install` once and boot their own
   dev server on `:3000`.
