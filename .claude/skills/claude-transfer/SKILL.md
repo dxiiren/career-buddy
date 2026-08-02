@@ -185,6 +185,6 @@ Grounded in primary sources, adversarially fact-checked (deep-research run):
 
 ## Evolution Log
 
-- Ported from the upload-product-vue pilot for career-buddy: pointer-based, read only on
+- Ported from the vue-inventory-ui pilot for career-buddy: pointer-based, read only on
   explicit resume, never auto-loaded; SCOPE GUARD + freshness re-verify. Commands + freshness
   checks adapted to this repo (just recipes, port 8114, the Vitest suite as the drift check).

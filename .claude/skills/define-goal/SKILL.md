@@ -150,7 +150,7 @@ Five pillars, distilled from a real overnight failure and its fix:
 
 ## Evolution Log
 
-- Ported from the upload-product-vue pilot for career-buddy - same interrogation ->
+- Ported from the vue-inventory-ui pilot for career-buddy - same interrogation ->
   confirm-until-100% -> stop-proof `{topic}-goal.md` flow and the five stop-proof pillars;
   examples and environment bootstrap adapted to this repo (Nuxt 3 + Vue 3 + TypeScript,
   port 8114, Vitest suite as the sanity gate, no coverage gate, no deploy).

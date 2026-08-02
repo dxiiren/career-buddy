@@ -117,6 +117,6 @@ evolving it:
 
 ## Evolution Log
 
-- Ported from the upload-product-vue pilot for career-buddy (Nuxt 3 / Vue 3 /
+- Ported from the vue-inventory-ui pilot for career-buddy (Nuxt 3 / Vue 3 /
   TypeScript stack); `audit.py` copied verbatim — it is repo-agnostic (stdlib-only, reads
   `.claude/skills/` + `CLAUDE.md` relative to the repo root).

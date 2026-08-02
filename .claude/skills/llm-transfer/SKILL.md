@@ -287,6 +287,6 @@ That's the shape of every handoff - scale each section up or down to fit the tas
 
 ## Evolution Log
 
-- Ported from the upload-product-vue pilot for career-buddy: same 9-section framework
+- Ported from the vue-inventory-ui pilot for career-buddy: same 9-section framework
   and dual-mode delivery; persona, stack constraints, and the worked example adapted to this
   repo (Nuxt 3 + Vue 3 + TypeScript, the useScrollAnimation composable).
