@@ -1,4 +1,4 @@
-# CLAUDE.md — carreer-buddy-proto
+# CLAUDE.md — career-buddy
 
 > Human-facing developer docs live in [`.docs/`](./.docs/README.md) — start at
 > [`.docs/tldr.md`](./.docs/tldr.md). Keep them in sync when changing behavior they document.
@@ -12,7 +12,7 @@ prep (including an AI simulation page), job search, networking, and self-promoti
 **All data is mock data served from composables** — there is no backend, no database, no
 `.env`; the "AI" features return canned content.
 
-- **Repo:** GitHub — `github.com/dxiiren/carreer-buddy-proto`
+- **Repo:** GitHub — `github.com/dxiiren/career-buddy`
 - **Live demo:** https://carreer-buddy-proto.vercel.app (Vercel). Local dev via `just start`
   on `http://localhost:8114` — no CI/CD.
 
@@ -34,7 +34,7 @@ prep (including an AI simulation page), job search, networking, and self-promoti
 ### Project Structure
 
 ```
-carreer-buddy-proto/
+career-buddy/
   nuxt.config.ts              # modules, SEO/sitemap, routeRules (noindex app pages), fonts
   tailwind.config.ts, tsconfig.json, vitest.config.ts, playwright.config.ts
   error.vue                   # ACTIVE error page (srcDir = repo root; app/app.vue +

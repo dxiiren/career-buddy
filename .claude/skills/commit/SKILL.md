@@ -140,7 +140,7 @@ scope: upload, products, views, router, composables, styles, config, tooling, do
 
 ## Evolution Log
 
-- Ported from the upload-product-vue pilot for carreer-buddy-proto: same fast-path/scoped
+- Ported from the upload-product-vue pilot for career-buddy: same fast-path/scoped
   pipeline; scope table rewritten for this repo's module layout (pages/ + components/{module}/);
   hook-failure handling stays dropped (this repo has no pre-commit framework / commitizen /
   gitleaks hooks).

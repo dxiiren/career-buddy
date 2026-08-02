@@ -1,4 +1,4 @@
-MCP smoke-test prompts -- one .txt per server, for carreer-buddy-proto.
+MCP smoke-test prompts -- one .txt per server, for career-buddy.
 Home: .claude/skills/test-all-mcp/checks/
 
 Each .txt is a standalone copy-paste block: the exact tool (mcp__<server>__<tool>), its args, and a

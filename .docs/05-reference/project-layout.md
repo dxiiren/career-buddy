@@ -7,7 +7,7 @@
 ## Annotated tree
 
 ```
-carreer-buddy-proto/
+career-buddy/
 ├── nuxt.config.ts            # modules (@nuxtjs/tailwindcss, @vueuse/nuxt, shadcn-nuxt,
 │                             # @nuxtjs/sitemap), site URL, sitemap excludes + noindex
 │                             # routeRules, shadcn config, global head (fonts, favicons)

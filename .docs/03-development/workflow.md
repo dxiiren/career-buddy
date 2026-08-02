@@ -51,7 +51,7 @@ the two real layers above.
   Scope by module (see the `/commit` skill's scope table).
 - Author email for this repo is `mohdakmal875@gmail.com` (already set repo-locally).
 - **Never** add `Co-Authored-By` / "Generated with Claude Code" footers to commits or PRs.
-- PRs go into `main` on `github.com/dxiiren/carreer-buddy-proto`; review is manual (no CI
+- PRs go into `main` on `github.com/dxiiren/career-buddy`; review is manual (no CI
   bots). `/pre-pr-review` gives you the self-review checklist first.
 
 ## Writing a feature plan

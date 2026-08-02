@@ -94,7 +94,7 @@ More in [`.docs/06-troubleshooting/common-issues.md`](.docs/06-troubleshooting/c
 ## Project layout
 
 ```
-carreer-buddy-proto/
+career-buddy/
   nuxt.config.ts              # modules, SEO/sitemap, routeRules, fonts
   tailwind.config.ts, tsconfig.json, vitest.config.ts, playwright.config.ts
   error.vue                   # active error page (app/ pair is unused — see .docs FAQ)

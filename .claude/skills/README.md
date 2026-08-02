@@ -1,4 +1,4 @@
-# Skills Catalog — `carreer-buddy-proto`
+# Skills Catalog — `career-buddy`
 
 Project development skills for this Nuxt 3 / Vue 3 / TypeScript / Tailwind + shadcn-vue career-preparation prototype (GitHub, local-only — no CI/CD). Each lives in its own directory with a `SKILL.md`. **Follow the relevant skill before writing code.** Run `/audit-skills` to verify every skill here is registered and that `CLAUDE.md` references only existing skills.
 

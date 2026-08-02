@@ -1,4 +1,4 @@
-# carreer-buddy-proto — Project Memory Index
+# career-buddy — Project Memory Index
 
 One line per memory below (`- [Title](file.md) — hook`). Each memory is one fact in its own `*.md` file with
 frontmatter (`name`, `description`, `metadata.type` = reference | feedback | project). This index is loaded
