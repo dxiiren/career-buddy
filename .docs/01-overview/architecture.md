@@ -82,8 +82,9 @@ Composables are SSR-rendered, so browser APIs (`localStorage`, `document`) are g
 | Functional (components/pages) | same | `tests/functional/` | 25 files / 620 tests, green |
 | E2E | Playwright 1.57 | `tests/e2e/` | 5 specs; boots its own dev server on `:3000`, five browser projects |
 
-`vitest.config.ts` runs unit+functional with a 15 s timeout; coverage config exists but the
-coverage provider package is not installed (see troubleshooting).
+`vitest.config.ts` runs unit+functional with a 15 s timeout; coverage uses the v8 provider
+(`@vitest/coverage-v8`, in devDependencies) — `just test-coverage` writes text + json + html
+reports into the git-ignored `coverage/`. No thresholds are configured.
 
 ## Build & patching
 

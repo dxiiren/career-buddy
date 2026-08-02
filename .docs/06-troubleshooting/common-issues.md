@@ -49,8 +49,8 @@ Two usual causes:
 
 ### `npm run test:coverage` fails asking for a package
 
-`@vitest/coverage-v8` is not in `devDependencies`, so the coverage script cannot run as
-shipped. Either install it (a dependency change — commit it deliberately) or skip coverage.
+`@vitest/coverage-v8` is in `devDependencies` (its version must track `vitest`'s), so this
+only happens on a stale install — run `just install` and retry (`just test-coverage`).
 
 ### Port 8114 already in use / server won't start
 

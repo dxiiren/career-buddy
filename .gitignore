@@ -24,6 +24,7 @@ logs
 !.env.example
 playwright-report
 test-results
+coverage
 nul
 problems
 # Claude Code — per-dev secrets & local overrides (NEVER commit)

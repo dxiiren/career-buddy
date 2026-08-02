@@ -18,6 +18,7 @@
 | `just test [flags]` | ALL Vitest tests once (`vitest --run`; extra flags pass through) |
 | `just test-unit` | `tests/unit` only (composables) |
 | `just test-functional` | `tests/functional` only (components/pages) |
+| `just test-coverage` | ALL Vitest tests once with v8 coverage → git-ignored `coverage/` (no thresholds) |
 | `just claudex` / `claudeo` / `claudeh` | Claude Code with all permissions — Sonnet / Opus / Haiku |
 
 `PORT` is overridable per invocation: `$env:PORT='8200'; just start` (default 8114).
@@ -33,7 +34,7 @@
 | `npm run test:e2e` | Playwright, all 5 browser projects; boots its own dev server on **:3000**; needs `npx playwright install` once |
 | `npm run test:e2e:ui` | Playwright UI mode |
 | `npm run test:seo` | just the SEO spec on chromium |
-| `npm run test:coverage` | **broken as shipped** — needs the missing `@vitest/coverage-v8` dev dependency |
+| `npm run test:coverage` | run-once full suite with v8 coverage (`just test-coverage`); reports land in the git-ignored `coverage/` |
 | `npm run test:all` | vitest run + full playwright |
 
 The justfile intentionally has no e2e recipe: the Playwright run manages its own server on a

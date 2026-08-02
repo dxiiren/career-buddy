@@ -62,6 +62,12 @@ test-unit: _require-node
 test-functional: _require-node
     npm run test:functional
 
+# Reporters come from vitest.config.ts (text to console; json + html into the
+# git-ignored coverage/). No thresholds configured — the gate is "runs green".
+# Run all Vitest tests once with coverage (vitest run --coverage).
+test-coverage: _require-node
+    npm run test:coverage
+
 # Full-project TypeScript check (vue-tsc via nuxt). Baseline is ZERO errors.
 typecheck: _require-node
     npx nuxt typecheck
